@@ -190,8 +190,41 @@
         .mi-desc { font-size: .82rem; color: var(--muted); line-height: 1.5; }
         .mi-price { font-family: var(--font-d); font-size: 1rem; color: var(--terracotta); white-space: nowrap; flex-shrink: 0; }
 
+        /* === REZENSIONEN === */
+        #rezensionen { background: var(--black); color: #fff; padding-bottom: clamp(2.5rem,5vw,4rem); }
+        #rezensionen .s-label { color: var(--terracotta); }
+        #rezensionen .s-title { color: #fff; }
+        .reviews-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; margin-bottom: 3.5rem; flex-wrap: wrap; }
+        .rating-summary { display: flex; align-items: center; gap: 1.5rem; }
+        .rating-score { font-family: var(--font-d); font-size: 4rem; color: #fff; line-height: 1; }
+        .rating-meta { display: flex; flex-direction: column; gap: .4rem; }
+        .stars { display: flex; gap: 3px; }
+        .star { width: 18px; height: 18px; fill: var(--terracotta); }
+        .rating-count { font-size: .8rem; color: rgba(255,255,255,.5); letter-spacing: .04em; }
+        .google-link { display: inline-flex; align-items: center; gap: .5rem; font-size: .8rem; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: rgba(255,255,255,.5); border-bottom: 1px solid rgba(255,255,255,.2); padding-bottom: 2px; transition: color .2s, border-color .2s; }
+        .google-link:hover { color: #fff; border-color: #fff; }
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 1.5rem; }
+        .reviews-slider { position: relative; }
+        .rs-arrow { display: none; }
+        .review-card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 2rem; display: flex; flex-direction: column; gap: 1rem; transition: background .2s; }
+        .review-card:hover { background: rgba(255,255,255,.1); }
+        .review-top { display: flex; align-items: center; gap: .75rem; }
+        .review-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--terracotta); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: .95rem; color: #fff; flex-shrink: 0; }
+        .review-name { font-weight: 500; font-size: .95rem; }
+        .review-source { font-size: .72rem; color: rgba(255,255,255,.4); margin-top: .1rem; }
+        .review-stars { display: flex; gap: 2px; }
+        .review-stars .star { width: 14px; height: 14px; }
+        .review-text { font-size: .92rem; color: rgba(255,255,255,.72); line-height: 1.75; }
+        .review-date { font-size: .75rem; color: rgba(255,255,255,.35); margin-top: auto; }
+        .review-meta { display: flex; gap: 1rem; flex-wrap: wrap; font-size: .78rem; color: rgba(255,255,255,.5); }
+        .review-meta span::after { content: ' |'; margin-left: 1rem; opacity: .4; }
+        .review-meta span:last-child::after { content: ''; }
+        .review-dish { font-size: .78rem; color: var(--terracotta); font-weight: 500; }
+        .review-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; border-radius: 10px; overflow: hidden; }
+        .review-photos img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
+
         /* === ÜBER UNS === */
-        #ueber-uns { background: var(--black); color: #fff; }
+        #ueber-uns { background: var(--black); color: #fff; padding-top: clamp(2.5rem,5vw,4rem); border-top: 1px solid rgba(255,255,255,.08); }
         #ueber-uns .s-label { color: var(--terracotta); }
         #ueber-uns .s-title { color: #fff; }
         .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem,6vw,7rem); align-items: center; }
@@ -205,30 +238,50 @@
         .acard-label { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.65); margin-bottom: .25rem; }
         .acard-val { font-family: var(--font-d); font-size: 2.4rem; color: #fff; line-height: 1; }
 
-        /* === GALERIE === */
-        #galerie { background: var(--cream); }
-        .gallery-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; margin-bottom: 3rem; flex-wrap: wrap; }
-        .gallery-note { font-size: .85rem; color: var(--muted); max-width: 34ch; line-height: 1.6; }
-        .ggrid { display: grid; grid-template-columns: repeat(12,1fr); grid-template-rows: repeat(2,260px); gap: 1rem; }
-        .gi { border-radius: 14px; overflow: hidden; position: relative; }
-        .gi:nth-child(1) { grid-column: 1/6;  grid-row: 1/2; }
-        .gi:nth-child(2) { grid-column: 6/9;  grid-row: 1/2; }
-        .gi:nth-child(3) { grid-column: 9/13; grid-row: 1/3; }
-        .gi:nth-child(4) { grid-column: 1/4;  grid-row: 2/3; }
-        .gi:nth-child(5) { grid-column: 4/9;  grid-row: 2/3; }
-        .gph {
-            width: 100%; height: 100%; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; gap: .5rem;
-            font-size: .68rem; letter-spacing: .12em; text-transform: uppercase;
-            color: rgba(255,255,255,.55); transition: transform .5s var(--ease);
-        }
-        .gi:hover .gph { transform: scale(1.04); }
-        .gph svg { opacity: .35; }
-        .gi:nth-child(1) .gph { background: #3D2414; }
-        .gi:nth-child(2) .gph { background: var(--sage); }
-        .gi:nth-child(3) .gph { background: var(--terracotta); }
-        .gi:nth-child(4) .gph { background: #6B4C2A; }
-        .gi:nth-child(5) .gph { background: #2C1810; }
+        /* === GALLERY SLIDER === */
+        #galerie { background: var(--cream); overflow: hidden; }
+        #galerie > .container { padding-bottom: 0; }
+        .gallery-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+        .gs-filters { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1.75rem; }
+        .gs-filter { font-family:var(--font-b); font-size:.78rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; padding:.55em 1.3em; border-radius:999px; border:1.5px solid rgba(26,26,26,.2); background:transparent; color:var(--muted); cursor:pointer; transition:all .2s; }
+        .gs-filter:hover { border-color:var(--terracotta); color:var(--terracotta); }
+        .gs-filter.active { background:var(--black); border-color:var(--black); color:#fff; }
+        .gs-wrap { position: relative; padding: 0 3rem; }
+        .gs-outer { overflow: hidden; cursor: grab; user-select: none; touch-action: pan-y; }
+        .gs-outer.dragging { cursor: grabbing; }
+        .gs-track { display: flex; gap: 1.25rem; transition: transform .55s cubic-bezier(.16,1,.3,1); will-change: transform; }
+        .gs-slide { flex: 0 0 min(780px, 58vw); border-radius: 16px; overflow: hidden; position: relative; cursor: pointer; aspect-ratio: 16/9; box-shadow: 0 8px 32px rgba(0,0,0,.1); transition: box-shadow .3s; }
+        .gs-slide:hover { box-shadow: 0 20px 56px rgba(0,0,0,.2); }
+        .gs-slide img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .45s var(--ease); }
+        .gs-slide:hover img { transform: scale(1.05); }
+        .gs-overlay { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.6rem; background:rgba(0,0,0,.52); backdrop-filter:blur(4px); opacity:0; transition:opacity .25s; }
+        .gs-slide:hover .gs-overlay { opacity:1; }
+        .gs-overlay svg { width:30px; height:30px; stroke:#fff; fill:none; stroke-width:2; opacity:.9; }
+        .gs-slide-title { font-size:.92rem; font-weight:600; color:#fff; }
+        .gs-badge { font-size:.65rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; background:rgba(255,255,255,.2); padding:.3em .85em; border-radius:999px; color:#fff; }
+        .gs-arrow { position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; background:rgba(26,26,26,.5); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.15); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:2; transition:background .2s, transform .2s; }
+        .gs-arrow:hover { background:var(--terracotta); transform:translateY(-50%) scale(1.08); }
+        .gs-arrow svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+        .gs-prev { left:.5rem; } .gs-next { right:.5rem; }
+        .gs-dots { display:flex; justify-content:center; gap:.7rem; margin-top:2rem; padding-bottom: clamp(3rem,6vw,5rem); }
+        .gs-dot { width:6px; height:6px; border-radius:50%; background:rgba(26,26,26,.18); border:none; cursor:pointer; padding:0; transition:background .25s, transform .25s; }
+        .gs-dot.active { background:var(--terracotta); transform:scale(1.55); }
+        /* Lightbox */
+        .gs-lightbox { display:none; position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,.92); align-items:center; justify-content:center; padding:1.5rem; }
+        .gs-lightbox.open { display:flex; }
+        .gs-lb-wrap { position:relative; max-width:900px; width:100%; display:flex; flex-direction:column; align-items:center; }
+        .gs-lb-img { max-height:78vh; width:auto; max-width:100%; border-radius:12px; animation:lbIn .22s ease; }
+        @keyframes lbIn { from{opacity:0;transform:scale(.95)} to{opacity:1;transform:scale(1)} }
+        .gs-lb-info { margin-top:1.25rem; text-align:center; }
+        .gs-lb-title { font-family:var(--font-d); font-size:1.3rem; color:#fff; margin-bottom:.5rem; }
+        .gs-lb-close { position:absolute; top:-3rem; right:0; background:none; border:none; color:rgba(255,255,255,.7); font-size:1.5rem; cursor:pointer; padding:.5rem; transition:color .2s; line-height:1; }
+        .gs-lb-close:hover { color:#fff; }
+        .gs-lb-prev, .gs-lb-next { position:absolute; top:40%; transform:translateY(-50%); background:rgba(255,255,255,.12); border:none; color:#fff; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.4rem; transition:background .2s; z-index:1; line-height:1; }
+        .gs-lb-prev { left:-56px; } .gs-lb-next { right:-56px; }
+        .gs-lb-prev:hover, .gs-lb-next:hover { background:rgba(255,255,255,.22); }
+        @media (max-width:1024px) { .gs-slide { flex:0 0 min(78vw, 560px); } }
+        @media (max-width:768px) { .gs-wrap { padding: 0 2.5rem; } .gs-slide { flex:0 0 calc(100vw - 5rem); } .gs-prev { left:.25rem; } .gs-next { right:.25rem; } }
+        @media (max-width:900px) { .gs-lb-prev { left:.5rem; } .gs-lb-next { right:.5rem; } }
 
         /* === KONTAKT === */
         #kontakt { background: var(--warm-white); }
@@ -263,16 +316,34 @@
             .nav-links { display: none; }
             .nav-toggle { display: flex; }
             .menu-grid { grid-template-columns: 1fr; gap: 0; }
-            .ggrid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
-            .gi:nth-child(n) { grid-column: auto; grid-row: auto; height: 200px; }
-            .gi:nth-child(3) { grid-column: 1/3; }
             .contact-grid { grid-template-columns: 1fr; }
-
+            .reviews-grid {
+                display: flex;
+                overflow-x: scroll;
+                scroll-snap-type: x mandatory;
+                scrollbar-width: none;
+                -webkit-overflow-scrolling: touch;
+                gap: 1rem;
+            }
+            .reviews-grid::-webkit-scrollbar { display: none; }
+            .review-card {
+                flex: 0 0 min(82vw, 320px);
+                scroll-snap-align: start;
+            }
+            .rs-arrow {
+                display: flex; align-items: center; justify-content: center;
+                position: absolute; top: 50%; transform: translateY(-50%);
+                background: none; border: none; cursor: pointer; padding: .5rem;
+                color: var(--terracotta); opacity: .45;
+                transition: opacity .2s; z-index: 2;
+            }
+            .rs-arrow:hover { opacity: 1; }
+            .rs-prev { left: -1.6rem; }
+            .rs-next { right: -1.6rem; }
+            .rs-arrow svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
         }
         @media (max-width: 480px) {
             .hero-ctas { flex-direction: column; align-items: flex-start; }
-            .ggrid { grid-template-columns: 1fr; }
-            .gi:nth-child(n) { grid-column: auto; height: 200px; }
             .foot-inner { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
         }
         @media (prefers-reduced-motion: reduce) {
@@ -292,7 +363,7 @@
             <span class="logo-text">QUITO</span>
         </a>
         <ul class="nav-links">
-            <li><a href="#speisekarte">Speisekarte</a></li>
+            <li><a href="speisekarte.html">Speisekarte</a></li>
             <li><a href="#ueber-uns">Über uns</a></li>
             <li><a href="#galerie">Galerie</a></li>
             <li><a href="#kontakt">Kontakt</a></li>
@@ -306,7 +377,7 @@
 <!-- MOBILE MENU -->
 <div class="mob-menu" id="mobMenu" role="dialog" aria-modal="true" aria-label="Navigation">
     <button class="mob-close" id="mobClose" aria-label="Menü schließen">✕</button>
-    <a href="#speisekarte" class="mob-link">Speisekarte</a>
+    <a href="speisekarte.html" class="mob-link">Speisekarte</a>
     <a href="#ueber-uns"   class="mob-link">Über uns</a>
     <a href="#galerie"     class="mob-link">Galerie</a>
     <a href="#kontakt"     class="mob-link">Kontakt</a>
@@ -335,7 +406,7 @@
         <h1 class="hero-h1">Morgens.<br>Mittags.<br><em>Immer gut.</em></h1>
         <p class="hero-sub">Herzlich willkommen im QUITO — dein Café für jeden Moment des Tages. Frisch, lokal und mit Liebe gemacht.</p>
         <div class="hero-ctas">
-            <a href="#speisekarte" class="btn btn-fill">Zur Speisekarte</a>
+            <a href="speisekarte.html" class="btn btn-fill">Zur Speisekarte</a>
             <a href="#kontakt"     class="btn btn-ghost">Tisch reservieren</a>
         </div>
     </div>
@@ -343,88 +414,6 @@
     <div class="scroll-hint" aria-hidden="true">
         <div class="scroll-line"></div>
         <span>Scroll</span>
-    </div>
-</section>
-
-<!-- SPEISEKARTE -->
-<section id="speisekarte" aria-labelledby="menu-title">
-    <div class="container">
-        <div class="menu-head">
-            <div>
-                <div class="s-label reveal">Unsere Karte</div>
-                <h2 class="s-title reveal d1" id="menu-title">Frisch &amp; <em>saisonal</em></h2>
-            </div>
-            <div class="tabs reveal d2" role="tablist" aria-label="Menü-Kategorien">
-                <button class="tab active" role="tab" aria-selected="true"  aria-controls="p-fr"  data-panel="p-fr">Frühstück</button>
-                <button class="tab"        role="tab" aria-selected="false" aria-controls="p-mi"  data-panel="p-mi">Mittagessen</button>
-                <button class="tab"        role="tab" aria-selected="false" aria-controls="p-ge"  data-panel="p-ge">Getränke</button>
-            </div>
-        </div>
-
-        <!-- Frühstück -->
-        <div class="panel active reveal" id="p-fr" role="tabpanel">
-            <div class="menu-grid">
-                <div>
-                    <div class="cat-title">Klassiker</div>
-                    <div class="mi"><div><div class="mi-name">Croissant &amp; Butter</div><div class="mi-desc">Frisch gebacken, Hausmarmelade</div></div><div class="mi-price">3,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Bircher Müsli</div><div class="mi-desc">Hafer, Joghurt, frische Früchte, Honig</div></div><div class="mi-price">7,50 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Rührei auf Toast</div><div class="mi-desc">Zwei Eier, Vollkorntoast, Schnittlauch</div></div><div class="mi-price">8,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Porridge</div><div class="mi-desc">Hafer, Mandelmilch, Zimt, Beeren</div></div><div class="mi-price">6,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Joghurt &amp; Granola</div><div class="mi-desc">Griechischer Joghurt, hausgemachtes Granola</div></div><div class="mi-price">6,50 €</div></div>
-                </div>
-                <div>
-                    <div class="cat-title">Besonderes</div>
-                    <div class="mi"><div><div class="mi-name">Avocado Toast</div><div class="mi-desc">Sauerteig, Avocado, Feta, Chili, Sesam</div></div><div class="mi-price">11,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">QUITO Frühstücksteller</div><div class="mi-desc">Käse, Wurst, Ei, Toast, Obst</div></div><div class="mi-price">14,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">French Toast</div><div class="mi-desc">Brioche, Ahornsirup, Vanillejoghurt, Beeren</div></div><div class="mi-price">10,50 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Eggs Benedict</div><div class="mi-desc">Pochiertes Ei, Schinken, Hollandaise</div></div><div class="mi-price">13,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Veganes Frühstück</div><div class="mi-desc">Tofu-Scramble, Gemüse, Sauerteig</div></div><div class="mi-price">12,90 €</div></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mittagessen -->
-        <div class="panel" id="p-mi" role="tabpanel">
-            <div class="menu-grid">
-                <div>
-                    <div class="cat-title">Suppen &amp; Salate</div>
-                    <div class="mi"><div><div class="mi-name">Tomatensuppe</div><div class="mi-desc">Hausgemacht, Basilikum-Öl, Brot</div></div><div class="mi-price">7,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Tagessuppe</div><div class="mi-desc">Frag uns nach der aktuellen Kreation</div></div><div class="mi-price">6,50 €</div></div>
-                    <div class="mi"><div><div class="mi-name">QUITO Salat</div><div class="mi-desc">Ziegenkäse, Walnuss, Honig-Senf-Dressing</div></div><div class="mi-price">13,50 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Caesar Salat</div><div class="mi-desc">Römersalat, Parmesan, Croutons</div></div><div class="mi-price">12,90 €</div></div>
-                </div>
-                <div>
-                    <div class="cat-title">Hauptgerichte</div>
-                    <div class="mi"><div><div class="mi-name">Tagesgericht</div><div class="mi-desc">Wechselt täglich — frag nach der Tafel</div></div><div class="mi-price">ab 13,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Club Sandwich</div><div class="mi-desc">Hähnchen, Speck, Tomate, Ei, Pommes</div></div><div class="mi-price">14,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Veggie Bowl</div><div class="mi-desc">Quinoa, Röstgemüse, Hummus, Granatapfel</div></div><div class="mi-price">13,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Quiche des Tages</div><div class="mi-desc">Mit Beilagensalat</div></div><div class="mi-price">11,50 €</div></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Getränke -->
-        <div class="panel" id="p-ge" role="tabpanel">
-            <div class="menu-grid">
-                <div>
-                    <div class="cat-title">Kaffee &amp; Espresso</div>
-                    <div class="mi"><div><div class="mi-name">Espresso</div><div class="mi-desc">Single origin, täglich frisch geröstet</div></div><div class="mi-price">2,40 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Cappuccino</div><div class="mi-desc">Espresso, cremig aufgeschäumt</div></div><div class="mi-price">3,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Flat White</div><div class="mi-desc">Double shot, feine Milchtextur</div></div><div class="mi-price">4,20 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Latte Macchiato</div><div class="mi-desc">Auch mit Hafer-, Mandel- oder Sojamilch</div></div><div class="mi-price">4,50 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Cold Brew</div><div class="mi-desc">18 h kalt gezogen, sanft &amp; intensiv</div></div><div class="mi-price">4,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Filterkaffee</div><div class="mi-desc">Pour-over, wechselnde Herkunft</div></div><div class="mi-price">3,50 €</div></div>
-                </div>
-                <div>
-                    <div class="cat-title">Weitere Getränke</div>
-                    <div class="mi"><div><div class="mi-name">Tee-Auswahl</div><div class="mi-desc">Grün, Schwarz, Kräuter, Chai</div></div><div class="mi-price">3,50 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Frische Säfte</div><div class="mi-desc">Orange, Grapefruit, Apfel-Ingwer</div></div><div class="mi-price">4,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Smoothie</div><div class="mi-desc">Mango-Kokos oder Beere-Banane</div></div><div class="mi-price">6,50 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Mineralwasser</div><div class="mi-desc">Still oder sprudelnd, 0,3 l</div></div><div class="mi-price">2,80 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Mate &amp; Bio-Limos</div><div class="mi-desc">Auswahl wechselt saisonal</div></div><div class="mi-price">3,80 €</div></div>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 
@@ -436,15 +425,190 @@
                 <div class="s-label reveal">Atmosphäre</div>
                 <h2 class="s-title reveal d1" id="gallery-title">Das <em>QUITO</em></h2>
             </div>
+        </div>
+        <div class="gs-filters reveal d2" role="group" aria-label="Galerie filtern">
+            <button class="gs-filter active" data-cat="Alle">Alle</button>
+            <button class="gs-filter" data-cat="Interieur">Interieur</button>
+            <button class="gs-filter" data-cat="Kaffee">Kaffee</button>
+            <button class="gs-filter" data-cat="Frühstück">Frühstück</button>
+            <button class="gs-filter" data-cat="Team">Team</button>
+            <button class="gs-filter" data-cat="Essen">Essen</button>
+        </div>
+    </div>
+    <div class="gs-wrap reveal d3">
+            <button class="gs-arrow gs-prev" aria-label="Vorheriges Bild">
+                <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="gs-arrow gs-next" aria-label="Nächstes Bild">
+                <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <div class="gs-outer">
+                <div class="gs-track" id="gsTrack">
+                    <div class="gs-slide" data-index="0" data-cat="Interieur" tabindex="0" role="button" aria-label="Café Innenraum öffnen">
+                        <img src="cafe-innen.JPG" alt="Café QUITO Innenansicht" loading="lazy" decoding="async">
+                        <div class="gs-overlay" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                            <span class="gs-slide-title">Café Innenraum</span>
+                            <span class="gs-badge">Interieur</span>
+                        </div>
+                    </div>
+                    <div class="gs-slide" data-index="1" data-cat="Kaffee" tabindex="0" role="button" aria-label="Specialty Coffee öffnen">
+                        <img src="kaffee.jpeg" alt="Kaffee im Café QUITO" loading="lazy" decoding="async">
+                        <div class="gs-overlay" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                            <span class="gs-slide-title">Specialty Coffee</span>
+                            <span class="gs-badge">Kaffee</span>
+                        </div>
+                    </div>
+                    <div class="gs-slide" data-index="2" data-cat="Frühstück" tabindex="0" role="button" aria-label="Frühstück öffnen">
+                        <img src="fruehstueck.jpeg" alt="Frühstück im Café QUITO" loading="lazy" decoding="async">
+                        <div class="gs-overlay" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                            <span class="gs-slide-title">Frühstück</span>
+                            <span class="gs-badge">Frühstück</span>
+                        </div>
+                    </div>
+                    <div class="gs-slide" data-index="3" data-cat="Team" tabindex="0" role="button" aria-label="Unser Team öffnen">
+                        <img src="team.JPG" alt="Das Team des Café QUITO" loading="lazy" decoding="async">
+                        <div class="gs-overlay" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                            <span class="gs-slide-title">Unser Team</span>
+                            <span class="gs-badge">Team</span>
+                        </div>
+                    </div>
+                    <div class="gs-slide" data-index="4" data-cat="Essen" tabindex="0" role="button" aria-label="Mittagessen öffnen">
+                        <img src="essen.jpg" alt="Essen im Café QUITO" loading="lazy" decoding="async">
+                        <div class="gs-overlay" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                            <span class="gs-slide-title">Mittagessen</span>
+                            <span class="gs-badge">Essen</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="gs-dots" role="group" aria-label="Galerie Navigation">
+                <button class="gs-dot active" aria-label="Bild 1"></button>
+                <button class="gs-dot" aria-label="Bild 2"></button>
+                <button class="gs-dot" aria-label="Bild 3"></button>
+                <button class="gs-dot" aria-label="Bild 4"></button>
+                <button class="gs-dot" aria-label="Bild 5"></button>
+            </div>
+        </div>
+    <!-- Lightbox -->
+    <div class="gs-lightbox" id="gsLightbox" role="dialog" aria-modal="true" aria-label="Bild vergrößert">
+        <div class="gs-lb-wrap">
+            <button class="gs-lb-close" aria-label="Schließen">✕</button>
+            <button class="gs-lb-prev" aria-label="Vorheriges Bild">‹</button>
+            <button class="gs-lb-next" aria-label="Nächstes Bild">›</button>
+            <img class="gs-lb-img" id="gsLbImg" src="" alt="">
+            <div class="gs-lb-info">
+                <div class="gs-lb-title" id="gsLbTitle"></div>
+                <span class="gs-badge" id="gsLbBadge"></span>
+            </div>
+        </div>
+    </div>
+</section>
 
+<!-- REZENSIONEN -->
+<section id="rezensionen" aria-labelledby="reviews-title">
+    <div class="container">
+        <div class="reviews-header">
+            <div>
+                <div class="s-label reveal">Was Gäste sagen</div>
+                <h2 class="s-title reveal d1" id="reviews-title">349 <em>Rezensionen</em></h2>
+            </div>
+            <div class="rating-summary reveal d2">
+                <div class="rating-score">4,6</div>
+                <div class="rating-meta">
+                    <div class="stars" aria-label="4,6 von 5 Sternen">
+                        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="star" viewBox="0 0 24 24">
+                            <defs><clipPath id="c60"><rect x="0" y="0" width="14.4" height="24"/></clipPath></defs>
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="rgba(255,255,255,.15)"/>
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="var(--terracotta)" clip-path="url(#c60)"/>
+                        </svg>
+                    </div>
+                    <div class="rating-count">Basierend auf 349 Google-Rezensionen</div>
+                    <a href="https://share.google/FHLpPrkt1QKdm269O" target="_blank" rel="noopener" class="google-link">
+                        Alle Rezensionen auf Google →
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="ggrid reveal">
-            <div class="gi"><img src="cafe-innen.JPG" alt="Café QUITO Innenansicht" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-            <div class="gi"><img src="kaffee.jpeg" alt="Kaffee im Café QUITO" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-            <div class="gi"><img src="fruehstueck.jpeg" alt="Frühstück im Café QUITO" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-            <div class="gi"><img src="team.JPG" alt="Das Team des Café QUITO" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-            <div class="gi"><img src="essen.jpg" alt="Essen im Café QUITO" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+
+        <div class="reviews-slider">
+        <button class="rs-arrow rs-prev" aria-label="Vorherige Rezension">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="rs-arrow rs-next" aria-label="Nächste Rezension">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="reviews-grid">
+            <div class="review-card reveal">
+                <div class="review-top">
+                    <div class="review-avatar" aria-hidden="true">G</div>
+                    <div>
+                        <div class="review-name">Gabriele</div>
+                        <div class="review-source">Rezension auf Google</div>
+                    </div>
+                </div>
+                <div class="review-stars" aria-label="5 von 5 Sternen">
+                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <p class="review-text">„Tolles Café, die freundlichste Bedienung, die man sich wünschen kann. Leckeres Frühstück, gute Auswahl, alles frisch gemacht."</p>
+                <div class="review-date">vor 2 Monaten</div>
+            </div>
+
+            <div class="review-card reveal d1">
+                <div class="review-top">
+                    <div class="review-avatar" aria-hidden="true">W</div>
+                    <div>
+                        <div class="review-name">Werner T.</div>
+                        <div class="review-source">Rezension auf Google</div>
+                    </div>
+                </div>
+                <div class="review-stars" aria-label="5 von 5 Sternen">
+                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <p class="review-text">„Chefin und gesamtes Personal sehr freundlich. Unschlagbar guter Kaffee. Essen sehr schmackhaft, sehr gute Qualität."</p>
+                <div class="review-date">vor 2 Monaten</div>
+            </div>
+
+            <div class="review-card reveal d2">
+                <div class="review-top">
+                    <div class="review-avatar" aria-hidden="true">D</div>
+                    <div>
+                        <div class="review-name">Dieter Satzer</div>
+                        <div class="review-source">Local Guide · 196 Rezensionen · 321 Fotos</div>
+                    </div>
+                </div>
+                <div class="review-stars" aria-label="5 von 5 Sternen">
+                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <p class="review-text">„Waren heute gut frühstücken. Sehr gute Qualität, sehr nette Bedienung, nur etwas laut. Aber ansonsten gerne wieder. Wenn das Wetter mitmacht am liebsten draussen."</p>
+                <div class="review-meta">
+                    <span>Essen: 5/5</span><span>Service: 5/5</span><span>Ambiente: 4/5</span>
+                </div>
+                <div class="review-dish">Empfehlung: Frühstück Platte Für 2</div>
+                <div class="review-date">vor einem Jahr</div>
+            </div>
         </div>
+        </div><!-- /.reviews-slider -->
     </div>
 </section>
 
@@ -454,7 +618,7 @@
         <div class="about-grid">
             <div class="about-text">
                 <div class="s-label reveal">Unsere Geschichte</div>
-                <h2 class="s-title reveal d1" id="about-title">Mehr als nur<br><em>ein Kaffee</em></h2>
+                <h2 class="s-title reveal d1" id="about-title">Mehr als nur<br><em>ein Café</em></h2>
                 <p class="reveal d2">Das QUITO ist ein Ort zum Ankommen. Ob du deinen Morgen mit uns beginnst, in der Mittagspause durchatmest oder einfach einen guten Kaffee genießt — wir freuen uns, dass du hier bist.</p>
                 <p class="reveal d3">Wir arbeiten mit regionalen Lieferanten zusammen und legen großen Wert auf frische Zutaten. Unsere Karte wechselt mit den Jahreszeiten — weil gutes Essen vom Rhythmus der Natur lebt.</p>
                 <blockquote class="about-quote reveal d4">„Ein guter Kaffee, ein gutes Gespräch — mehr braucht es manchmal nicht."</blockquote>
@@ -553,21 +717,6 @@
     );
     document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
-    // Menu tabs
-    document.querySelectorAll('.tab').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.tab').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
-            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-            btn.classList.add('active'); btn.setAttribute('aria-selected','true');
-            const panel = document.getElementById(btn.dataset.panel);
-            panel.classList.add('active');
-            panel.querySelectorAll('.mi').forEach((item, i) => {
-                item.style.cssText = 'opacity:0;transform:translateY(10px)';
-                setTimeout(() => { item.style.cssText = 'transition:opacity .3s ease,transform .3s ease;opacity:1;transform:none'; }, i * 35);
-            });
-        });
-    });
-
     // Mobile menu
     const mob    = document.getElementById('mobMenu');
     const toggler = document.getElementById('toggler');
@@ -576,6 +725,180 @@
     document.getElementById('mobClose').addEventListener('click', close);
     mob.querySelectorAll('.mob-link').forEach(l => l.addEventListener('click', close));
     document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+
+    // ── Reviews Slider (mobile) ───────────────────────────────────────────────
+    (function () {
+        var grid = document.querySelector('.reviews-grid');
+        var prev = document.querySelector('.rs-prev');
+        var next = document.querySelector('.rs-next');
+        if (!grid || !prev || !next) return;
+        function scrollBy(dir) {
+            var card = grid.querySelector('.review-card');
+            var gap  = 16;
+            var step = card ? card.offsetWidth + gap : grid.offsetWidth;
+            grid.scrollBy({ left: dir * step, behavior: 'smooth' });
+        }
+        prev.addEventListener('click', function () { scrollBy(-1); });
+        next.addEventListener('click', function () { scrollBy(1); });
+    })();
+
+    // ── Gallery Slider + Lightbox ─────────────────────────────────────────────
+    (function () {
+        var IMAGES = [
+            { src: 'cafe-innen.JPG',   title: 'Café Innenraum',   cat: 'Interieur', alt: 'Café QUITO Innenansicht' },
+            { src: 'kaffee.jpeg',      title: 'Specialty Coffee', cat: 'Kaffee',    alt: 'Kaffee im Café QUITO' },
+            { src: 'fruehstueck.jpeg', title: 'Frühstück',        cat: 'Frühstück', alt: 'Frühstück im Café QUITO' },
+            { src: 'team.JPG',         title: 'Unser Team',       cat: 'Team',      alt: 'Das Team des Café QUITO' },
+            { src: 'essen.jpg',        title: 'Mittagessen',      cat: 'Essen',     alt: 'Essen im Café QUITO' },
+        ];
+
+        var track  = document.getElementById('gsTrack');
+        var outer  = track.parentElement; // .gs-outer
+        var slides = Array.from(track.querySelectorAll('.gs-slide'));
+        var dots   = Array.from(document.querySelectorAll('.gs-dot'));
+        var N      = slides.length;
+        var cur    = 0;
+        var GAP    = 20;
+
+        function visible() { return slides.filter(function(s){ return s.style.display !== 'none'; }); }
+        function slideW()  { var v = visible(); return v.length ? v[0].offsetWidth + GAP : 0; }
+        function maxIdx()  {
+            var v = visible();
+            if (!v.length) return 0;
+            var perView = Math.max(1, Math.floor((outer.offsetWidth + GAP) / slideW()));
+            return Math.max(0, v.length - perView);
+        }
+
+        function goTo(idx) {
+            var v = visible();
+            cur = Math.max(0, Math.min(idx, maxIdx()));
+            track.style.transform = 'translateX(-' + (cur * slideW()) + 'px)';
+            dots.forEach(function(d, i) {
+                d.style.display = i < v.length ? '' : 'none';
+                d.classList.toggle('active', i === cur);
+            });
+        }
+
+        document.querySelector('.gs-prev').addEventListener('click', function(){ goTo(cur - 1); });
+        document.querySelector('.gs-next').addEventListener('click', function(){ goTo(cur + 1); });
+        dots.forEach(function(d, i){ d.addEventListener('click', function(){ goTo(i); }); });
+        window.addEventListener('resize', function(){ goTo(cur); });
+
+        // ── Filter ────────────────────────────────────────────────────────────
+        document.querySelectorAll('.gs-filter').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.gs-filter').forEach(function(b){ b.classList.remove('active'); });
+                btn.classList.add('active');
+                var cat = btn.dataset.cat;
+                slides.forEach(function(s){
+                    s.style.display = (cat === 'Alle' || s.dataset.cat === cat) ? '' : 'none';
+                });
+                cur = 0;
+                goTo(0);
+            });
+        });
+
+        goTo(0);
+
+        // ── Drag ──────────────────────────────────────────────────────────────
+        var dragging = false, dragX = 0, dragY = 0, dragBase = 0, didDrag = false, isHoriz = null;
+        var SWIPE_PX = 55; // minimum px to trigger slide change
+
+        outer.addEventListener('pointerdown', function(e) {
+            if (e.button !== 0) return;
+            dragging = true; didDrag = false; isHoriz = null;
+            dragX    = e.clientX;
+            dragY    = e.clientY;
+            dragBase = -(cur * slideW());
+            outer.setPointerCapture(e.pointerId);
+        });
+
+        outer.addEventListener('pointermove', function(e) {
+            if (!dragging) return;
+            var dx = e.clientX - dragX;
+            var dy = e.clientY - dragY;
+            // Determine drag direction on first significant movement
+            if (isHoriz === null && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
+                isHoriz = Math.abs(dx) >= Math.abs(dy);
+                if (isHoriz) {
+                    track.style.transition = 'none';
+                    outer.classList.add('dragging');
+                }
+            }
+            if (isHoriz) {
+                didDrag = true;
+                track.style.transform = 'translateX(' + (dragBase + dx) + 'px)';
+            }
+        });
+
+        outer.addEventListener('pointerup', function(e) {
+            if (!dragging) return;
+            dragging = false;
+            if (isHoriz) {
+                outer.classList.remove('dragging');
+                track.style.transition = '';
+                var dx = e.clientX - dragX;
+                if      (dx < -SWIPE_PX) goTo(cur + 1);
+                else if (dx >  SWIPE_PX) goTo(cur - 1);
+                else goTo(cur);
+                if (didDrag) {
+                    var block = function(ev){ ev.stopPropagation(); ev.preventDefault(); document.removeEventListener('click', block, true); };
+                    document.addEventListener('click', block, true);
+                }
+            }
+            isHoriz = null;
+        });
+
+        outer.addEventListener('pointercancel', function() {
+            if (!dragging) return;
+            dragging = false; isHoriz = null;
+            outer.classList.remove('dragging');
+            track.style.transition = '';
+            goTo(cur);
+        });
+
+        // ── Lightbox ──────────────────────────────────────────────────────────
+        var lb      = document.getElementById('gsLightbox');
+        var lbImg   = document.getElementById('gsLbImg');
+        var lbTitle = document.getElementById('gsLbTitle');
+        var lbBadge = document.getElementById('gsLbBadge');
+        var lbCur   = 0;
+
+        function openLb(idx) {
+            lbCur = idx;
+            var item = IMAGES[idx];
+            lbImg.src = item.src; lbImg.alt = item.alt;
+            lbTitle.textContent = item.title;
+            lbBadge.textContent = item.cat;
+            lb.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+
+        slides.forEach(function(slide) {
+            var idx = parseInt(slide.dataset.index);
+            slide.addEventListener('click', function(){ if (!didDrag) openLb(idx); });
+            slide.addEventListener('keydown', function(e){
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(idx); }
+            });
+        });
+
+        document.querySelector('.gs-lb-close').addEventListener('click', closeLb);
+        lb.addEventListener('click', closeLb);
+        document.querySelector('.gs-lb-wrap').addEventListener('click', function(e){ e.stopPropagation(); });
+        document.querySelector('.gs-lb-prev').addEventListener('click', function(e){
+            e.stopPropagation(); lbCur = (lbCur - 1 + N) % N; openLb(lbCur);
+        });
+        document.querySelector('.gs-lb-next').addEventListener('click', function(e){
+            e.stopPropagation(); lbCur = (lbCur + 1) % N; openLb(lbCur);
+        });
+        document.addEventListener('keydown', function(e) {
+            if (!lb.classList.contains('open')) return;
+            if (e.key === 'Escape')     closeLb();
+            if (e.key === 'ArrowLeft')  { lbCur = (lbCur - 1 + N) % N; openLb(lbCur); }
+            if (e.key === 'ArrowRight') { lbCur = (lbCur + 1) % N; openLb(lbCur); }
+        });
+    })();
 </script>
 </body>
 </html>
