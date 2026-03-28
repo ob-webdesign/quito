@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speisekarte — QUITO Café</title>
+    <meta name="description" content="Die Speisekarte des Café QUITO in Frankenthal — Frühstück, Mittagessen, Kaffee & Getränke.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black:      #1A1A1A;
+            --cream:      #F5EDD6;
+            --terracotta: #C4793A;
+            --sage:       #8B9D6A;
+            --warm-white: #FDFAF4;
+            --muted:      #6B6153;
+            --font-d: 'DM Serif Display', serif;
+            --font-b: 'DM Sans', sans-serif;
+            --nav-h: 72px;
+            --pad: clamp(1.5rem, 5vw, 3rem);
+            --max: min(1320px, 94vw);
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-b); background: var(--cream); color: var(--black); overflow-x: hidden; font-size: 16px; line-height: 1.6; }
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            background-size: 180px;
+            pointer-events: none; z-index: 9999; mix-blend-mode: multiply;
+        }
+
+        .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+        .reveal.visible { opacity: 1; transform: none; }
+        .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; }
+
+        /* === NAV === */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            height: var(--nav-h);
+            display: flex; align-items: center;
+            padding: 0 var(--pad);
+            background: var(--cream);
+            box-shadow: 0 1px 0 rgba(26,26,26,.09);
+        }
+        .nav-inner { width: 100%; max-width: var(--max); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; position: relative; }
+        .nav-inner > a { position: absolute; left: 50%; transform: translateX(-50%); }
+        .logo-img  { height: 38px; width: auto; display: block; }
+        .logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.35rem; letter-spacing: .12em; text-transform: uppercase; background: var(--black); color: #fff; padding: .3em .85em; border-radius: 999px; display: none; }
+        .nav-links { display: flex; gap: clamp(1.5rem,3vw,2.5rem); list-style: none; }
+        .nav-links a { font-size: .85rem; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--black); position: relative; padding-bottom: 2px; }
+        .nav-links a.active { color: var(--terracotta); }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1.5px; background: var(--terracotta); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
+        .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+        .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; background: none; border: none; }
+        .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--black); }
+
+        /* === MOBILE MENU === */
+        .mob-menu { display: none; position: fixed; inset: 0; background: var(--cream); z-index: 101; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; }
+        .mob-menu.open { display: flex; }
+        .mob-menu a { font-family: var(--font-d); font-size: clamp(2rem,8vw,3.5rem); transition: color .2s; }
+        .mob-menu a:hover { color: var(--terracotta); }
+        .mob-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; cursor: pointer; font-size: 1.5rem; padding: .5rem; color: var(--black); }
+
+        /* === PAGE HEADER === */
+        .page-header {
+            padding-top: calc(var(--nav-h) + clamp(3rem, 6vw, 5rem));
+            padding-bottom: clamp(2rem, 4vw, 3rem);
+            background: var(--warm-white);
+        }
+        .page-header .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+        .s-label { display: inline-flex; align-items: center; gap: .75rem; font-size: .7rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 1.1rem; }
+        .s-label::before { content: ''; display: inline-block; width: 22px; height: 1.5px; background: var(--terracotta); }
+        .s-title { font-family: var(--font-d); font-size: clamp(2.2rem,5vw,3.8rem); line-height: 1.1; }
+        .s-title em { font-style: italic; color: var(--terracotta); }
+
+        /* === SPEISEKARTE === */
+        #speisekarte { background: var(--warm-white); padding: 0 0 clamp(5rem,10vw,9rem); }
+        .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+        .menu-head { display: flex; align-items: flex-end; justify-content: flex-end; gap: 2rem; margin-bottom: 3.5rem; flex-wrap: wrap; }
+        .tabs { display: flex; gap: .5rem; flex-wrap: wrap; }
+        .tab { font-family: var(--font-b); font-size: .78rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: .6em 1.35em; border-radius: 999px; border: 1.5px solid rgba(26,26,26,.2); background: transparent; color: var(--muted); cursor: pointer; transition: all .2s; }
+        .tab:hover { border-color: var(--terracotta); color: var(--terracotta); }
+        .tab.active { background: var(--black); border-color: var(--black); color: #fff; }
+        .panel { display: none; }
+        .panel.active { display: block; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%,340px),1fr)); gap: 0 3rem; }
+        .cat-title { font-family: var(--font-d); font-size: 1.3rem; font-style: italic; color: var(--black); margin: 2.5rem 0 .5rem; padding-bottom: .6rem; border-bottom: 2px solid var(--terracotta); display: inline-block; }
+        .cat-title:first-child { margin-top: 0; }
+        .mi { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 1.35rem 0; border-bottom: 1px solid rgba(26,26,26,.09); }
+        .mi:last-child { border-bottom: none; }
+        .mi-name { font-size: 1rem; font-weight: 500; margin-bottom: .15rem; }
+        .mi-desc { font-size: .82rem; color: var(--muted); line-height: 1.5; }
+        .mi-price { font-family: var(--font-d); font-size: 1rem; color: var(--terracotta); white-space: nowrap; flex-shrink: 0; }
+
+        /* === FOOTER === */
+        footer { background: var(--black); color: #fff; padding: 3rem 0; }
+        .foot-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+        .foot-logo img { height: 30px; filter: invert(1); }
+        .foot-logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1rem; letter-spacing: .12em; background: #fff; color: var(--black); padding: .28em .75em; border-radius: 999px; display: none; }
+        .foot-copy { font-size: .78rem; color: rgba(255,255,255,.38); }
+        .foot-links { display: flex; gap: 1.5rem; list-style: none; }
+        .foot-links a { font-size: .78rem; color: rgba(255,255,255,.45); transition: color .2s; }
+        .foot-links a:hover { color: #fff; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-toggle { display: flex; }
+            .menu-grid { grid-template-columns: 1fr; gap: 0; }
+        }
+        @media (max-width: 480px) {
+            .foot-inner { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+        }
+    </style>
+</head>
+<body>
+
+<nav role="navigation" aria-label="Hauptnavigation">
+    <div class="nav-inner">
+        <a href="index.html" aria-label="QUITO — zur Startseite">
+            <img src="logo.png" alt="QUITO" class="logo-img"
+                 onerror="this.style.display='none';document.querySelectorAll('.logo-text').forEach(el=>el.style.display='block')">
+            <span class="logo-text">QUITO</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="speisekarte.html" class="active">Speisekarte</a></li>
+            <li><a href="index.html#ueber-uns">Über uns</a></li>
+            <li><a href="index.html#galerie">Galerie</a></li>
+            <li><a href="index.html#kontakt">Kontakt</a></li>
+        </ul>
+        <button class="nav-toggle" id="toggler" aria-label="Menü öffnen" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<div class="mob-menu" id="mobMenu" role="dialog" aria-modal="true" aria-label="Navigation">
+    <button class="mob-close" id="mobClose" aria-label="Menü schließen">✕</button>
+    <a href="speisekarte.html" class="mob-link">Speisekarte</a>
+    <a href="index.html#ueber-uns" class="mob-link">Über uns</a>
+    <a href="index.html#galerie"   class="mob-link">Galerie</a>
+    <a href="index.html#kontakt"   class="mob-link">Kontakt</a>
+</div>
+
+<div class="page-header">
+    <div class="container">
+        <div class="s-label reveal">Unsere Karte</div>
+        <h1 class="s-title reveal d1">Frisch &amp; <em>saisonal</em></h1>
+    </div>
+</div>
+
+<section id="speisekarte" aria-labelledby="menu-title">
+    <div class="container">
+        <div class="menu-head">
+            <div class="tabs reveal" role="tablist" aria-label="Menü-Kategorien">
+                <button class="tab active" role="tab" aria-selected="true"  aria-controls="p-fr" data-panel="p-fr">Frühstück</button>
+                <button class="tab"        role="tab" aria-selected="false" aria-controls="p-mi" data-panel="p-mi">Mittagessen</button>
+                <button class="tab"        role="tab" aria-selected="false" aria-controls="p-ge" data-panel="p-ge">Getränke</button>
+            </div>
+        </div>
+
+        <!-- Frühstück -->
+        <div class="panel active" id="p-fr" role="tabpanel">
+            <div class="menu-grid">
+                <div>
+                    <div class="cat-title">Klassiker</div>
+                    <div class="mi"><div><div class="mi-name">Croissant &amp; Butter</div><div class="mi-desc">Frisch gebacken, Hausmarmelade</div></div><div class="mi-price">3,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Bircher Müsli</div><div class="mi-desc">Hafer, Joghurt, frische Früchte, Honig</div></div><div class="mi-price">7,50 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Rührei auf Toast</div><div class="mi-desc">Zwei Eier, Vollkorntoast, Schnittlauch</div></div><div class="mi-price">8,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Porridge</div><div class="mi-desc">Hafer, Mandelmilch, Zimt, Beeren</div></div><div class="mi-price">6,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Joghurt &amp; Granola</div><div class="mi-desc">Griechischer Joghurt, hausgemachtes Granola</div></div><div class="mi-price">6,50 €</div></div>
+                </div>
+                <div>
+                    <div class="cat-title">Besonderes</div>
+                    <div class="mi"><div><div class="mi-name">Avocado Toast</div><div class="mi-desc">Sauerteig, Avocado, Feta, Chili, Sesam</div></div><div class="mi-price">11,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">QUITO Frühstücksteller</div><div class="mi-desc">Käse, Wurst, Ei, Toast, Obst</div></div><div class="mi-price">14,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">French Toast</div><div class="mi-desc">Brioche, Ahornsirup, Vanillejoghurt, Beeren</div></div><div class="mi-price">10,50 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Eggs Benedict</div><div class="mi-desc">Pochiertes Ei, Schinken, Hollandaise</div></div><div class="mi-price">13,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Veganes Frühstück</div><div class="mi-desc">Tofu-Scramble, Gemüse, Sauerteig</div></div><div class="mi-price">12,90 €</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mittagessen -->
+        <div class="panel" id="p-mi" role="tabpanel">
+            <div class="menu-grid">
+                <div>
+                    <div class="cat-title">Suppen &amp; Salate</div>
+                    <div class="mi"><div><div class="mi-name">Tomatensuppe</div><div class="mi-desc">Hausgemacht, Basilikum-Öl, Brot</div></div><div class="mi-price">7,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Tagessuppe</div><div class="mi-desc">Frag uns nach der aktuellen Kreation</div></div><div class="mi-price">6,50 €</div></div>
+                    <div class="mi"><div><div class="mi-name">QUITO Salat</div><div class="mi-desc">Ziegenkäse, Walnuss, Honig-Senf-Dressing</div></div><div class="mi-price">13,50 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Caesar Salat</div><div class="mi-desc">Römersalat, Parmesan, Croutons</div></div><div class="mi-price">12,90 €</div></div>
+                </div>
+                <div>
+                    <div class="cat-title">Hauptgerichte</div>
+                    <div class="mi"><div><div class="mi-name">Tagesgericht</div><div class="mi-desc">Wechselt täglich — frag nach der Tafel</div></div><div class="mi-price">ab 13,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Club Sandwich</div><div class="mi-desc">Hähnchen, Speck, Tomate, Ei, Pommes</div></div><div class="mi-price">14,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Veggie Bowl</div><div class="mi-desc">Quinoa, Röstgemüse, Hummus, Granatapfel</div></div><div class="mi-price">13,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Quiche des Tages</div><div class="mi-desc">Mit Beilagensalat</div></div><div class="mi-price">11,50 €</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Getränke -->
+        <div class="panel" id="p-ge" role="tabpanel">
+            <div class="menu-grid">
+                <div>
+                    <div class="cat-title">Kaffee &amp; Espresso</div>
+                    <div class="mi"><div><div class="mi-name">Espresso</div><div class="mi-desc">Single origin, täglich frisch geröstet</div></div><div class="mi-price">2,40 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Cappuccino</div><div class="mi-desc">Espresso, cremig aufgeschäumt</div></div><div class="mi-price">3,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Flat White</div><div class="mi-desc">Double shot, feine Milchtextur</div></div><div class="mi-price">4,20 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Latte Macchiato</div><div class="mi-desc">Auch mit Hafer-, Mandel- oder Sojamilch</div></div><div class="mi-price">4,50 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Cold Brew</div><div class="mi-desc">18 h kalt gezogen, sanft &amp; intensiv</div></div><div class="mi-price">4,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Filterkaffee</div><div class="mi-desc">Pour-over, wechselnde Herkunft</div></div><div class="mi-price">3,50 €</div></div>
+                </div>
+                <div>
+                    <div class="cat-title">Weitere Getränke</div>
+                    <div class="mi"><div><div class="mi-name">Tee-Auswahl</div><div class="mi-desc">Grün, Schwarz, Kräuter, Chai</div></div><div class="mi-price">3,50 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Frische Säfte</div><div class="mi-desc">Orange, Grapefruit, Apfel-Ingwer</div></div><div class="mi-price">4,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Smoothie</div><div class="mi-desc">Mango-Kokos oder Beere-Banane</div></div><div class="mi-price">6,50 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Mineralwasser</div><div class="mi-desc">Still oder sprudelnd, 0,3 l</div></div><div class="mi-price">2,80 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Mate &amp; Bio-Limos</div><div class="mi-desc">Auswahl wechselt saisonal</div></div><div class="mi-price">3,80 €</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="foot-inner">
+        <div class="foot-logo">
+            <img src="logo.png" alt="QUITO"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+            <span class="foot-logo-text">QUITO</span>
+        </div>
+        <p class="foot-copy">© 2025 Café QUITO. Alle Rechte vorbehalten.</p>
+        <ul class="foot-links">
+            <li><a href="#">Impressum</a></li>
+            <li><a href="#">Datenschutz</a></li>
+        </ul>
+    </div>
+</footer>
+
+<script>
+    const ro = new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } }),
+        { threshold: 0.1 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+    document.querySelectorAll('.tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active'); btn.setAttribute('aria-selected','true');
+            const panel = document.getElementById(btn.dataset.panel);
+            panel.classList.add('active');
+            panel.querySelectorAll('.mi').forEach((item, i) => {
+                item.style.cssText = 'opacity:0;transform:translateY(10px)';
+                setTimeout(() => { item.style.cssText = 'transition:opacity .3s ease,transform .3s ease;opacity:1;transform:none'; }, i * 35);
+            });
+        });
+    });
+
+    const mob = document.getElementById('mobMenu');
+    const toggler = document.getElementById('toggler');
+    const close = () => { mob.classList.remove('open'); toggler.setAttribute('aria-expanded','false'); document.body.style.overflow = ''; };
+    toggler.addEventListener('click', () => { mob.classList.add('open'); toggler.setAttribute('aria-expanded','true'); document.body.style.overflow = 'hidden'; });
+    document.getElementById('mobClose').addEventListener('click', close);
+    mob.querySelectorAll('.mob-link').forEach(l => l.addEventListener('click', close));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+</script>
+</body>
+</html>
