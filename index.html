@@ -250,14 +250,13 @@
         .gs-outer { overflow: hidden; cursor: grab; user-select: none; touch-action: pan-y; }
         .gs-outer.dragging { cursor: grabbing; }
         .gs-track { display: flex; gap: 1.25rem; transition: transform .55s cubic-bezier(.16,1,.3,1); will-change: transform; }
-        .gs-slide { flex: 0 0 min(780px, 58vw); border-radius: 16px; overflow: hidden; position: relative; cursor: pointer; aspect-ratio: 16/9; box-shadow: 0 8px 32px rgba(0,0,0,.1); transition: box-shadow .3s; }
+        .gs-slide { flex: 0 0 min(480px, 42vw); border-radius: 16px; overflow: hidden; position: relative; cursor: pointer; aspect-ratio: 4/5; box-shadow: 0 8px 32px rgba(0,0,0,.1); transition: box-shadow .3s; }
         .gs-slide:hover { box-shadow: 0 20px 56px rgba(0,0,0,.2); }
-        .gs-slide img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .45s var(--ease); }
-        .gs-slide:hover img { transform: scale(1.05); }
-        .gs-overlay { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.6rem; background:rgba(0,0,0,.52); backdrop-filter:blur(4px); opacity:0; transition:opacity .25s; }
-        .gs-slide:hover .gs-overlay { opacity:1; }
-        .gs-overlay svg { width:30px; height:30px; stroke:#fff; fill:none; stroke-width:2; opacity:.9; }
-        .gs-slide-title { font-size:.92rem; font-weight:600; color:#fff; }
+        .gs-slide img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s var(--ease); -webkit-user-drag:none; user-drag:none; }
+        .gs-slide:hover img { transform: scale(1.04); }
+        .gs-slide { cursor: grab; }
+        .gs-outer.dragging .gs-slide { cursor: grabbing; }
+        .gs-overlay { display: none; }
         .gs-badge { font-size:.65rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; background:rgba(255,255,255,.2); padding:.3em .85em; border-radius:999px; color:#fff; }
         .gs-arrow { position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; background:rgba(26,26,26,.5); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.15); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:2; transition:background .2s, transform .2s; }
         .gs-arrow:hover { background:var(--terracotta); transform:translateY(-50%) scale(1.08); }
@@ -279,8 +278,8 @@
         .gs-lb-prev, .gs-lb-next { position:absolute; top:40%; transform:translateY(-50%); background:rgba(255,255,255,.12); border:none; color:#fff; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.4rem; transition:background .2s; z-index:1; line-height:1; }
         .gs-lb-prev { left:-56px; } .gs-lb-next { right:-56px; }
         .gs-lb-prev:hover, .gs-lb-next:hover { background:rgba(255,255,255,.22); }
-        @media (max-width:1024px) { .gs-slide { flex:0 0 min(78vw, 560px); } }
-        @media (max-width:768px) { .gs-wrap { padding: 0 2.5rem; } .gs-slide { flex:0 0 calc(100vw - 5rem); } .gs-prev { left:.25rem; } .gs-next { right:.25rem; } }
+        @media (max-width:1024px) { .gs-slide { flex:0 0 min(55vw, 380px); } }
+        @media (max-width:768px) { .gs-wrap { padding: 0 2.5rem; } .gs-slide { flex:0 0 min(70vw, 300px); } .gs-prev { left:.25rem; } .gs-next { right:.25rem; } }
         @media (max-width:900px) { .gs-lb-prev { left:.5rem; } .gs-lb-next { right:.5rem; } }
 
         /* === KONTAKT === */
@@ -800,9 +799,15 @@
 
         goTo(0);
 
-        // ── Drag ──────────────────────────────────────────────────────────────
+        // ── Drag + Click ──────────────────────────────────────────────────────
+        // NOTE: No setPointerCapture — it redirects click events to outer,
+        // breaking individual slide click handlers. Use window-level listeners
+        // for move/up so drag works even when pointer leaves outer.
         var dragging = false, dragX = 0, dragY = 0, dragBase = 0, didDrag = false, isHoriz = null;
-        var SWIPE_PX = 55; // minimum px to trigger slide change
+        var SWIPE_PX = 55;
+
+        // Prevent native image drag (would fire pointercancel and break slider drag)
+        outer.addEventListener('dragstart', function(e){ e.preventDefault(); });
 
         outer.addEventListener('pointerdown', function(e) {
             if (e.button !== 0) return;
@@ -810,20 +815,15 @@
             dragX    = e.clientX;
             dragY    = e.clientY;
             dragBase = -(cur * slideW());
-            outer.setPointerCapture(e.pointerId);
         });
 
-        outer.addEventListener('pointermove', function(e) {
+        window.addEventListener('pointermove', function(e) {
             if (!dragging) return;
             var dx = e.clientX - dragX;
             var dy = e.clientY - dragY;
-            // Determine drag direction on first significant movement
-            if (isHoriz === null && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
+            if (isHoriz === null && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
                 isHoriz = Math.abs(dx) >= Math.abs(dy);
-                if (isHoriz) {
-                    track.style.transition = 'none';
-                    outer.classList.add('dragging');
-                }
+                if (isHoriz) { track.style.transition = 'none'; outer.classList.add('dragging'); }
             }
             if (isHoriz) {
                 didDrag = true;
@@ -831,7 +831,7 @@
             }
         });
 
-        outer.addEventListener('pointerup', function(e) {
+        window.addEventListener('pointerup', function(e) {
             if (!dragging) return;
             dragging = false;
             if (isHoriz) {
@@ -841,17 +841,16 @@
                 if      (dx < -SWIPE_PX) goTo(cur + 1);
                 else if (dx >  SWIPE_PX) goTo(cur - 1);
                 else goTo(cur);
-                if (didDrag) {
-                    var block = function(ev){ ev.stopPropagation(); ev.preventDefault(); document.removeEventListener('click', block, true); };
-                    document.addEventListener('click', block, true);
-                }
             }
             isHoriz = null;
+            // Keep didDrag=true through the synchronous click event that follows
+            // pointerup, then reset so next independent clicks work normally.
+            setTimeout(function(){ didDrag = false; }, 0);
         });
 
-        outer.addEventListener('pointercancel', function() {
+        window.addEventListener('pointercancel', function() {
             if (!dragging) return;
-            dragging = false; isHoriz = null;
+            dragging = false; isHoriz = null; didDrag = false;
             outer.classList.remove('dragging');
             track.style.transition = '';
             goTo(cur);
@@ -875,9 +874,15 @@
         }
         function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; }
 
+        // Event delegation: click fires on slide and bubbles to outer.
+        // setPointerCapture would break this by redirecting click to outer directly.
+        outer.addEventListener('click', function(e) {
+            if (didDrag) return;
+            var slide = e.target.closest('.gs-slide');
+            if (slide) openLb(parseInt(slide.dataset.index));
+        });
         slides.forEach(function(slide) {
             var idx = parseInt(slide.dataset.index);
-            slide.addEventListener('click', function(){ if (!didDrag) openLb(idx); });
             slide.addEventListener('keydown', function(e){
                 if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(idx); }
             });
