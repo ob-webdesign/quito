@@ -7,7 +7,7 @@
     <meta name="description" content="Die Speisekarte des Café QUITO in Frankenthal — Frühstück, Mittagessen, Kaffee & Getränke.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --black:      #1A1A1A;
@@ -17,8 +17,7 @@
             --warm-white: #FDFAF4;
             --muted:      #6B6153;
             --font-d: 'DM Serif Display', serif;
-            --font-b: 'DM Sans', sans-serif;
-            --font-menu: 'Source Sans 3', sans-serif;
+            --font-b: 'Source Sans 3', sans-serif;
             --nav-h: 72px;
             --pad: clamp(1.5rem, 5vw, 3rem);
             --max: min(1320px, 94vw);
@@ -94,13 +93,13 @@
         .panel { display: none; }
         .panel.active { display: block; }
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%,340px),1fr)); gap: 0 3rem; }
-        .cat-title { font-family: var(--font-menu); font-size: 1.3rem; font-weight: 700; color: var(--black); margin: 2.5rem 0 .5rem; padding-bottom: .6rem; border-bottom: 2px solid var(--terracotta); display: inline-block; }
+        .cat-title { font-family: var(--font-b); font-size: 1.3rem; font-weight: 700; color: var(--black); margin: 2.5rem 0 .5rem; padding-bottom: .6rem; border-bottom: 2px solid var(--terracotta); display: inline-block; }
         .cat-title:first-child { margin-top: 0; }
         .mi { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 1.35rem 0; border-bottom: 1px solid rgba(26,26,26,.09); }
         .mi:last-child { border-bottom: none; }
-        .mi-name { font-family: var(--font-menu); font-size: 1rem; font-weight: 600; margin-bottom: .15rem; }
-        .mi-desc { font-family: var(--font-menu); font-size: .82rem; font-weight: 400; color: var(--muted); line-height: 1.5; }
-        .mi-price { font-family: var(--font-menu); font-size: 1rem; font-weight: 600; color: var(--terracotta); white-space: nowrap; flex-shrink: 0; }
+        .mi-name { font-family: var(--font-b); font-size: 1rem; font-weight: 600; margin-bottom: .15rem; }
+        .mi-desc { font-family: var(--font-b); font-size: .82rem; font-weight: 400; color: var(--muted); line-height: 1.5; }
+        .mi-price { font-family: var(--font-b); font-size: 1rem; font-weight: 600; color: var(--terracotta); white-space: nowrap; flex-shrink: 0; }
 
         /* === FOOTER === */
         footer { background: var(--black); color: #fff; padding: 3rem 0; }
@@ -209,7 +208,7 @@
         <div class="panel" id="p-sp" role="tabpanel">
             <div class="menu-grid">
                 <div>
-                    <div class="cat-title">Speisenkarte</div>
+                    <div class="cat-title">Speisekarte</div>
                     <div class="mi"><div><div class="mi-name">Wurstsalat mit Pommes Frites</div></div><div class="mi-price">kl. 13,90 € / gr. 15,90 €</div></div>
                     <div class="mi"><div><div class="mi-name">Kartoffel mit Quark und Räucherlachs</div><div class="mi-desc">Dazu servieren wir einen kleinen Mischsalat</div></div><div class="mi-price">13,90 €</div></div>
                     <div class="mi"><div><div class="mi-name">Cheeseburger</div><div class="mi-desc">Reines Rindfleisch mit Käse mit kleiner Portion Pommes</div></div><div class="mi-price">13,90 €</div></div>
