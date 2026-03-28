@@ -1,0 +1,9 @@
+# Claude Code
+.agents/
+.claude/
+CLAUDE.md
+skills-lock.json
+
+# Unused / uncompressed images
+hero.JPG
+IMG_1863.jpeg
