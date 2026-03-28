@@ -98,7 +98,7 @@
         .mob-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; cursor: pointer; font-size: 1.5rem; padding: .5rem; color: var(--black); }
 
         /* === HERO === */
-        #hero { position: relative; min-height: 100dvh; display: flex; align-items: flex-end; overflow: hidden; }
+        #hero { position: relative; min-height: 88dvh; display: flex; align-items: flex-end; overflow: hidden; }
 
         /*
         ════════════════════════════════════════════════════
@@ -124,7 +124,7 @@
         .hero-content {
             position: relative; z-index: 2;
             width: 100%; max-width: var(--max); margin: 0 auto;
-            padding: 0 var(--pad) clamp(4rem,8vw,6rem);
+            padding: 0 var(--pad) clamp(2rem,4vw,3rem);
         }
         .hero-eyebrow {
             display: inline-flex; align-items: center; gap: .6rem;
@@ -239,7 +239,7 @@
         .acard-val { font-family: var(--font-d); font-size: 2.4rem; color: #fff; line-height: 1; }
 
         /* === GALLERY SLIDER === */
-        #galerie { background: var(--cream); overflow: hidden; }
+        #galerie { background: var(--cream); overflow: hidden; padding-top: clamp(3rem,6vw,5rem); padding-bottom: 0; }
         #galerie > .container { padding-bottom: 0; }
         .gallery-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
         .gs-filters { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1.75rem; }
@@ -262,7 +262,7 @@
         .gs-arrow:hover { background:var(--terracotta); transform:translateY(-50%) scale(1.08); }
         .gs-arrow svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
         .gs-prev { left:.5rem; } .gs-next { right:.5rem; }
-        .gs-dots { display:flex; justify-content:center; gap:.7rem; margin-top:2rem; padding-bottom: clamp(3rem,6vw,5rem); }
+        .gs-dots { display:flex; justify-content:center; gap:.7rem; margin-top:2rem; padding-bottom: clamp(3rem,5vw,4rem); }
         .gs-dot { width:6px; height:6px; border-radius:50%; background:rgba(26,26,26,.18); border:none; cursor:pointer; padding:0; transition:background .25s, transform .25s; }
         .gs-dot.active { background:var(--terracotta); transform:scale(1.55); }
         /* Lightbox */
@@ -551,7 +551,7 @@
                     <div class="review-avatar" aria-hidden="true">G</div>
                     <div>
                         <div class="review-name">Gabriele</div>
-                        <div class="review-source">Rezension auf Google</div>
+                        <div class="review-source">Local Guide · 133 Rezensionen · 98 Fotos</div>
                     </div>
                 </div>
                 <div class="review-stars" aria-label="5 von 5 Sternen">
@@ -561,16 +561,19 @@
                     <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                     <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 </div>
-                <p class="review-text">„Tolles Café, die freundlichste Bedienung, die man sich wünschen kann. Leckeres Frühstück, gute Auswahl, alles frisch gemacht."</p>
+                <p class="review-text">„Tolles Café die freundlichste Bedienung, die man sich wünschen kann. Leckeres Frühstück, gute Auswahl, alles frisch gemacht. Ein ganz weicher leckerer Kaffee."</p>
+                <div class="review-meta">
+                    <span>Essen: 5/5</span><span>Service: 5/5</span><span>Ambiente: 4/5</span>
+                </div>
                 <div class="review-date">vor 2 Monaten</div>
             </div>
 
             <div class="review-card reveal d1">
                 <div class="review-top">
-                    <div class="review-avatar" aria-hidden="true">W</div>
+                    <div class="review-avatar" aria-hidden="true">T</div>
                     <div>
-                        <div class="review-name">Werner T.</div>
-                        <div class="review-source">Rezension auf Google</div>
+                        <div class="review-name">t. g.</div>
+                        <div class="review-source">Local Guide · 499 Rezensionen · 118 Fotos</div>
                     </div>
                 </div>
                 <div class="review-stars" aria-label="5 von 5 Sternen">
@@ -580,16 +583,19 @@
                     <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                     <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 </div>
-                <p class="review-text">„Chefin und gesamtes Personal sehr freundlich. Unschlagbar guter Kaffee. Essen sehr schmackhaft, sehr gute Qualität."</p>
-                <div class="review-date">vor 2 Monaten</div>
+                <p class="review-text">„Das Essen (Apfelkuchen u Schnitzel) waren sehr lecker und der Service war ausgezeichnet. Wir können das Cafe Quito nur empfehlen!"</p>
+                <div class="review-meta">
+                    <span>Essen: 5/5</span><span>Service: 5/5</span><span>Ambiente: 5/5</span>
+                </div>
+                <div class="review-date">vor 9 Monaten</div>
             </div>
 
             <div class="review-card reveal d2">
                 <div class="review-top">
-                    <div class="review-avatar" aria-hidden="true">D</div>
+                    <div class="review-avatar" aria-hidden="true">M</div>
                     <div>
-                        <div class="review-name">Dieter Satzer</div>
-                        <div class="review-source">Local Guide · 196 Rezensionen · 321 Fotos</div>
+                        <div class="review-name">Manuel W.</div>
+                        <div class="review-source">Local Guide · 356 Rezensionen · 964 Fotos</div>
                     </div>
                 </div>
                 <div class="review-stars" aria-label="5 von 5 Sternen">
@@ -599,12 +605,12 @@
                     <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                     <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 </div>
-                <p class="review-text">„Waren heute gut frühstücken. Sehr gute Qualität, sehr nette Bedienung, nur etwas laut. Aber ansonsten gerne wieder. Wenn das Wetter mitmacht am liebsten draussen."</p>
+                <p class="review-text">„Besondere Atmosphäre und sehr gemütliche Ambiente. Essen und Service einfach nur Klasse. Das Cordon Bleu und die Teigtaschen = 5☆+"</p>
                 <div class="review-meta">
-                    <span>Essen: 5/5</span><span>Service: 5/5</span><span>Ambiente: 4/5</span>
+                    <span>Essen: 5/5</span><span>Service: 5/5</span><span>Ambiente: 5/5</span>
                 </div>
-                <div class="review-dish">Empfehlung: Frühstück Platte Für 2</div>
-                <div class="review-date">vor einem Jahr</div>
+                <div class="review-dish">Empfehlung: Teigtaschen, Cordon Bleu, Kuchen</div>
+                <div class="review-date">vor 3 Jahren</div>
             </div>
         </div>
         </div><!-- /.reviews-slider -->
