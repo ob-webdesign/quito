@@ -124,7 +124,7 @@
         .hero-content {
             position: relative; z-index: 2;
             width: 100%; max-width: var(--max); margin: 0 auto;
-            padding: 0 var(--pad) clamp(1rem,2vw,1.5rem);
+            padding: 0 var(--pad) .5rem;
         }
         .hero-eyebrow {
             display: inline-flex; align-items: center; gap: .6rem;
@@ -250,7 +250,7 @@
         .gs-outer { overflow: hidden; cursor: grab; user-select: none; touch-action: pan-y; }
         .gs-outer.dragging { cursor: grabbing; }
         .gs-track { display: flex; gap: 1.25rem; transition: transform .55s cubic-bezier(.16,1,.3,1); will-change: transform; }
-        .gs-slide { flex: 0 0 min(480px, 42vw); border-radius: 16px; overflow: hidden; position: relative; cursor: pointer; aspect-ratio: 4/5; box-shadow: 0 8px 32px rgba(0,0,0,.1); transition: box-shadow .3s; }
+        .gs-slide { flex: 0 0 min(400px, 27vw); border-radius: 16px; overflow: hidden; position: relative; cursor: pointer; aspect-ratio: 4/5; box-shadow: 0 8px 32px rgba(0,0,0,.1); transition: box-shadow .3s; }
         .gs-slide:hover { box-shadow: 0 20px 56px rgba(0,0,0,.2); }
         .gs-slide img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s var(--ease); -webkit-user-drag:none; user-drag:none; }
         .gs-slide:hover img { transform: scale(1.04); }
@@ -278,7 +278,7 @@
         .gs-lb-prev, .gs-lb-next { position:absolute; top:40%; transform:translateY(-50%); background:rgba(255,255,255,.12); border:none; color:#fff; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.4rem; transition:background .2s; z-index:1; line-height:1; }
         .gs-lb-prev { left:-56px; } .gs-lb-next { right:-56px; }
         .gs-lb-prev:hover, .gs-lb-next:hover { background:rgba(255,255,255,.22); }
-        @media (max-width:1024px) { .gs-slide { flex:0 0 min(55vw, 380px); } }
+        @media (max-width:1024px) { .gs-slide { flex:0 0 min(45vw, 340px); } }
         @media (max-width:768px) { .gs-wrap { padding: 0 2.5rem; } .gs-slide { flex:0 0 min(70vw, 300px); } .gs-prev { left:.25rem; } .gs-next { right:.25rem; } }
         @media (max-width:900px) { .gs-lb-prev { left:.5rem; } .gs-lb-next { right:.5rem; } }
 
@@ -627,7 +627,7 @@
                 <div class="s-label reveal">Unsere Geschichte</div>
                 <h2 class="s-title reveal d1" id="about-title">Mehr als nur<br><em>ein Café</em></h2>
                 <p class="reveal d2">Das QUITO ist ein Ort zum Ankommen. Ob du deinen Morgen mit uns beginnst, in der Mittagspause durchatmest oder einfach einen guten Kaffee genießt — wir freuen uns, dass du hier bist.</p>
-                <p class="reveal d3">Wir arbeiten mit regionalen Lieferanten zusammen und legen großen Wert auf frische Zutaten. Unsere Karte wechselt mit den Jahreszeiten — weil gutes Essen vom Rhythmus der Natur lebt.</p>
+                <p class="reveal d3">Wir arbeiten mit regionalen Lieferanten zusammen und legen großen Wert auf frische Zutaten.</p>
                 <blockquote class="about-quote reveal d4">„Ein guter Kaffee, ein gutes Gespräch — mehr braucht es manchmal nicht."</blockquote>
             </div>
             <div class="about-cards reveal d2" aria-hidden="true">
