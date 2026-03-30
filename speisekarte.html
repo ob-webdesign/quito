@@ -55,20 +55,59 @@
         .nav-inner > a { position: absolute; left: 50%; transform: translateX(-50%); }
         .logo-img  { height: 38px; width: auto; display: block; }
         .logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.35rem; letter-spacing: .12em; text-transform: uppercase; background: var(--black); color: #fff; padding: .3em .85em; border-radius: 999px; display: none; }
-        .nav-links { display: flex; gap: clamp(1.5rem,3vw,2.5rem); list-style: none; }
-        .nav-links a { font-size: .85rem; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--black); position: relative; padding-bottom: 2px; }
-        .nav-links a.active { color: var(--terracotta); }
-        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1.5px; background: var(--terracotta); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
-        .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
-        .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; background: none; border: none; }
-        .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--black); }
+        /* Nav actions (right side) */
+        .nav-actions { display: flex; align-items: center; gap: .75rem; }
+        .nav-pill {
+            font-family: var(--font-b); font-size: .8rem; font-weight: 500;
+            letter-spacing: .07em; text-transform: uppercase;
+            padding: .55em 1.4em; border-radius: 999px;
+            border: 1.5px solid rgba(26,26,26,.25); color: var(--black);
+            transition: border-color .2s, color .2s, background .2s;
+        }
+        .nav-pill:hover { border-color: var(--terracotta); color: var(--terracotta); }
+        .nav-pill.active { border-color: var(--terracotta); color: var(--terracotta); }
+        .nav-sub-toggle {
+            width: 42px; height: 42px; border-radius: 50%;
+            border: 1.5px solid rgba(26,26,26,.25); background: transparent;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 4px; cursor: pointer; transition: border-color .2s;
+        }
+        .nav-sub-toggle:hover { border-color: var(--terracotta); }
+        .nav-sub-toggle span { display: block; width: 18px; height: 1.5px; background: var(--black); transition: background .2s; }
 
-        /* === MOBILE MENU === */
-        .mob-menu { display: none; position: fixed; inset: 0; background: var(--cream); z-index: 101; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; }
-        .mob-menu.open { display: flex; }
-        .mob-menu a { font-family: var(--font-d); font-size: clamp(2rem,8vw,3.5rem); transition: color .2s; }
-        .mob-menu a:hover { color: var(--terracotta); }
-        .mob-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; cursor: pointer; font-size: 1.5rem; padding: .5rem; color: var(--black); }
+        /* Submenu panel (SNOCKS-style side panel) */
+        .sub-menu {
+            position: fixed; top: 0; left: 0; z-index: 200;
+            width: min(340px, 80vw); height: 100dvh;
+            background: var(--warm-white);
+            box-shadow: 8px 0 40px rgba(0,0,0,.15);
+            padding: 2.5rem 2.5rem 2rem;
+            transform: translateX(-100%); pointer-events: none;
+            transition: transform .35s ease;
+        }
+        .sub-menu.open { transform: none; pointer-events: auto; }
+        .sub-menu-close {
+            position: absolute; top: 1.4rem; right: 1.4rem;
+            width: 32px; height: 32px; border: 1px solid rgba(26,26,26,.2);
+            border-radius: 50%; background: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; color: var(--black); transition: border-color .2s;
+        }
+        .sub-menu-close:hover { border-color: var(--terracotta); color: var(--terracotta); }
+        .sub-menu a {
+            display: block; font-family: var(--font-b); font-size: 1.15rem; font-weight: 500;
+            letter-spacing: .02em; color: var(--black); padding: 1rem 0;
+            border-bottom: 1px solid rgba(26,26,26,.08); transition: color .2s;
+        }
+        .sub-menu a:first-of-type { margin-top: 3rem; }
+        .sub-menu a:last-of-type { border-bottom: none; }
+        .sub-menu a:hover { color: var(--terracotta); }
+        .sub-menu-overlay {
+            position: fixed; inset: 0; z-index: 199;
+            background: rgba(0,0,0,.3); opacity: 0; pointer-events: none;
+            transition: opacity .35s ease;
+        }
+        .sub-menu-overlay.open { opacity: 1; pointer-events: auto; }
 
         /* === PAGE HEADER === */
         .page-header {
@@ -112,8 +151,8 @@
         .foot-links a:hover { color: #fff; }
 
         @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .nav-toggle { display: flex; }
+            .nav-pill { display: none; }
+            .nav-actions { position: absolute; left: var(--pad); right: auto; }
             .menu-grid { grid-template-columns: 1fr; gap: 0; }
             .mi { flex-direction: column; align-items: flex-start; gap: .35rem; }
             .mi-price { white-space: normal; text-align: left; }
@@ -135,24 +174,22 @@
                  onerror="this.style.display='none';document.querySelectorAll('.logo-text').forEach(el=>el.style.display='block')">
             <span class="logo-text">QUITO</span>
         </a>
-        <ul class="nav-links">
-            <li><a href="speisekarte.html" class="active">Speisekarte</a></li>
-            <li><a href="index.html#ueber-uns">Über uns</a></li>
-            <li><a href="index.html#galerie">Galerie</a></li>
-            <li><a href="index.html#kontakt">Kontakt</a></li>
-        </ul>
-        <button class="nav-toggle" id="toggler" aria-label="Menü öffnen" aria-expanded="false">
-            <span></span><span></span><span></span>
-        </button>
+        <div class="nav-actions">
+            <a href="speisekarte.html" class="nav-pill active">Speisekarte</a>
+            <button class="nav-sub-toggle" id="subToggle" aria-label="Menü öffnen" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
     </div>
 </nav>
 
-<div class="mob-menu" id="mobMenu" role="dialog" aria-modal="true" aria-label="Navigation">
-    <button class="mob-close" id="mobClose" aria-label="Menü schließen">✕</button>
-    <a href="speisekarte.html" class="mob-link">Speisekarte</a>
-    <a href="index.html#ueber-uns" class="mob-link">Über uns</a>
-    <a href="index.html#galerie"   class="mob-link">Galerie</a>
-    <a href="index.html#kontakt"   class="mob-link">Kontakt</a>
+<div class="sub-menu-overlay" id="subOverlay"></div>
+<div class="sub-menu" id="subMenu" role="dialog" aria-label="Navigation">
+    <button class="sub-menu-close" id="subClose" aria-label="Menü schließen">✕</button>
+    <a href="speisekarte.html">Speisekarte</a>
+    <a href="index.html#ueber-uns">Über uns</a>
+    <a href="index.html#galerie">Galerie</a>
+    <a href="index.html#kontakt">Kontakt</a>
 </div>
 
 <div class="page-header">
@@ -370,13 +407,17 @@
         });
     });
 
-    const mob = document.getElementById('mobMenu');
-    const toggler = document.getElementById('toggler');
-    const close = () => { mob.classList.remove('open'); toggler.setAttribute('aria-expanded','false'); document.body.style.overflow = ''; };
-    toggler.addEventListener('click', () => { mob.classList.add('open'); toggler.setAttribute('aria-expanded','true'); document.body.style.overflow = 'hidden'; });
-    document.getElementById('mobClose').addEventListener('click', close);
-    mob.querySelectorAll('.mob-link').forEach(l => l.addEventListener('click', close));
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    // Sub menu (side panel)
+    const subMenu = document.getElementById('subMenu');
+    const subOverlay = document.getElementById('subOverlay');
+    const subToggle = document.getElementById('subToggle');
+    const closeSub = () => { subMenu.classList.remove('open'); subOverlay.classList.remove('open'); subToggle.setAttribute('aria-expanded','false'); document.body.style.overflow = ''; };
+    const openSub  = () => { subMenu.classList.add('open'); subOverlay.classList.add('open'); subToggle.setAttribute('aria-expanded','true'); document.body.style.overflow = 'hidden'; };
+    subToggle.addEventListener('click', () => { subMenu.classList.contains('open') ? closeSub() : openSub(); });
+    document.getElementById('subClose').addEventListener('click', closeSub);
+    subOverlay.addEventListener('click', closeSub);
+    subMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', closeSub));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSub(); });
 </script>
 </body>
 </html>

@@ -69,36 +69,67 @@
         }
         nav:not(.scrolled) .logo-text { background: #fff; color: var(--black); }
 
-        .nav-links { display: flex; gap: clamp(1.5rem,3vw,2.5rem); list-style: none; }
-        .nav-links a {
-            font-size: .85rem; font-weight: 500; letter-spacing: .07em; text-transform: uppercase;
-            color: var(--black); position: relative; padding-bottom: 2px;
+        /* Nav actions */
+        .nav-actions { display: flex; align-items: center; gap: .75rem; position: absolute; left: 0; }
+        .nav-pill {
+            font-family: var(--font-b); font-size: .8rem; font-weight: 500;
+            letter-spacing: .07em; text-transform: uppercase;
+            padding: .55em 1.4em; border-radius: 999px;
+            border: 1.5px solid rgba(26,26,26,.25); color: var(--black);
+            transition: border-color .2s, color .2s, background .2s;
         }
-        nav:not(.scrolled) .nav-links a { color: #fff; }
-        .nav-links a::after {
-            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-            height: 1.5px; background: var(--terracotta);
-            transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease);
-        }
-        .nav-links a:hover::after { transform: scaleX(1); }
+        .nav-pill:hover { border-color: var(--terracotta); color: var(--terracotta); }
+        nav:not(.scrolled) .nav-pill { border-color: rgba(255,255,255,.4); color: #fff; }
+        nav:not(.scrolled) .nav-pill:hover { border-color: #fff; }
 
-        .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; background: none; border: none; }
-        .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--black); transition: transform .3s, opacity .3s; }
-        nav:not(.scrolled) .nav-toggle span { background: #fff; }
-
-        /* === MOBILE MENU === */
-        .mob-menu {
-            display: none; position: fixed; inset: 0;
-            background: var(--cream); z-index: 101;
-            flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+        .nav-sub-toggle {
+            width: 42px; height: 42px; border-radius: 50%;
+            border: 1.5px solid rgba(26,26,26,.25); background: transparent;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 4px; cursor: pointer; transition: border-color .2s;
         }
-        .mob-menu.open { display: flex; }
-        .mob-menu a { font-family: var(--font-d); font-size: clamp(2rem,8vw,3.5rem); transition: color .2s; }
-        .mob-menu a:hover { color: var(--terracotta); }
-        .mob-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; cursor: pointer; font-size: 1.5rem; padding: .5rem; color: var(--black); }
+        .nav-sub-toggle:hover { border-color: var(--terracotta); }
+        .nav-sub-toggle span { display: block; width: 18px; height: 1.5px; background: var(--black); transition: background .2s; }
+        nav:not(.scrolled) .nav-sub-toggle { border-color: rgba(255,255,255,.4); }
+        nav:not(.scrolled) .nav-sub-toggle:hover { border-color: #fff; }
+        nav:not(.scrolled) .nav-sub-toggle span { background: #fff; }
+
+        /* Submenu panel (SNOCKS-style side panel) */
+        .sub-menu {
+            position: fixed; top: 0; left: 0; z-index: 200;
+            width: min(340px, 80vw); height: 100dvh;
+            background: var(--warm-white);
+            box-shadow: 8px 0 40px rgba(0,0,0,.15);
+            padding: 2.5rem 2.5rem 2rem;
+            transform: translateX(-100%); pointer-events: none;
+            transition: transform .35s var(--ease);
+        }
+        .sub-menu.open { transform: none; pointer-events: auto; }
+        .sub-menu-close {
+            position: absolute; top: 1.4rem; right: 1.4rem;
+            width: 32px; height: 32px; border: 1px solid rgba(26,26,26,.2);
+            border-radius: 50%; background: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; color: var(--black); transition: border-color .2s;
+        }
+        .sub-menu-close:hover { border-color: var(--terracotta); color: var(--terracotta); }
+        .sub-menu a {
+            display: block; font-family: var(--font-b); font-size: 1.15rem; font-weight: 500;
+            letter-spacing: .02em; color: var(--black); padding: 1rem 0;
+            border-bottom: 1px solid rgba(26,26,26,.08); transition: color .2s;
+        }
+        .sub-menu a:first-of-type { margin-top: 3rem; }
+        .sub-menu a:last-of-type { border-bottom: none; }
+        .sub-menu a:hover { color: var(--terracotta); }
+        .sub-menu-overlay {
+            position: fixed; inset: 0; z-index: 199;
+            background: rgba(0,0,0,.3); opacity: 0; pointer-events: none;
+            transition: opacity .35s var(--ease);
+        }
+        .sub-menu-overlay.open { opacity: 1; pointer-events: auto; }
 
         /* === HERO === */
-        #hero { position: relative; min-height: 88dvh; display: flex; align-items: flex-end; overflow: hidden; }
+        #hero { position: relative; height: 100dvh; display: flex; align-items: flex-end; overflow: hidden; }
 
         /*
         ════════════════════════════════════════════════════
@@ -119,28 +150,28 @@
         }
         .hero-overlay {
             position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(8,5,3,.85) 0%, rgba(8,5,3,.3) 55%, rgba(8,5,3,.08) 100%);
+            background: linear-gradient(to top, rgba(8,5,3,.88) 0%, rgba(8,5,3,.45) 40%, rgba(8,5,3,.08) 70%, rgba(8,5,3,.03) 100%);
         }
         .hero-content {
             position: relative; z-index: 2;
-            width: 100%; max-width: var(--max); margin: 0 auto;
-            padding: 0 var(--pad) .5rem;
+            width: 100%;
+            padding: 0 var(--pad) var(--pad);
         }
         .hero-eyebrow {
             display: inline-flex; align-items: center; gap: .6rem;
-            font-size: .72rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase;
-            color: rgba(255,255,255,.65); margin-bottom: 1.5rem;
+            font-size: .68rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase;
+            color: rgba(255,255,255,.55); margin-bottom: 1.25rem;
         }
         .hero-eyebrow::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--terracotta); }
         .hero-h1 {
             font-family: var(--font-d);
-            font-size: clamp(3rem, 8vw, 7.5rem);
-            line-height: 1.0; color: #fff;
-            max-width: 14ch; margin-bottom: 1.75rem;
+            font-size: clamp(2.6rem, 5.5vw, 4.8rem);
+            line-height: 1.08; color: #fff;
+            max-width: 14ch; margin-bottom: 1.5rem;
         }
         .hero-h1 em { font-style: italic; color: var(--terracotta); }
-        .hero-sub { font-size: clamp(1rem,1.4vw,1.1rem); color: rgba(255,255,255,.72); max-width: 44ch; margin-bottom: 2.5rem; line-height: 1.75; }
-        .hero-ctas { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+        .hero-sub { font-size: clamp(.95rem,1.2vw,1.05rem); color: rgba(255,255,255,.65); max-width: 38ch; margin-bottom: 2rem; line-height: 1.7; }
+        .hero-ctas { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
 
         .btn { display: inline-flex; align-items: center; gap: .5rem; font-family: var(--font-b); font-size: .82rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; padding: .85em 1.8em; border-radius: 999px; cursor: pointer; transition: background .2s, border-color .2s, transform .2s; border: 1.5px solid transparent; }
         .btn:hover { transform: translateY(-1px); }
@@ -339,8 +370,7 @@
             .about-photo-mobile img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 14px; }
         }
         @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .nav-toggle { display: flex; }
+            .nav-pill { display: none; }
             .menu-grid { grid-template-columns: 1fr; gap: 0; }
             .contact-grid { grid-template-columns: 1fr; }
             .reviews-grid {
@@ -390,25 +420,23 @@
                  onerror="this.style.display='none';document.querySelectorAll('.logo-text').forEach(el=>el.style.display='block')">
             <span class="logo-text">QUITO</span>
         </a>
-        <ul class="nav-links">
-            <li><a href="speisekarte.html">Speisekarte</a></li>
-            <li><a href="#ueber-uns">Über uns</a></li>
-            <li><a href="#galerie">Galerie</a></li>
-            <li><a href="#kontakt">Kontakt</a></li>
-        </ul>
-        <button class="nav-toggle" id="toggler" aria-label="Menü öffnen" aria-expanded="false">
-            <span></span><span></span><span></span>
-        </button>
+        <div class="nav-actions">
+            <a href="speisekarte.html" class="nav-pill">Speisekarte</a>
+            <button class="nav-sub-toggle" id="subToggle" aria-label="Menü öffnen" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
     </div>
 </nav>
 
-<!-- MOBILE MENU -->
-<div class="mob-menu" id="mobMenu" role="dialog" aria-modal="true" aria-label="Navigation">
-    <button class="mob-close" id="mobClose" aria-label="Menü schließen">✕</button>
-    <a href="speisekarte.html" class="mob-link">Speisekarte</a>
-    <a href="#ueber-uns"   class="mob-link">Über uns</a>
-    <a href="#galerie"     class="mob-link">Galerie</a>
-    <a href="#kontakt"     class="mob-link">Kontakt</a>
+<!-- SUB MENU -->
+<div class="sub-menu-overlay" id="subOverlay"></div>
+<div class="sub-menu" id="subMenu" role="dialog" aria-label="Navigation">
+    <button class="sub-menu-close" id="subClose" aria-label="Menü schließen">✕</button>
+    <a href="speisekarte.html">Speisekarte</a>
+    <a href="#ueber-uns">Über uns</a>
+    <a href="#galerie">Galerie</a>
+    <a href="#kontakt">Kontakt</a>
 </div>
 
 <!-- HERO -->
@@ -617,11 +645,10 @@
     <div class="container">
         <div class="about-grid">
             <div class="about-text">
-                <div class="s-label reveal">Unsere Geschichte</div>
+                <div class="s-label reveal">Das sind wir</div>
                 <h2 class="s-title reveal d1" id="about-title">Mehr als nur<br><em>ein Café</em></h2>
                 <p class="reveal d2">Das QUITO ist ein Ort zum Ankommen. Ob du deinen Morgen mit uns beginnst, in der Mittagspause durchatmest oder einfach einen guten Kaffee genießt — wir freuen uns, dass du hier bist.</p>
-                <p class="reveal d3">Wir arbeiten mit regionalen Lieferanten zusammen und legen großen Wert auf frische Zutaten.</p>
-                <div class="about-photo-mobile reveal d4">
+                <div class="about-photo-mobile reveal d3">
                     <img src="story-bild.jpg" alt="Café QUITO">
                 </div>
                 <blockquote class="about-quote reveal d5">„Ein guter Kaffee, ein gutes Gespräch — mehr braucht es manchmal nicht."</blockquote>
@@ -709,14 +736,17 @@
     );
     document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
-    // Mobile menu
-    const mob    = document.getElementById('mobMenu');
-    const toggler = document.getElementById('toggler');
-    const close  = () => { mob.classList.remove('open'); toggler.setAttribute('aria-expanded','false'); document.body.style.overflow = ''; };
-    toggler.addEventListener('click', () => { mob.classList.add('open'); toggler.setAttribute('aria-expanded','true'); document.body.style.overflow = 'hidden'; });
-    document.getElementById('mobClose').addEventListener('click', close);
-    mob.querySelectorAll('.mob-link').forEach(l => l.addEventListener('click', close));
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    // Sub menu (side panel)
+    const subMenu = document.getElementById('subMenu');
+    const subOverlay = document.getElementById('subOverlay');
+    const subToggle = document.getElementById('subToggle');
+    const closeSub = () => { subMenu.classList.remove('open'); subOverlay.classList.remove('open'); subToggle.setAttribute('aria-expanded','false'); document.body.style.overflow = ''; };
+    const openSub  = () => { subMenu.classList.add('open'); subOverlay.classList.add('open'); subToggle.setAttribute('aria-expanded','true'); document.body.style.overflow = 'hidden'; };
+    subToggle.addEventListener('click', () => { subMenu.classList.contains('open') ? closeSub() : openSub(); });
+    document.getElementById('subClose').addEventListener('click', closeSub);
+    subOverlay.addEventListener('click', closeSub);
+    subMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', closeSub));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSub(); });
 
     // ── Reviews Slider (mobile) ───────────────────────────────────────────────
     (function () {
