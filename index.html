@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>QUITO — Café</title>
     <meta name="description" content="QUITO Café — Frühstück, Mittagessen, Kaffee & Getränke. Frisch, lokal, mit Liebe gemacht.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,9 +50,10 @@
         /* === NAV === */
         nav {
             position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            height: var(--nav-h);
+            height: calc(var(--nav-h) + env(safe-area-inset-top));
             display: flex; align-items: center;
             padding: 0 var(--pad);
+            padding-top: env(safe-area-inset-top);
             transition: background .4s var(--ease), box-shadow .4s var(--ease);
         }
         nav.scrolled { background: var(--cream); box-shadow: 0 1px 0 rgba(26,26,26,.09); }
@@ -129,7 +130,7 @@
         .sub-menu-overlay.open { opacity: 1; pointer-events: auto; }
 
         /* === HERO === */
-        #hero { position: relative; height: 100dvh; display: flex; align-items: flex-end; overflow: hidden; }
+        #hero { position: relative; height: 100dvh; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
 
         /*
         ════════════════════════════════════════════════════
@@ -153,9 +154,11 @@
             background: linear-gradient(to top, rgba(8,5,3,.88) 0%, rgba(8,5,3,.45) 40%, rgba(8,5,3,.08) 70%, rgba(8,5,3,.03) 100%);
         }
         .hero-content {
-            position: relative; z-index: 2;
+            position: absolute; bottom: 3.5rem; left: 0; right: 0; z-index: 2;
             width: 100%;
-            padding: 0 var(--pad) var(--pad);
+            padding: 0 var(--pad);
+            display: flex; flex-direction: column; align-items: center;
+            text-align: center;
         }
         .hero-eyebrow {
             display: inline-flex; align-items: center; gap: .6rem;
@@ -171,7 +174,7 @@
         }
         .hero-h1 em { font-style: italic; color: var(--terracotta); }
         .hero-sub { font-size: clamp(.95rem,1.2vw,1.05rem); color: rgba(255,255,255,.65); max-width: 38ch; margin-bottom: 2rem; line-height: 1.7; }
-        .hero-ctas { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .hero-ctas { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; }
 
         .btn { display: inline-flex; align-items: center; gap: .5rem; font-family: var(--font-b); font-size: .82rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; padding: .85em 1.8em; border-radius: 999px; cursor: pointer; transition: background .2s, border-color .2s, transform .2s; border: 1.5px solid transparent; }
         .btn:hover { transform: translateY(-1px); }
@@ -185,7 +188,7 @@
         @keyframes pulse { 0%,100% { opacity: .4; } 50% { opacity: 1; } }
 
         /* === SHARED SECTION === */
-        section { padding: clamp(5rem,10vw,9rem) 0; }
+        section { padding: clamp(4rem,7vw,6rem) 0; }
         .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
         .s-label { display: inline-flex; align-items: center; gap: .75rem; font-size: .7rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 1.1rem; }
         .s-label::before { content: ''; display: inline-block; width: 22px; height: 1.5px; background: var(--terracotta); }
@@ -222,7 +225,7 @@
         .mi-price { font-family: var(--font-d); font-size: 1rem; color: var(--terracotta); white-space: nowrap; flex-shrink: 0; }
 
         /* === REZENSIONEN === */
-        #rezensionen { background: var(--black); color: #fff; padding-bottom: clamp(2.5rem,5vw,4rem); }
+        #rezensionen { background: var(--black); color: #fff; }
         #rezensionen .s-label { color: var(--terracotta); }
         #rezensionen .s-title { color: #fff; }
         .reviews-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; margin-bottom: 3.5rem; flex-wrap: wrap; }
@@ -255,7 +258,7 @@
         .review-photos img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
 
         /* === ÜBER UNS === */
-        #ueber-uns { background: var(--black); color: #fff; padding-top: clamp(2.5rem,5vw,4rem); border-top: 1px solid rgba(255,255,255,.08); }
+        #ueber-uns { background: var(--black); color: #fff; border-top: 1px solid rgba(255,255,255,.08); }
         #ueber-uns .s-label { color: var(--terracotta); }
         #ueber-uns .s-title { color: #fff; }
         .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem,6vw,7rem); align-items: center; }
@@ -353,13 +356,25 @@
         .map-wrap iframe { width: 100%; height: 100%; display: block; }
 
         /* === FOOTER === */
-        footer { background: var(--black); color: #fff; padding: 3rem 0; }
-        .foot-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
-        .foot-logo img  { height: 30px; filter: invert(1); }
-        .foot-logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1rem; letter-spacing: .12em; background: #fff; color: var(--black); padding: .28em .75em; border-radius: 999px; display: none; }
-        .foot-copy { font-size: .78rem; color: rgba(255,255,255,.38); }
-        .foot-links { display: flex; gap: 1.5rem; list-style: none; }
-        .foot-links a { font-size: .78rem; color: rgba(255,255,255,.45); transition: color .2s; }
+        footer { background: var(--black); color: #fff; padding: clamp(3rem,6vw,5rem) 0 clamp(2rem,4vw,3rem); }
+        .foot-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center; }
+        .foot-logo { margin-bottom: 2rem; }
+        .foot-logo img  { height: 30px; filter: invert(1); margin: 0 auto; }
+        .foot-logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.6rem; letter-spacing: .12em; text-transform: uppercase; color: #fff; display: none; }
+        /* Desktop: one row with dot separators */
+        .foot-info { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0; margin-bottom: 1.75rem; }
+        .foot-info p { font-size: .95rem; color: rgba(255,255,255,.55); line-height: 1.7; }
+        .foot-info p + p::before { content: '·'; margin: 0 1.25rem; color: rgba(255,255,255,.25); }
+        .foot-info a { color: rgba(255,255,255,.55); transition: color .2s; }
+        .foot-info a:hover { color: #fff; }
+        .foot-social { display: flex; align-items: center; justify-content: center; gap: .6rem; margin-bottom: 2.5rem; color: rgba(255,255,255,.55); font-size: .92rem; transition: color .2s; }
+        .foot-social:hover { color: #fff; }
+        .foot-social svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+        .foot-divider { width: 48px; height: 1px; background: rgba(255,255,255,.15); margin: 0 auto 2rem; }
+        .foot-bottom { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+        .foot-copy { font-size: .78rem; color: rgba(255,255,255,.3); }
+        .foot-links { display: flex; gap: 2rem; list-style: none; }
+        .foot-links a { font-size: .78rem; color: rgba(255,255,255,.4); transition: color .2s; }
         .foot-links a:hover { color: #fff; }
 
         /* === RESPONSIVE === */
@@ -370,6 +385,7 @@
             .about-photo-mobile img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 14px; }
         }
         @media (max-width: 768px) {
+            .hero-content { bottom: 3rem; }
             .nav-pill { display: none; }
             .menu-grid { grid-template-columns: 1fr; gap: 0; }
             .contact-grid { grid-template-columns: 1fr; }
@@ -380,7 +396,6 @@
                 scroll-snap-type: x mandatory;
                 scrollbar-width: none;
                 -webkit-overflow-scrolling: touch;
-                touch-action: pan-x;
                 gap: 1rem;
             }
             .reviews-grid::-webkit-scrollbar { display: none; }
@@ -401,8 +416,10 @@
             .rs-arrow svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
         }
         @media (max-width: 480px) {
-            .hero-ctas { flex-direction: column; align-items: flex-start; }
-            .foot-inner { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+            .hero-ctas { flex-direction: column; align-items: center; }
+            .foot-info { flex-direction: column; gap: .35rem; }
+            .foot-info p + p::before { content: none; }
+            .foot-bottom { flex-direction: column; gap: .6rem; }
         }
         @media (prefers-reduced-motion: reduce) {
             .reveal { opacity: 1; transform: none; transition: none; }
@@ -435,7 +452,7 @@
     <button class="sub-menu-close" id="subClose" aria-label="Menü schließen">✕</button>
     <a href="speisekarte.html">Speisekarte</a>
     <a href="#ueber-uns">Über uns</a>
-    <a href="#galerie">Galerie</a>
+    <a href="galerie.html">Galerie</a>
     <a href="#kontakt">Kontakt</a>
 </div>
 
@@ -474,171 +491,6 @@
 </section>
 
 <!-- GALERIE -->
-<section id="galerie" aria-labelledby="gallery-title">
-    <div class="container">
-        <div class="gallery-top">
-            <div>
-                <div class="s-label reveal">Atmosphäre</div>
-                <h2 class="s-title reveal d1" id="gallery-title">Das <em>QUITO</em></h2>
-            </div>
-        </div>
-        <div class="gs-filters reveal d2" role="group" aria-label="Galerie filtern">
-            <button class="gs-filter active" data-cat="Alle">Alle</button>
-            <button class="gs-filter" data-cat="Interieur">Interieur</button>
-            <button class="gs-filter" data-cat="Kaffee">Kaffee</button>
-            <button class="gs-filter" data-cat="Frühstück">Frühstück</button>
-            <button class="gs-filter" data-cat="Team">Team</button>
-            <button class="gs-filter" data-cat="Essen">Essen</button>
-        </div>
-        <div class="gal-slider-wrap" id="galSliderWrap">
-            <div class="gal-grid" id="galGrid">
-                <div class="gal-item" data-index="0" data-category="Interieur" tabindex="0" role="button" aria-label="Café Innenraum öffnen">
-                    <img src="cafe-innen.JPG" alt="Café QUITO Innenansicht" loading="lazy" decoding="async">
-                    <div class="gal-overlay" aria-hidden="true"><span>Interieur</span></div>
-                </div>
-                <div class="gal-item" data-index="1" data-category="Kaffee" tabindex="0" role="button" aria-label="Specialty Coffee öffnen">
-                    <img src="kaffee.jpeg" alt="Kaffee im Café QUITO" loading="lazy" decoding="async">
-                    <div class="gal-overlay" aria-hidden="true"><span>Kaffee</span></div>
-                </div>
-                <div class="gal-item" data-index="2" data-category="Frühstück" tabindex="0" role="button" aria-label="Frühstück öffnen">
-                    <img src="fruehstueck.jpeg" alt="Frühstück im Café QUITO" loading="lazy" decoding="async">
-                    <div class="gal-overlay" aria-hidden="true"><span>Frühstück</span></div>
-                </div>
-                <div class="gal-item" data-index="3" data-category="Team" tabindex="0" role="button" aria-label="Unser Team öffnen">
-                    <img src="team.JPG" alt="Das Team des Café QUITO" loading="lazy" decoding="async">
-                    <div class="gal-overlay" aria-hidden="true"><span>Team</span></div>
-                </div>
-                <div class="gal-item" data-index="4" data-category="Essen" tabindex="0" role="button" aria-label="Mittagessen öffnen">
-                    <img src="essen.JPG.jpg" alt="Essen im Café QUITO" loading="lazy" decoding="async">
-                    <div class="gal-overlay" aria-hidden="true"><span>Essen</span></div>
-                </div>
-            </div>
-        </div>
-        <div class="gal-slider-dots" id="galDots"></div>
-    </div>
-    <!-- Lightbox -->
-    <div class="gal-lb" id="galLightbox" role="dialog" aria-modal="true" aria-label="Bild vergrößert">
-        <div class="gal-lb-wrap">
-            <button class="gal-lb-close" aria-label="Schließen">✕</button>
-            <button class="gal-lb-prev" aria-label="Vorheriges Bild">‹</button>
-            <button class="gal-lb-next" aria-label="Nächstes Bild">›</button>
-            <img class="gal-lb-img" id="galLbImg" src="" alt="">
-            <div class="gal-lb-info">
-                <div class="gal-lb-title" id="galLbTitle"></div>
-                <span class="gal-lb-badge" id="galLbBadge"></span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- REZENSIONEN -->
-<section id="rezensionen" aria-labelledby="reviews-title">
-    <div class="container">
-        <div class="reviews-header">
-            <div>
-                <div class="s-label reveal">Was Gäste sagen</div>
-                <h2 class="s-title reveal d1" id="reviews-title">349 <em>Rezensionen</em></h2>
-            </div>
-            <div class="rating-summary reveal d2">
-                <div class="rating-score">4,6</div>
-                <div class="rating-meta">
-                    <div class="stars" aria-label="4,6 von 5 Sternen">
-                        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24">
-                            <defs><clipPath id="c60"><rect x="0" y="0" width="14.4" height="24"/></clipPath></defs>
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="rgba(255,255,255,.15)"/>
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="var(--terracotta)" clip-path="url(#c60)"/>
-                        </svg>
-                    </div>
-                    <div class="rating-count">Basierend auf 349 Google-Rezensionen</div>
-                    <a href="https://share.google/FHLpPrkt1QKdm269O" target="_blank" rel="noopener" class="google-link">
-                        Alle Rezensionen auf Google →
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="reviews-slider">
-        <button class="rs-arrow rs-prev" aria-label="Vorherige Rezension">
-            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <button class="rs-arrow rs-next" aria-label="Nächste Rezension">
-            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-        <div class="reviews-grid">
-            <div class="review-card reveal">
-                <div class="review-top">
-                    <div class="review-avatar" aria-hidden="true">G</div>
-                    <div>
-                        <div class="review-name">Gabriele</div>
-                        <div class="review-source">Local Guide · 133 Rezensionen · 98 Fotos</div>
-                    </div>
-                </div>
-                <div class="review-stars" aria-label="5 von 5 Sternen">
-                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                </div>
-                <p class="review-text">„Tolles Café die freundlichste Bedienung, die man sich wünschen kann. Leckeres Frühstück, gute Auswahl, alles frisch gemacht. Ein ganz weicher leckerer Kaffee."</p>
-                <div class="review-meta">
-                    <span>Essen: 5/5</span><span>Service: 5/5</span><span>Ambiente: 4/5</span>
-                </div>
-                <div class="review-date">vor 2 Monaten</div>
-            </div>
-
-            <div class="review-card reveal d1">
-                <div class="review-top">
-                    <div class="review-avatar" aria-hidden="true">T</div>
-                    <div>
-                        <div class="review-name">t. g.</div>
-                        <div class="review-source">Local Guide · 499 Rezensionen · 118 Fotos</div>
-                    </div>
-                </div>
-                <div class="review-stars" aria-label="5 von 5 Sternen">
-                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                </div>
-                <p class="review-text">„Das Essen (Apfelkuchen u Schnitzel) waren sehr lecker und der Service war ausgezeichnet. Wir können das Cafe Quito nur empfehlen!"</p>
-                <div class="review-meta">
-                    <span>Essen: 5/5</span><span>Service: 5/5</span><span>Ambiente: 5/5</span>
-                </div>
-                <div class="review-date">vor 9 Monaten</div>
-            </div>
-
-            <div class="review-card reveal d2">
-                <div class="review-top">
-                    <div class="review-avatar" aria-hidden="true">M</div>
-                    <div>
-                        <div class="review-name">Manuel W.</div>
-                        <div class="review-source">Local Guide · 356 Rezensionen · 964 Fotos</div>
-                    </div>
-                </div>
-                <div class="review-stars" aria-label="5 von 5 Sternen">
-                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                </div>
-                <p class="review-text">„Besondere Atmosphäre und sehr gemütliche Ambiente. Essen und Service einfach nur Klasse. Das Cordon Bleu und die Teigtaschen = 5☆+"</p>
-                <div class="review-meta">
-                    <span>Essen: 5/5</span><span>Service: 5/5</span><span>Ambiente: 5/5</span>
-                </div>
-                <div class="review-dish">Empfehlung: Teigtaschen, Cordon Bleu, Kuchen</div>
-                <div class="review-date">vor 3 Jahren</div>
-            </div>
-        </div>
-        </div><!-- /.reviews-slider -->
-    </div>
-</section>
 
 <!-- ÜBER UNS -->
 <section id="ueber-uns" aria-labelledby="about-title">
@@ -649,12 +501,12 @@
                 <h2 class="s-title reveal d1" id="about-title">Mehr als nur<br><em>ein Café</em></h2>
                 <p class="reveal d2">Das QUITO ist ein Ort zum Ankommen. Ob du deinen Morgen mit uns beginnst, in der Mittagspause durchatmest oder einfach einen guten Kaffee genießt — wir freuen uns, dass du hier bist.</p>
                 <div class="about-photo-mobile reveal d3">
-                    <img src="story-bild.jpg" alt="Café QUITO">
+                    <img src="story-bild.WEBP" alt="Café QUITO">
                 </div>
                 <blockquote class="about-quote reveal d5">„Ein guter Kaffee, ein gutes Gespräch — mehr braucht es manchmal nicht."</blockquote>
             </div>
             <div class="about-photo reveal d2">
-                <img src="story-bild.jpg" alt="Café QUITO">
+                <img src="story-bild.WEBP" alt="Café QUITO">
             </div>
         </div>
     </div>
@@ -683,7 +535,8 @@
                     <div class="cb reveal d3">
                         <div class="cb-label">Kontakt</div>
                         <div class="cb-content">
-                            <a href="tel:+4962333039095">+49 6233 3039095</a>
+                            <a href="tel:+4962333039095">+49 6233 3039095</a><br>
+                            <a href="mailto:info@cafe-quito.de">info@cafe-quito.de</a>
                         </div>
                     </div>
                     <div class="cb reveal d3">
@@ -693,7 +546,7 @@
                 </div>
             </div>
 
-            <div class="reveal d2">
+            <div class="reveal d2" style="display:none">
                 <iframe class="map-wrap"
                     src="https://maps.google.com/maps?width=520&height=400&hl=en&q=Speyerer%20Stra%C3%9Fe%2024%20Frankenthal%20+(Caf%C3%A9%20Quito)&t=&z=15&ie=UTF8&iwloc=B&output=embed"
                     width="520" height="400"
@@ -707,6 +560,14 @@
     </div>
 </section>
 
+<!-- REZENSIONEN -->
+<section id="rezensionen" style="display:none">
+    <div class="container">
+        <script src="https://elfsightcdn.com/platform.js" async></script>
+        <div class="elfsight-app-1c2d565d-e34c-4f3e-a408-5d3d29f7a876" data-elfsight-app-lazy></div>
+    </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
     <div class="foot-inner">
@@ -715,11 +576,23 @@
                  onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
             <span class="foot-logo-text">QUITO</span>
         </div>
-        <p class="foot-copy">© 2025 Café QUITO. Alle Rechte vorbehalten.</p>
-        <ul class="foot-links">
-            <li><a href="#">Impressum</a></li>
-            <li><a href="#">Datenschutz</a></li>
-        </ul>
+        <div class="foot-info">
+            <p>Speyerer Straße 24, 67227 Frankenthal (Pfalz)</p>
+            <p>Mo–Fr 9–18 Uhr · Sa 9–16 Uhr</p>
+            <p><a href="mailto:info@cafe-quito.de">info@cafe-quito.de</a></p>
+        </div>
+        <a href="https://www.instagram.com" target="_blank" rel="noopener" class="foot-social" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/></svg>
+            @cafe.quito
+        </a>
+        <div class="foot-divider"></div>
+        <div class="foot-bottom">
+            <p class="foot-copy">© 2025 Café QUITO. Alle Rechte vorbehalten.</p>
+            <ul class="foot-links">
+                <li><a href="impressum.html">Impressum</a></li>
+                <li><a href="#">Datenschutz</a></li>
+            </ul>
+        </div>
     </div>
 </footer>
 

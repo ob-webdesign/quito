@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Impressum — QUITO Café</title>
+    <meta name="description" content="Impressum des Café QUITO in Frankenthal (Pfalz).">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black:      #1A1A1A;
+            --cream:      #F5EDD6;
+            --terracotta: #C4793A;
+            --warm-white: #FDFAF4;
+            --muted:      #6B6153;
+            --font-d: 'DM Serif Display', serif;
+            --font-b: 'Source Sans 3', sans-serif;
+            --nav-h: 72px;
+            --pad: clamp(1.5rem, 5vw, 3rem);
+            --max: min(1320px, 94vw);
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-b); background: var(--cream); color: var(--black); overflow-x: hidden; font-size: 16px; line-height: 1.6; }
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+        address { font-style: normal; }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            background-size: 180px;
+            pointer-events: none; z-index: 9999; mix-blend-mode: multiply;
+        }
+
+        /* === NAV === */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            height: calc(var(--nav-h) + env(safe-area-inset-top));
+            display: flex; align-items: center;
+            padding: 0 var(--pad);
+            padding-top: env(safe-area-inset-top);
+            background: var(--cream);
+            box-shadow: 0 1px 0 rgba(26,26,26,.09);
+        }
+        .nav-inner { width: 100%; max-width: var(--max); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; position: relative; }
+        .nav-inner > a { position: absolute; left: 50%; transform: translateX(-50%); }
+        .logo-img  { height: 38px; width: auto; display: block; }
+        .logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.35rem; letter-spacing: .12em; text-transform: uppercase; background: var(--black); color: #fff; padding: .3em .85em; border-radius: 999px; display: none; }
+        .nav-actions { display: flex; align-items: center; gap: .75rem; }
+        .nav-pill {
+            font-family: var(--font-b); font-size: .8rem; font-weight: 500;
+            letter-spacing: .07em; text-transform: uppercase;
+            padding: .55em 1.4em; border-radius: 999px;
+            border: 1.5px solid rgba(26,26,26,.25); color: var(--black);
+            transition: border-color .2s, color .2s;
+        }
+        .nav-pill:hover { border-color: var(--terracotta); color: var(--terracotta); }
+        .nav-sub-toggle {
+            width: 42px; height: 42px; border-radius: 50%;
+            border: 1.5px solid rgba(26,26,26,.25); background: transparent;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 4px; cursor: pointer; transition: border-color .2s;
+        }
+        .nav-sub-toggle:hover { border-color: var(--terracotta); }
+        .nav-sub-toggle span { display: block; width: 18px; height: 1.5px; background: var(--black); }
+
+        /* Submenu */
+        .sub-menu {
+            position: fixed; top: 0; left: 0; z-index: 200;
+            width: min(340px, 80vw); height: 100dvh;
+            background: var(--warm-white);
+            box-shadow: 8px 0 40px rgba(0,0,0,.15);
+            padding: 2.5rem 2.5rem 2rem;
+            transform: translateX(-100%); pointer-events: none;
+            transition: transform .35s ease;
+        }
+        .sub-menu.open { transform: none; pointer-events: auto; }
+        .sub-menu-close {
+            position: absolute; top: 1.4rem; right: 1.4rem;
+            width: 32px; height: 32px; border: 1px solid rgba(26,26,26,.2);
+            border-radius: 50%; background: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; color: var(--black); transition: border-color .2s;
+        }
+        .sub-menu-close:hover { border-color: var(--terracotta); color: var(--terracotta); }
+        .sub-menu a {
+            display: block; font-family: var(--font-b); font-size: 1.15rem; font-weight: 500;
+            letter-spacing: .02em; color: var(--black); padding: 1rem 0;
+            border-bottom: 1px solid rgba(26,26,26,.08); transition: color .2s;
+        }
+        .sub-menu a:first-of-type { margin-top: 3rem; }
+        .sub-menu a:last-of-type { border-bottom: none; }
+        .sub-menu a:hover { color: var(--terracotta); }
+        .sub-menu-overlay {
+            position: fixed; inset: 0; z-index: 199;
+            background: rgba(0,0,0,.3); opacity: 0; pointer-events: none;
+            transition: opacity .35s ease;
+        }
+        .sub-menu-overlay.open { opacity: 1; pointer-events: auto; }
+
+        /* === PAGE HEADER === */
+        .page-header {
+            padding-top: calc(var(--nav-h) + env(safe-area-inset-top) + clamp(3rem, 6vw, 5rem));
+            padding-bottom: clamp(2rem, 4vw, 3rem);
+            background: var(--warm-white);
+        }
+        .page-header .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+        .s-label { display: inline-flex; align-items: center; gap: .75rem; font-size: .7rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 1.1rem; }
+        .s-label::before { content: ''; display: inline-block; width: 22px; height: 1.5px; background: var(--terracotta); }
+        .s-title { font-family: var(--font-d); font-size: clamp(2.2rem,5vw,3.8rem); line-height: 1.1; }
+
+        /* === IMPRESSUM CONTENT === */
+        .impressum-body {
+            background: var(--warm-white);
+            padding: 0 0 clamp(5rem, 10vw, 8rem);
+        }
+        .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+        .imp-grid { max-width: 720px; }
+
+        .imp-section { margin-bottom: 3rem; }
+        .imp-section:last-child { margin-bottom: 0; }
+
+        .imp-h2 {
+            font-family: var(--font-d); font-size: clamp(1.15rem, 2vw, 1.4rem);
+            color: var(--black); margin-bottom: .9rem;
+            padding-bottom: .5rem; border-bottom: 1.5px solid rgba(26,26,26,.1);
+        }
+        .imp-h3 {
+            font-family: var(--font-b); font-size: .72rem; font-weight: 600;
+            letter-spacing: .13em; text-transform: uppercase;
+            color: var(--terracotta); margin: 1.25rem 0 .4rem;
+        }
+        .imp-p {
+            font-size: .97rem; color: var(--muted); line-height: 1.8; margin-bottom: .6rem;
+        }
+        .imp-p a { border-bottom: 1px solid rgba(26,26,26,.2); transition: color .2s, border-color .2s; }
+        .imp-p a:hover { color: var(--terracotta); border-color: var(--terracotta); }
+        .imp-p strong { color: var(--black); font-weight: 600; }
+
+        /* === FOOTER === */
+        footer { background: var(--black); color: #fff; padding: clamp(3rem,6vw,5rem) 0 clamp(2rem,4vw,3rem); }
+        .foot-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center; }
+        .foot-logo { margin-bottom: 2rem; }
+        .foot-logo img { height: 30px; filter: invert(1); margin: 0 auto; }
+        .foot-logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.6rem; letter-spacing: .12em; text-transform: uppercase; color: #fff; display: none; }
+        .foot-info { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0; margin-bottom: 1.75rem; }
+        .foot-info p { font-size: .95rem; color: rgba(255,255,255,.55); line-height: 1.7; }
+        .foot-info p + p::before { content: '·'; margin: 0 1.25rem; color: rgba(255,255,255,.25); }
+        .foot-info a { color: rgba(255,255,255,.55); transition: color .2s; }
+        .foot-info a:hover { color: #fff; }
+        .foot-social { display: flex; align-items: center; justify-content: center; gap: .6rem; margin-bottom: 2.5rem; color: rgba(255,255,255,.55); font-size: .92rem; transition: color .2s; }
+        .foot-social:hover { color: #fff; }
+        .foot-social svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+        .foot-divider { width: 48px; height: 1px; background: rgba(255,255,255,.15); margin: 0 auto 2rem; }
+        .foot-bottom { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+        .foot-copy { font-size: .78rem; color: rgba(255,255,255,.3); }
+        .foot-links { display: flex; gap: 2rem; list-style: none; }
+        .foot-links a { font-size: .78rem; color: rgba(255,255,255,.4); transition: color .2s; }
+        .foot-links a:hover { color: #fff; }
+
+        @media (max-width: 768px) {
+            .nav-pill { display: none; }
+            .nav-actions { position: absolute; left: var(--pad); right: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<nav role="navigation" aria-label="Hauptnavigation">
+    <div class="nav-inner">
+        <a href="index.html" aria-label="QUITO — zur Startseite">
+            <img src="logo.png" alt="QUITO" class="logo-img"
+                 onerror="this.style.display='none';document.querySelectorAll('.logo-text').forEach(el=>el.style.display='block')">
+            <span class="logo-text">QUITO</span>
+        </a>
+        <div class="nav-actions">
+            <a href="speisekarte.html" class="nav-pill">Speisekarte</a>
+            <button class="nav-sub-toggle" id="subToggle" aria-label="Menü öffnen" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<div class="sub-menu-overlay" id="subOverlay"></div>
+<div class="sub-menu" id="subMenu" role="dialog" aria-label="Navigation">
+    <button class="sub-menu-close" id="subClose" aria-label="Menü schließen">✕</button>
+    <a href="speisekarte.html">Speisekarte</a>
+    <a href="index.html#ueber-uns">Über uns</a>
+    <a href="galerie.html">Galerie</a>
+    <a href="index.html#kontakt">Kontakt</a>
+</div>
+
+<div class="page-header">
+    <div class="container">
+        <div class="s-label">Rechtliches</div>
+        <h1 class="s-title">Impressum</h1>
+    </div>
+</div>
+
+<div class="impressum-body">
+    <div class="container">
+        <div class="imp-grid">
+
+            <!-- § 5 TMG -->
+            <div class="imp-section">
+                <h2 class="imp-h2">Angaben gemäß § 5 TMG</h2>
+                <div class="imp-h3">Betreiber</div>
+                <p class="imp-p">
+                    <strong>Max Mustermann</strong><br>
+                    Café QUITO<br>
+                    Speyerer Straße 24<br>
+                    67227 Frankenthal (Pfalz)
+                </p>
+                <div class="imp-h3">Kontakt</div>
+                <p class="imp-p">
+                    Telefon: <a href="tel:+4962333039095">+49 6233 3039095</a><br>
+                    E-Mail: <a href="mailto:info@cafe-quito.de">info@cafe-quito.de</a>
+                </p>
+                <div class="imp-h3">Umsatzsteuer-ID</div>
+                <p class="imp-p">
+                    Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br>
+                    <strong>DE 123 456 789</strong>
+                </p>
+            </div>
+
+            <!-- Verantwortlich für den Inhalt -->
+            <div class="imp-section">
+                <h2 class="imp-h2">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+                <p class="imp-p">
+                    Max Mustermann<br>
+                    Speyerer Straße 24<br>
+                    67227 Frankenthal (Pfalz)
+                </p>
+            </div>
+
+            <!-- EU-Streitschlichtung -->
+            <div class="imp-section">
+                <h2 class="imp-h2">EU-Streitschlichtung</h2>
+                <p class="imp-p">
+                    Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:
+                    <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer">https://ec.europa.eu/consumers/odr/</a>
+                </p>
+                <p class="imp-p">
+                    Unsere E-Mail-Adresse finden Sie oben im Impressum.
+                </p>
+            </div>
+
+            <!-- Verbraucherstreitbeilegung -->
+            <div class="imp-section">
+                <h2 class="imp-h2">Verbraucherstreitbeilegung / Universalschlichtungsstelle</h2>
+                <p class="imp-p">
+                    Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer
+                    Verbraucherschlichtungsstelle teilzunehmen.
+                </p>
+            </div>
+
+            <!-- Haftung für Inhalte -->
+            <div class="imp-section">
+                <h2 class="imp-h2">Haftung für Inhalte</h2>
+                <p class="imp-p">
+                    Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten
+                    nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als
+                    Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde
+                    Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige
+                    Tätigkeit hinweisen.
+                </p>
+                <p class="imp-p">
+                    Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den
+                    allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch
+                    erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei
+                    Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend
+                    entfernen.
+                </p>
+            </div>
+
+            <!-- Haftung für Links -->
+            <div class="imp-section">
+                <h2 class="imp-h2">Haftung für Links</h2>
+                <p class="imp-p">
+                    Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen
+                    Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen.
+                    Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der
+                    Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf
+                    mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der
+                    Verlinkung nicht erkennbar.
+                </p>
+                <p class="imp-p">
+                    Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete
+                    Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von
+                    Rechtsverletzungen werden wir derartige Links umgehend entfernen.
+                </p>
+            </div>
+
+            <!-- Urheberrecht -->
+            <div class="imp-section">
+                <h2 class="imp-h2">Urheberrecht</h2>
+                <p class="imp-p">
+                    Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen
+                    dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art
+                    der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen
+                    Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind
+                    nur für den privaten, nicht kommerziellen Gebrauch gestattet.
+                </p>
+                <p class="imp-p">
+                    Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die
+                    Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche
+                    gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden,
+                    bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen
+                    werden wir derartige Inhalte umgehend entfernen.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="foot-inner">
+        <div class="foot-logo">
+            <img src="logo.png" alt="QUITO"
+                 onerror="this.style.display='none';document.querySelectorAll('.foot-logo-text').forEach(el=>el.style.display='block')">
+            <span class="foot-logo-text">QUITO</span>
+        </div>
+        <div class="foot-info">
+            <p>Speyerer Straße 24, 67227 Frankenthal (Pfalz)</p>
+            <p>Mo–Fr 9–18 Uhr · Sa 9–16 Uhr</p>
+            <p><a href="mailto:info@cafe-quito.de">info@cafe-quito.de</a></p>
+        </div>
+        <a href="https://www.instagram.com" target="_blank" rel="noopener" class="foot-social" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/></svg>
+            @cafe.quito
+        </a>
+        <div class="foot-divider"></div>
+        <div class="foot-bottom">
+            <p class="foot-copy">© 2025 Café QUITO. Alle Rechte vorbehalten.</p>
+            <ul class="foot-links">
+                <li><a href="impressum.html">Impressum</a></li>
+                <li><a href="#">Datenschutz</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const subMenu = document.getElementById('subMenu');
+    const subOverlay = document.getElementById('subOverlay');
+    const subToggle = document.getElementById('subToggle');
+    const closeSub = () => { subMenu.classList.remove('open'); subOverlay.classList.remove('open'); subToggle.setAttribute('aria-expanded','false'); document.body.style.overflow = ''; };
+    const openSub  = () => { subMenu.classList.add('open'); subOverlay.classList.add('open'); subToggle.setAttribute('aria-expanded','true'); document.body.style.overflow = 'hidden'; };
+    subToggle.addEventListener('click', () => { subMenu.classList.contains('open') ? closeSub() : openSub(); });
+    document.getElementById('subClose').addEventListener('click', closeSub);
+    subOverlay.addEventListener('click', closeSub);
+    subMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', closeSub));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSub(); });
+</script>
+</body>
+</html>

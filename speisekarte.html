@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Speisekarte — QUITO Café</title>
     <meta name="description" content="Die Speisekarte des Café QUITO in Frankenthal — Frühstück, Mittagessen, Kaffee & Getränke.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,9 +45,10 @@
         /* === NAV === */
         nav {
             position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            height: var(--nav-h);
+            height: calc(var(--nav-h) + env(safe-area-inset-top));
             display: flex; align-items: center;
             padding: 0 var(--pad);
+            padding-top: env(safe-area-inset-top);
             background: var(--cream);
             box-shadow: 0 1px 0 rgba(26,26,26,.09);
         }
@@ -141,13 +142,24 @@
         .mi-price { font-family: var(--font-b); font-size: 1rem; font-weight: 600; color: var(--terracotta); white-space: nowrap; flex-shrink: 0; }
 
         /* === FOOTER === */
-        footer { background: var(--black); color: #fff; padding: 3rem 0; }
-        .foot-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
-        .foot-logo img { height: 30px; filter: invert(1); }
-        .foot-logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1rem; letter-spacing: .12em; background: #fff; color: var(--black); padding: .28em .75em; border-radius: 999px; display: none; }
-        .foot-copy { font-size: .78rem; color: rgba(255,255,255,.38); }
-        .foot-links { display: flex; gap: 1.5rem; list-style: none; }
-        .foot-links a { font-size: .78rem; color: rgba(255,255,255,.45); transition: color .2s; }
+        footer { background: var(--black); color: #fff; padding: clamp(3rem,6vw,5rem) 0 clamp(2rem,4vw,3rem); }
+        .foot-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center; }
+        .foot-logo { margin-bottom: 2rem; }
+        .foot-logo img { height: 30px; filter: invert(1); margin: 0 auto; }
+        .foot-logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.6rem; letter-spacing: .12em; text-transform: uppercase; color: #fff; display: none; }
+        .foot-info { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0; margin-bottom: 1.75rem; }
+        .foot-info p { font-size: .95rem; color: rgba(255,255,255,.55); line-height: 1.7; }
+        .foot-info p + p::before { content: '·'; margin: 0 1.25rem; color: rgba(255,255,255,.25); }
+        .foot-info a { color: rgba(255,255,255,.55); transition: color .2s; }
+        .foot-info a:hover { color: #fff; }
+        .foot-social { display: flex; align-items: center; justify-content: center; gap: .6rem; margin-bottom: 2.5rem; color: rgba(255,255,255,.55); font-size: .92rem; transition: color .2s; }
+        .foot-social:hover { color: #fff; }
+        .foot-social svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+        .foot-divider { width: 48px; height: 1px; background: rgba(255,255,255,.15); margin: 0 auto 2rem; }
+        .foot-bottom { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+        .foot-copy { font-size: .78rem; color: rgba(255,255,255,.3); }
+        .foot-links { display: flex; gap: 2rem; list-style: none; }
+        .foot-links a { font-size: .78rem; color: rgba(255,255,255,.4); transition: color .2s; }
         .foot-links a:hover { color: #fff; }
 
         @media (max-width: 768px) {
@@ -158,7 +170,9 @@
             .mi-price { white-space: normal; text-align: left; }
         }
         @media (max-width: 480px) {
-            .foot-inner { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+            .foot-info { flex-direction: column; gap: .35rem; }
+            .foot-info p + p::before { content: none; }
+            .foot-bottom { flex-direction: column; gap: .6rem; }
         }
         @media (prefers-reduced-motion: reduce) {
             .reveal { opacity: 1; transform: none; transition: none; }
@@ -188,7 +202,7 @@
     <button class="sub-menu-close" id="subClose" aria-label="Menü schließen">✕</button>
     <a href="speisekarte.html">Speisekarte</a>
     <a href="index.html#ueber-uns">Über uns</a>
-    <a href="index.html#galerie">Galerie</a>
+    <a href="galerie.html">Galerie</a>
     <a href="index.html#kontakt">Kontakt</a>
 </div>
 
@@ -378,11 +392,23 @@
                  onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
             <span class="foot-logo-text">QUITO</span>
         </div>
-        <p class="foot-copy">© 2025 Café QUITO. Alle Rechte vorbehalten.</p>
-        <ul class="foot-links">
-            <li><a href="#">Impressum</a></li>
-            <li><a href="#">Datenschutz</a></li>
-        </ul>
+        <div class="foot-info">
+            <p>Speyerer Straße 24, 67227 Frankenthal (Pfalz)</p>
+            <p>Mo–Fr 9–18 Uhr · Sa 9–16 Uhr</p>
+            <p><a href="mailto:info@cafe-quito.de">info@cafe-quito.de</a></p>
+        </div>
+        <a href="https://www.instagram.com" target="_blank" rel="noopener" class="foot-social" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/></svg>
+            @cafe.quito
+        </a>
+        <div class="foot-divider"></div>
+        <div class="foot-bottom">
+            <p class="foot-copy">© 2025 Café QUITO. Alle Rechte vorbehalten.</p>
+            <ul class="foot-links">
+                <li><a href="impressum.html">Impressum</a></li>
+                <li><a href="#">Datenschutz</a></li>
+            </ul>
+        </div>
     </div>
 </footer>
 

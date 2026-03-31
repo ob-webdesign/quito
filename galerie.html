@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galerie — QUITO Café</title>
+    <meta name="description" content="Bilder aus dem Café QUITO in Frankenthal — Interieur, Kaffee, Frühstück, Team und mehr.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black:      #1A1A1A;
+            --cream:      #F5EDD6;
+            --terracotta: #C4793A;
+            --sage:       #8B9D6A;
+            --warm-white: #FDFAF4;
+            --muted:      #6B6153;
+            --font-d: 'DM Serif Display', serif;
+            --font-b: 'Source Sans 3', sans-serif;
+            --nav-h: 72px;
+            --pad: clamp(1.5rem, 5vw, 3rem);
+            --max: min(1320px, 94vw);
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-b); background: var(--cream); color: var(--black); overflow-x: hidden; font-size: 16px; line-height: 1.6; }
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            background-size: 180px;
+            pointer-events: none; z-index: 9999; mix-blend-mode: multiply;
+        }
+
+        .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+        .reveal.visible { opacity: 1; transform: none; }
+        .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; }
+
+        /* === NAV === */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            height: calc(var(--nav-h) + env(safe-area-inset-top));
+            display: flex; align-items: center;
+            padding: 0 var(--pad);
+            padding-top: env(safe-area-inset-top);
+            background: var(--cream);
+            box-shadow: 0 1px 0 rgba(26,26,26,.09);
+        }
+        .nav-inner { width: 100%; max-width: var(--max); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; position: relative; }
+        .nav-inner > a { position: absolute; left: 50%; transform: translateX(-50%); }
+        .logo-img  { height: 38px; width: auto; display: block; }
+        .logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.35rem; letter-spacing: .12em; text-transform: uppercase; background: var(--black); color: #fff; padding: .3em .85em; border-radius: 999px; display: none; }
+        .nav-actions { display: flex; align-items: center; gap: .75rem; }
+        .nav-pill {
+            font-family: var(--font-b); font-size: .8rem; font-weight: 500;
+            letter-spacing: .07em; text-transform: uppercase;
+            padding: .55em 1.4em; border-radius: 999px;
+            border: 1.5px solid rgba(26,26,26,.25); color: var(--black);
+            transition: border-color .2s, color .2s, background .2s;
+        }
+        .nav-pill:hover { border-color: var(--terracotta); color: var(--terracotta); }
+        .nav-sub-toggle {
+            width: 42px; height: 42px; border-radius: 50%;
+            border: 1.5px solid rgba(26,26,26,.25); background: transparent;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 4px; cursor: pointer; transition: border-color .2s;
+        }
+        .nav-sub-toggle:hover { border-color: var(--terracotta); }
+        .nav-sub-toggle span { display: block; width: 18px; height: 1.5px; background: var(--black); transition: background .2s; }
+
+        /* Submenu panel */
+        .sub-menu {
+            position: fixed; top: 0; left: 0; z-index: 200;
+            width: min(340px, 80vw); height: 100dvh;
+            background: var(--warm-white);
+            box-shadow: 8px 0 40px rgba(0,0,0,.15);
+            padding: 2.5rem 2.5rem 2rem;
+            transform: translateX(-100%); pointer-events: none;
+            transition: transform .35s ease;
+        }
+        .sub-menu.open { transform: none; pointer-events: auto; }
+        .sub-menu-close {
+            position: absolute; top: 1.4rem; right: 1.4rem;
+            width: 32px; height: 32px; border: 1px solid rgba(26,26,26,.2);
+            border-radius: 50%; background: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; color: var(--black); transition: border-color .2s;
+        }
+        .sub-menu-close:hover { border-color: var(--terracotta); color: var(--terracotta); }
+        .sub-menu a {
+            display: block; font-family: var(--font-b); font-size: 1.15rem; font-weight: 500;
+            letter-spacing: .02em; color: var(--black); padding: 1rem 0;
+            border-bottom: 1px solid rgba(26,26,26,.08); transition: color .2s;
+        }
+        .sub-menu a:first-of-type { margin-top: 3rem; }
+        .sub-menu a:last-of-type { border-bottom: none; }
+        .sub-menu a:hover { color: var(--terracotta); }
+        .sub-menu a.active { color: var(--terracotta); }
+        .sub-menu-overlay {
+            position: fixed; inset: 0; z-index: 199;
+            background: rgba(0,0,0,.3); opacity: 0; pointer-events: none;
+            transition: opacity .35s ease;
+        }
+        .sub-menu-overlay.open { opacity: 1; pointer-events: auto; }
+
+        /* === PAGE HEADER === */
+        .page-header {
+            padding-top: calc(var(--nav-h) + clamp(3rem, 6vw, 5rem));
+            padding-bottom: clamp(2rem, 4vw, 3rem);
+            background: var(--warm-white);
+        }
+        .page-header .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+        .s-label { display: inline-flex; align-items: center; gap: .75rem; font-size: .7rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 1.1rem; }
+        .s-label::before { content: ''; display: inline-block; width: 22px; height: 1.5px; background: var(--terracotta); }
+        .s-title { font-family: var(--font-d); font-size: clamp(2.2rem,5vw,3.8rem); line-height: 1.1; }
+        .s-title em { font-style: italic; color: var(--terracotta); }
+
+        /* === GALLERY === */
+        #galerie { background: var(--cream); overflow: hidden; padding-top: clamp(3rem,6vw,5rem); padding-bottom: clamp(3rem,6vw,5rem); }
+        .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+        .gallery-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+        .gs-filters { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:2.5rem; }
+        .gs-filter { font-family:var(--font-b); font-size:.78rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; padding:.55em 1.3em; border-radius:999px; border:1.5px solid rgba(26,26,26,.2); background:transparent; color:var(--muted); cursor:pointer; transition:all .2s; }
+        .gs-filter:hover { border-color:var(--terracotta); color:var(--terracotta); }
+        .gs-filter.active { background:var(--black); border-color:var(--black); color:#fff; }
+
+        .gal-grid { columns: 3; column-gap: 1.25rem; }
+        .gal-item { break-inside: avoid; margin-bottom: 1.25rem; position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; opacity: 0; transform: translateY(10px); transition: opacity .4s var(--ease), transform .4s var(--ease); }
+        .gal-item.visible { opacity: 1; transform: none; }
+        .gal-item.hidden { opacity: 0; transform: scale(0.95); pointer-events: none; position: absolute; }
+        .gal-item img { width: 100%; height: auto; display: block; border-radius: 12px; transition: transform .5s var(--ease); }
+        @media (hover: hover) { .gal-item:hover img { transform: scale(1.04); } }
+
+        .gal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .3s; border-radius: 12px; pointer-events: none; }
+        @media (hover: hover) { .gal-item:hover .gal-overlay { opacity: 1; } }
+        .gal-overlay span { font-family: var(--font-b); font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #fff; background: rgba(255,255,255,.18); padding: .4em 1em; border-radius: 999px; }
+
+        .gal-lb { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.85); align-items: center; justify-content: center; padding: 1.5rem; }
+        .gal-lb.open { display: flex; }
+        .gal-lb-wrap { position: relative; max-width: 900px; width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .gal-lb-img { max-height: 82vh; width: auto; max-width: 100%; border-radius: 12px; }
+        .gal-lb-info { margin-top: 1.25rem; text-align: center; }
+        .gal-lb-title { font-family: var(--font-d); font-size: 1.3rem; color: #fff; margin-bottom: .5rem; }
+        .gal-lb-badge { font-size: .65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; background: rgba(255,255,255,.2); padding: .3em .85em; border-radius: 999px; color: #fff; }
+        .gal-lb-close { position: absolute; top: -3rem; right: 0; background: none; border: none; color: rgba(255,255,255,.7); font-size: 1.5rem; cursor: pointer; padding: .5rem; transition: color .2s; line-height: 1; }
+        .gal-lb-close:hover { color: #fff; }
+        .gal-lb-prev, .gal-lb-next { position: absolute; top: 40%; transform: translateY(-50%); background: rgba(255,255,255,.12); border: none; color: #fff; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.4rem; transition: background .2s; z-index: 1; line-height: 1; }
+        .gal-lb-prev { left: -56px; } .gal-lb-next { right: -56px; }
+        .gal-lb-prev:hover, .gal-lb-next:hover { background: rgba(255,255,255,.22); }
+
+        @media (max-width: 1024px) { .gal-grid { columns: 2; } }
+        @media (max-width: 768px) {
+            .nav-pill { display: none; }
+            .nav-actions { position: absolute; left: var(--pad); right: auto; }
+            .gal-grid { columns: unset; display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+            .gal-item { margin-bottom: 0; }
+            .gal-item img { aspect-ratio: 4/5; object-fit: cover; }
+            .gal-grid.slider-mode {
+                display: flex; overflow-x: scroll; scroll-snap-type: x mandatory;
+                scrollbar-width: none; -webkit-overflow-scrolling: touch;
+                gap: 0; column-gap: 0;
+            }
+            .gal-grid.slider-mode::-webkit-scrollbar { display: none; }
+            .gal-page {
+                flex: 0 0 100%; scroll-snap-align: start;
+                display: grid; grid-template-columns: 1fr 1fr;
+                gap: .75rem; padding: 0 .1px;
+            }
+            .gal-slider-wrap { position: relative; }
+            .gal-slider-dots { display: flex; align-items: center; justify-content: center; gap: .5rem; margin-top: 1.25rem; }
+            .gal-slider-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(26,26,26,.18); border: none; padding: 0; cursor: pointer; transition: background .25s, transform .25s; }
+            .gal-slider-dot.active { background: var(--terracotta); transform: scale(1.5); }
+        }
+        @media (min-width: 769px) {
+            .gal-slider-dots { display: none; }
+            .gal-page { display: contents; }
+        }
+        @media (max-width: 900px) { .gal-lb-prev { left: .5rem; } .gal-lb-next { right: .5rem; } }
+
+        /* === FOOTER === */
+        footer { background: var(--black); color: #fff; padding: clamp(3rem,6vw,5rem) 0 clamp(2rem,4vw,3rem); }
+        .foot-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center; }
+        .foot-logo { margin-bottom: 2rem; }
+        .foot-logo img { height: 30px; filter: invert(1); margin: 0 auto; }
+        .foot-logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.6rem; letter-spacing: .12em; text-transform: uppercase; color: #fff; display: none; }
+        .foot-info { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0; margin-bottom: 1.75rem; }
+        .foot-info p { font-size: .95rem; color: rgba(255,255,255,.55); line-height: 1.7; }
+        .foot-info p + p::before { content: '·'; margin: 0 1.25rem; color: rgba(255,255,255,.25); }
+        .foot-info a { color: rgba(255,255,255,.55); transition: color .2s; }
+        .foot-info a:hover { color: #fff; }
+        .foot-social { display: flex; align-items: center; justify-content: center; gap: .6rem; margin-bottom: 2.5rem; color: rgba(255,255,255,.55); font-size: .92rem; transition: color .2s; }
+        .foot-social:hover { color: #fff; }
+        .foot-social svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+        .foot-divider { width: 48px; height: 1px; background: rgba(255,255,255,.15); margin: 0 auto 2rem; }
+        .foot-bottom { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+        .foot-copy { font-size: .78rem; color: rgba(255,255,255,.3); }
+        .foot-links { display: flex; gap: 2rem; list-style: none; }
+        .foot-links a { font-size: .78rem; color: rgba(255,255,255,.4); transition: color .2s; }
+        .foot-links a:hover { color: #fff; }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+        }
+    </style>
+</head>
+<body>
+
+<nav role="navigation" aria-label="Hauptnavigation">
+    <div class="nav-inner">
+        <a href="index.html" aria-label="QUITO — zur Startseite">
+            <img src="logo.png" alt="QUITO" class="logo-img"
+                 onerror="this.style.display='none';document.querySelectorAll('.logo-text').forEach(el=>el.style.display='block')">
+            <span class="logo-text">QUITO</span>
+        </a>
+        <div class="nav-actions">
+            <a href="speisekarte.html" class="nav-pill">Speisekarte</a>
+            <button class="nav-sub-toggle" id="subToggle" aria-label="Menü öffnen" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<div class="sub-menu-overlay" id="subOverlay"></div>
+<div class="sub-menu" id="subMenu" role="dialog" aria-label="Navigation">
+    <button class="sub-menu-close" id="subClose" aria-label="Menü schließen">✕</button>
+    <a href="speisekarte.html">Speisekarte</a>
+    <a href="index.html#ueber-uns">Über uns</a>
+    <a href="galerie.html" class="active">Galerie</a>
+    <a href="index.html#kontakt">Kontakt</a>
+</div>
+
+<div class="page-header">
+    <div class="container">
+        <div class="s-label reveal">Atmosphäre</div>
+        <h1 class="s-title reveal d1">Das <em>QUITO</em></h1>
+    </div>
+</div>
+
+<section id="galerie" aria-labelledby="gallery-title">
+    <div class="container">
+        <div class="gs-filters reveal d2" role="group" aria-label="Galerie filtern">
+            <button class="gs-filter active" data-cat="Alle">Alle</button>
+            <button class="gs-filter" data-cat="Interieur">Interieur</button>
+            <button class="gs-filter" data-cat="Kaffee">Kaffee</button>
+            <button class="gs-filter" data-cat="Frühstück">Frühstück</button>
+            <button class="gs-filter" data-cat="Team">Team</button>
+            <button class="gs-filter" data-cat="Essen">Essen</button>
+        </div>
+        <div class="gal-slider-wrap" id="galSliderWrap">
+            <div class="gal-grid" id="galGrid">
+                <div class="gal-item" data-index="0" data-category="Interieur" tabindex="0" role="button" aria-label="Café Innenraum öffnen">
+                    <img src="cafe-innen.JPG" alt="Café QUITO Innenansicht" loading="lazy" decoding="async">
+                    <div class="gal-overlay" aria-hidden="true"><span>Interieur</span></div>
+                </div>
+                <div class="gal-item" data-index="1" data-category="Kaffee" tabindex="0" role="button" aria-label="Specialty Coffee öffnen">
+                    <img src="kaffee.jpeg" alt="Kaffee im Café QUITO" loading="lazy" decoding="async">
+                    <div class="gal-overlay" aria-hidden="true"><span>Kaffee</span></div>
+                </div>
+                <div class="gal-item" data-index="2" data-category="Frühstück" tabindex="0" role="button" aria-label="Frühstück öffnen">
+                    <img src="fruehstueck.jpeg" alt="Frühstück im Café QUITO" loading="lazy" decoding="async">
+                    <div class="gal-overlay" aria-hidden="true"><span>Frühstück</span></div>
+                </div>
+                <div class="gal-item" data-index="3" data-category="Team" tabindex="0" role="button" aria-label="Unser Team öffnen">
+                    <img src="team.JPG" alt="Das Team des Café QUITO" loading="lazy" decoding="async">
+                    <div class="gal-overlay" aria-hidden="true"><span>Team</span></div>
+                </div>
+                <div class="gal-item" data-index="4" data-category="Essen" tabindex="0" role="button" aria-label="Mittagessen öffnen">
+                    <img src="essen.JPG.jpg" alt="Essen im Café QUITO" loading="lazy" decoding="async">
+                    <div class="gal-overlay" aria-hidden="true"><span>Essen</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="gal-slider-dots" id="galDots"></div>
+    </div>
+    <!-- Lightbox -->
+    <div class="gal-lb" id="galLightbox" role="dialog" aria-modal="true" aria-label="Bild vergrößert">
+        <div class="gal-lb-wrap">
+            <button class="gal-lb-close" aria-label="Schließen">✕</button>
+            <button class="gal-lb-prev" aria-label="Vorheriges Bild">‹</button>
+            <button class="gal-lb-next" aria-label="Nächstes Bild">›</button>
+            <img class="gal-lb-img" id="galLbImg" src="" alt="">
+            <div class="gal-lb-info">
+                <div class="gal-lb-title" id="galLbTitle"></div>
+                <span class="gal-lb-badge" id="galLbBadge"></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="foot-inner">
+        <div class="foot-logo">
+            <img src="logo.png" alt="QUITO"
+                 onerror="this.style.display='none';document.querySelectorAll('.foot-logo-text').forEach(el=>el.style.display='block')">
+            <span class="foot-logo-text">QUITO</span>
+        </div>
+        <div class="foot-info">
+            <p>Speyerer Straße 24, 67227 Frankenthal (Pfalz)</p>
+            <p>Mo–Fr 9–18 Uhr · Sa 9–16 Uhr</p>
+            <p><a href="mailto:info@cafe-quito.de">info@cafe-quito.de</a></p>
+        </div>
+        <a href="https://www.instagram.com" target="_blank" rel="noopener" class="foot-social" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/></svg>
+            @cafe.quito
+        </a>
+        <div class="foot-divider"></div>
+        <div class="foot-bottom">
+            <p class="foot-copy">© 2025 Café QUITO. Alle Rechte vorbehalten.</p>
+            <ul class="foot-links">
+                <li><a href="impressum.html">Impressum</a></li>
+                <li><a href="#">Datenschutz</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const ro = new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } }),
+        { threshold: 0.1 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+    // Sub menu
+    const subMenu = document.getElementById('subMenu');
+    const subOverlay = document.getElementById('subOverlay');
+    const subToggle = document.getElementById('subToggle');
+    const closeSub = () => { subMenu.classList.remove('open'); subOverlay.classList.remove('open'); subToggle.setAttribute('aria-expanded','false'); document.body.style.overflow = ''; };
+    const openSub  = () => { subMenu.classList.add('open'); subOverlay.classList.add('open'); subToggle.setAttribute('aria-expanded','true'); document.body.style.overflow = 'hidden'; };
+    subToggle.addEventListener('click', () => { subMenu.classList.contains('open') ? closeSub() : openSub(); });
+    document.getElementById('subClose').addEventListener('click', closeSub);
+    subOverlay.addEventListener('click', closeSub);
+    subMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', closeSub));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSub(); });
+
+    // Gallery
+    (function () {
+        var IMAGES = [
+            { src: 'cafe-innen.JPG',   title: 'Café Innenraum',   cat: 'Interieur', alt: 'Café QUITO Innenansicht' },
+            { src: 'kaffee.jpeg',      title: 'Specialty Coffee', cat: 'Kaffee',    alt: 'Kaffee im Café QUITO' },
+            { src: 'fruehstueck.jpeg', title: 'Frühstück',        cat: 'Frühstück', alt: 'Frühstück im Café QUITO' },
+            { src: 'team.JPG',         title: 'Unser Team',       cat: 'Team',      alt: 'Das Team des Café QUITO' },
+            { src: 'essen.JPG.jpg',    title: 'Mittagessen',      cat: 'Essen',     alt: 'Essen im Café QUITO' },
+        ];
+
+        var grid  = document.getElementById('galGrid');
+        var items = Array.from(grid.querySelectorAll('.gal-item'));
+
+        var revealObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObs.unobserve(entry.target); }
+            });
+        }, { threshold: 0.1 });
+        items.forEach(function(item) { revealObs.observe(item); });
+
+        var dotsWrap  = document.getElementById('galDots');
+        var sliderWrap = document.getElementById('galSliderWrap');
+
+        function unwrapPages() {
+            Array.from(grid.querySelectorAll('.gal-page')).forEach(function(page) {
+                while (page.firstChild) { grid.insertBefore(page.firstChild, page); }
+                page.remove();
+            });
+        }
+
+        function updateSliderMode() {
+            var isMobile = window.innerWidth <= 768;
+            var vis = items.filter(function(i) { return !i.classList.contains('hidden'); });
+            unwrapPages();
+            if (isMobile && vis.length >= 5) {
+                grid.classList.add('slider-mode');
+                sliderWrap.classList.add('has-slider');
+                var pageCount = Math.ceil(vis.length / 4);
+                for (var p = 0; p < pageCount; p++) {
+                    var page = document.createElement('div');
+                    page.className = 'gal-page';
+                    var start = p * 4;
+                    var end = Math.min(start + 4, vis.length);
+                    grid.insertBefore(page, vis[start]);
+                    for (var j = start; j < end; j++) { page.appendChild(vis[j]); }
+                }
+                dotsWrap.innerHTML = '';
+                Array.from(grid.querySelectorAll('.gal-page')).forEach(function(pg, i) {
+                    var dot = document.createElement('button');
+                    dot.className = 'gal-slider-dot' + (i === 0 ? ' active' : '');
+                    dot.setAttribute('aria-label', 'Seite ' + (i + 1));
+                    dot.addEventListener('click', function() { pg.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' }); });
+                    dotsWrap.appendChild(dot);
+                });
+            } else {
+                grid.classList.remove('slider-mode');
+                sliderWrap.classList.remove('has-slider');
+                dotsWrap.innerHTML = '';
+            }
+        }
+
+        grid.addEventListener('scroll', function() {
+            if (!grid.classList.contains('slider-mode')) return;
+            var dots = Array.from(dotsWrap.querySelectorAll('.gal-slider-dot'));
+            var activeIdx = Math.round(grid.scrollLeft / grid.offsetWidth);
+            dots.forEach(function(d, i) { d.classList.toggle('active', i === activeIdx); });
+        });
+
+        updateSliderMode();
+        window.addEventListener('resize', updateSliderMode);
+
+        document.querySelectorAll('.gs-filter').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.gs-filter').forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                var cat = btn.dataset.cat;
+                items.forEach(function(item) {
+                    var match = cat === 'Alle' || item.dataset.category === cat;
+                    if (match) {
+                        item.classList.remove('hidden');
+                        item.style.position = '';
+                        if (!item.classList.contains('visible')) { revealObs.observe(item); }
+                    } else {
+                        item.classList.add('hidden');
+                        item.classList.remove('visible');
+                    }
+                });
+                updateSliderMode();
+            });
+        });
+
+        var lb      = document.getElementById('galLightbox');
+        var lbImg   = document.getElementById('galLbImg');
+        var lbTitle = document.getElementById('galLbTitle');
+        var lbBadge = document.getElementById('galLbBadge');
+        var lbCur   = 0;
+
+        function visibleItems() { return items.filter(function(i) { return !i.classList.contains('hidden'); }); }
+
+        function openLb(idx) {
+            lbCur = idx;
+            var item = IMAGES[idx];
+            lbImg.src = item.src; lbImg.alt = item.alt;
+            lbTitle.textContent = item.title; lbBadge.textContent = item.cat;
+            lb.classList.add('open'); document.body.style.overflow = 'hidden';
+        }
+        function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+
+        function lbNav(dir) {
+            var vis = visibleItems();
+            var curVisIdx = -1;
+            vis.forEach(function(item, i) { if (parseInt(item.dataset.index) === lbCur) curVisIdx = i; });
+            openLb(parseInt(vis[(curVisIdx + dir + vis.length) % vis.length].dataset.index));
+        }
+
+        grid.addEventListener('click', function(e) {
+            var item = e.target.closest('.gal-item');
+            if (item && !item.classList.contains('hidden')) { openLb(parseInt(item.dataset.index)); }
+        });
+        items.forEach(function(item) {
+            item.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(parseInt(item.dataset.index)); }
+            });
+        });
+
+        document.querySelector('.gal-lb-close').addEventListener('click', closeLb);
+        lb.addEventListener('click', closeLb);
+        document.querySelector('.gal-lb-wrap').addEventListener('click', function(e) { e.stopPropagation(); });
+        document.querySelector('.gal-lb-prev').addEventListener('click', function(e) { e.stopPropagation(); lbNav(-1); });
+        document.querySelector('.gal-lb-next').addEventListener('click', function(e) { e.stopPropagation(); lbNav(1); });
+        document.addEventListener('keydown', function(e) {
+            if (!lb.classList.contains('open')) return;
+            if (e.key === 'Escape') closeLb();
+            if (e.key === 'ArrowLeft') lbNav(-1);
+            if (e.key === 'ArrowRight') lbNav(1);
+        });
+    })();
+</script>
+</body>
+</html>
