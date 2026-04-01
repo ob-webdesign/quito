@@ -1,0 +1,50 @@
+[
+  {
+    "src": "hero.WEBP",
+    "title": "Das Café",
+    "cat": "Interieur",
+    "orient": "landscape"
+  },
+  {
+    "src": "cafe-innen.JPG",
+    "title": "Innenraum",
+    "cat": "Interieur",
+    "orient": "both"
+  },
+  {
+    "src": "kaffee.jpeg",
+    "title": "Specialty Coffee",
+    "cat": "Kaffee",
+    "orient": "portrait"
+  },
+  {
+    "src": "fruehstueck.jpeg",
+    "title": "Frühstück",
+    "cat": "Frühstück",
+    "orient": "portrait"
+  },
+  {
+    "src": "essen.JPG.jpg",
+    "title": "Mittagessen",
+    "cat": "Essen",
+    "orient": "landscape"
+  },
+  {
+    "src": "team.JPG",
+    "title": "Unser Team",
+    "cat": "Team",
+    "orient": "landscape"
+  },
+  {
+    "src": "story-bild.WEBP",
+    "title": "Unsere Geschichte",
+    "cat": "Geschichte",
+    "orient": "landscape"
+  },
+    {
+    "src": "tisch.jpg",
+    "title": "tisch",
+    "cat": "Neu",
+    "orient": "portrait"
+  }
+]

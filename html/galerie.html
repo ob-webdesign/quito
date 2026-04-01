@@ -356,9 +356,18 @@
         @keyframes fadeIn { to { opacity: 1; } }
 
         /* ── MOBILE ── */
+        @keyframes hint-arrow {
+            0%   { opacity: 0; transform: scale(.88); }
+            25%  { opacity: 1; transform: scale(1); }
+            75%  { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(.88); }
+        }
         @media (max-width: 768px) {
             .bar-label { display: none; }
             .zone { width: 28%; }
+            .zone-next .zone-icon {
+                animation: hint-arrow 2s var(--ease) 0.8s 1;
+            }
         }
         @media (max-width: 480px) {
             .caption-title { font-size: 1.75rem; }
@@ -427,6 +436,20 @@
 <!-- PROGRESS -->
 <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
 
+<!-- GALERIE-DATEN (wird von scripts/update-galerie.sh aktualisiert) -->
+<script id="galerie-data">
+window.GALERIE_DATA = [
+  {"src":"hero.WEBP","title":"Das Café","cat":"Interieur","orient":"landscape"},
+  {"src":"cafe-innen.JPG","title":"Innenraum","cat":"Interieur","orient":"both"},
+  {"src":"kaffee.jpeg","title":"Specialty Coffee","cat":"Kaffee","orient":"portrait"},
+  {"src":"fruehstueck.jpeg","title":"Frühstück","cat":"Frühstück","orient":"portrait"},
+  {"src":"essen.JPG.jpg","title":"Mittagessen","cat":"Essen","orient":"landscape"},
+  {"src":"team.JPG","title":"Unser Team","cat":"Team","orient":"landscape"},
+  {"src":"story-bild.WEBP","title":"Unsere Geschichte","cat":"Geschichte","orient":"landscape"},
+  {"src":"tisch.jpg","title":"tisch","cat":"Neu","orient":"portrait"}
+];
+</script>
+
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Bild vergrößert">
     <div class="lb-inner">
@@ -441,15 +464,12 @@
 
 <script>
 (function () {
-    var SLIDES = [
-        { src: '../bilder/hero.WEBP',          title: 'Das Café',          cat: 'Interieur'  },
-        { src: '../bilder/cafe-innen.JPG',     title: 'Innenraum',         cat: 'Interieur'  },
-        { src: '../bilder/kaffee.jpeg',        title: 'Specialty Coffee',  cat: 'Kaffee'     },
-        { src: '../bilder/fruehstueck.jpeg',   title: 'Frühstück',         cat: 'Frühstück'  },
-        { src: '../bilder/essen.JPG.jpg',      title: 'Mittagessen',       cat: 'Essen'      },
-        { src: '../bilder/team.JPG',           title: 'Unser Team',        cat: 'Team'       },
-        { src: '../bilder/story-bild.WEBP',    title: 'Unsere Geschichte', cat: 'Geschichte' }
-    ];
+    var isMobile    = window.innerWidth <= 768;
+    var AUTO_MS     = 4000;
+    var current     = 0;
+    var total       = 0;
+    var autoTimer   = null;
+    var SLIDES      = [];
 
     var gallery      = document.getElementById('gallery');
     var caption      = document.getElementById('caption');
@@ -463,29 +483,43 @@
     var lbTitle      = document.getElementById('lbTitle');
     var lbCat        = document.getElementById('lbCat');
 
-    var current   = 0;
-    var total     = SLIDES.length;
-    var autoTimer = null;
-    var AUTO_MS   = 6500;
-
     function fmt(n) { return n < 10 ? '0' + n : '' + n; }
 
-    counterTot.textContent = fmt(total);
-
-    // Build slides
-    SLIDES.forEach(function (s, i) {
-        var div = document.createElement('div');
-        div.className = 'slide' + (i === 0 ? ' active' : '');
-        var img = document.createElement('img');
-        img.src     = s.src;
-        img.alt     = s.title + ' — Café QUITO';
-        img.loading = i < 2 ? 'eager' : 'lazy';
-        img.decoding = 'async';
-        div.appendChild(img);
-        gallery.appendChild(div);
+    // Bilddaten aus Inline-Variable laden (via scripts/update-galerie.sh aktuell gehalten)
+    var all = window.GALERIE_DATA || [];
+    SLIDES = all.filter(function (s) {
+        var o = s.orient || 'both';
+        return o === 'both' || (isMobile ? o === 'portrait' : o === 'landscape');
+    }).map(function (s) {
+        return { src: '../bilder/' + s.src, title: s.title, cat: s.cat };
     });
+    if (SLIDES.length === 0) {
+        SLIDES = all.map(function (s) {
+            return { src: '../bilder/' + s.src, title: s.title, cat: s.cat };
+        });
+    }
+    init();
 
-    var slides = gallery.querySelectorAll('.slide');
+    function init() {
+        total = SLIDES.length;
+        counterTot.textContent = fmt(total);
+
+        SLIDES.forEach(function (s, i) {
+            var div = document.createElement('div');
+            div.className = 'slide' + (i === 0 ? ' active' : '');
+            var img = document.createElement('img');
+            img.src      = s.src;
+            img.alt      = s.title + ' — Café QUITO';
+            img.loading  = i < 2 ? 'eager' : 'lazy';
+            img.decoding = 'async';
+            div.appendChild(img);
+            gallery.appendChild(div);
+        });
+
+        progressFill.style.width = (1 / total * 100) + '%';
+        updateCaption(false);
+        autoTimer = setInterval(next, AUTO_MS);
+    }
 
     function updateCaption(animate) {
         if (animate) {
@@ -501,11 +535,13 @@
         }, delay);
     }
 
+    function slides() { return gallery.querySelectorAll('.slide'); }
+
     function goTo(idx) {
         if (idx === current) return;
-        slides[current].classList.remove('active');
+        slides()[current].classList.remove('active');
         current = (idx + total) % total;
-        slides[current].classList.add('active');
+        slides()[current].classList.add('active');
         counterCur.textContent = fmt(current + 1);
         progressFill.style.width = ((current + 1) / total * 100) + '%';
         updateCaption(true);
@@ -519,11 +555,6 @@
         clearInterval(autoTimer);
         autoTimer = setInterval(next, AUTO_MS);
     }
-
-    // Init
-    progressFill.style.width = (1 / total * 100) + '%';
-    updateCaption(false);
-    autoTimer = setInterval(next, AUTO_MS);
 
     // Navigation buttons
     document.getElementById('prevBtn').addEventListener('click', function (e) { e.stopPropagation(); prev(); });
