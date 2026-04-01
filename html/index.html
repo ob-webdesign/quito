@@ -86,7 +86,7 @@
         nav:not(.scrolled) .nav-pill:hover { border-color: #fff; }
 
         .nav-sub-toggle {
-            width: 42px; height: 42px; border-radius: 50%;
+            width: 48px; height: 48px; border-radius: 50%;
             border: 1.5px solid rgba(26,26,26,.25); background: transparent;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             gap: 4px; cursor: pointer; transition: border-color .2s;
@@ -118,7 +118,7 @@
         .sub-menu-close:hover { border-color: var(--terracotta); color: var(--terracotta); }
         .sub-menu a {
             display: block; font-family: var(--font-b); font-size: 1.15rem; font-weight: 500;
-            letter-spacing: .02em; color: var(--black); padding: 1rem 0;
+            letter-spacing: .02em; color: var(--black); padding: 1.15rem 0;
             border-bottom: 1px solid rgba(26,26,26,.08); transition: color .2s;
         }
         .sub-menu a:first-of-type { margin-top: 3rem; }
@@ -192,7 +192,7 @@
         /* === SHARED SECTION === */
         section { padding: clamp(4rem,7vw,6rem) 0; }
         .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
-        .s-label { display: inline-flex; align-items: center; gap: .75rem; font-size: .7rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 1.1rem; }
+        .s-label { display: inline-flex; align-items: center; gap: .75rem; font-size: .75rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 1.1rem; }
         .s-label::before { content: ''; display: inline-block; width: 22px; height: 1.5px; background: var(--terracotta); }
         .s-title { font-family: var(--font-d); font-size: clamp(2.2rem,5vw,3.8rem); line-height: 1.1; }
         .s-title em { font-style: italic; color: var(--terracotta); }
@@ -299,7 +299,7 @@
         .gal-lb-badge { font-size: .65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; background: rgba(255,255,255,.2); padding: .3em .85em; border-radius: 999px; color: #fff; }
         .gal-lb-close { position: absolute; top: -3rem; right: 0; background: none; border: none; color: rgba(255,255,255,.7); font-size: 1.5rem; cursor: pointer; padding: .5rem; transition: color .2s; line-height: 1; }
         .gal-lb-close:hover { color: #fff; }
-        .gal-lb-prev, .gal-lb-next { position: absolute; top: 40%; transform: translateY(-50%); background: rgba(255,255,255,.12); border: none; color: #fff; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.4rem; transition: background .2s; z-index: 1; line-height: 1; }
+        .gal-lb-prev, .gal-lb-next { position: absolute; top: 40%; transform: translateY(-50%); background: rgba(255,255,255,.12); border: none; color: #fff; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.4rem; transition: background .2s; z-index: 1; line-height: 1; }
         .gal-lb-prev { left: -56px; } .gal-lb-next { right: -56px; }
         .gal-lb-prev:hover, .gal-lb-next:hover { background: rgba(255,255,255,.22); }
         @media (max-width: 1024px) { .gal-grid { columns: 2; } }
@@ -334,8 +334,9 @@
             }
             .gal-slider-wrap { position: relative; }
             .gal-slider-dots { display: flex; align-items: center; justify-content: center; gap: .5rem; margin-top: 1.25rem; }
-            .gal-slider-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(26,26,26,.18); border: none; padding: 0; cursor: pointer; transition: background .25s, transform .25s; }
-            .gal-slider-dot.active { background: var(--terracotta); transform: scale(1.5); }
+            .gal-slider-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(26,26,26,.18); border: none; padding: 0; cursor: pointer; transition: background .25s, transform .25s; position: relative; }
+            .gal-slider-dot::before { content: ''; position: absolute; inset: -10px; }
+            .gal-slider-dot.active { background: var(--terracotta); transform: scale(1.4); }
         }
         @media (min-width: 769px) {
             .gal-slider-dots { display: none; }
@@ -358,7 +359,7 @@
         .map-wrap iframe { width: 100%; height: 100%; display: block; }
 
         /* === FOOTER === */
-        footer { background: var(--black); color: #fff; padding: clamp(3rem,6vw,5rem) 0 clamp(2rem,4vw,3rem); }
+        footer { background: var(--black); color: #fff; padding: clamp(3rem,6vw,5rem) 0 calc(clamp(2rem,4vw,3rem) + env(safe-area-inset-bottom)); }
         .foot-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center; }
         .foot-logo { margin-bottom: 2rem; }
         .foot-logo img  { height: 30px; filter: invert(1); margin: 0 auto; }
@@ -389,6 +390,7 @@
         @media (max-width: 768px) {
             .hero-content { bottom: 3rem; }
             .nav-pill { display: none; }
+            .btn { font-size: .88rem; }
             .menu-grid { grid-template-columns: 1fr; gap: 0; }
             .contact-grid { grid-template-columns: 1fr; }
             .reviews-grid {
@@ -426,6 +428,12 @@
         @media (prefers-reduced-motion: reduce) {
             .reveal { opacity: 1; transform: none; transition: none; }
             .scroll-line { animation: none; }
+        }
+        .nav-sub-toggle:focus-visible, .sub-menu-close:focus-visible, .sub-menu a:focus-visible,
+        .nav-pill:focus-visible, .btn:focus-visible, .foot-social:focus-visible,
+        .foot-links a:focus-visible, .gal-item:focus-visible, .gal-lb-close:focus-visible,
+        .gal-lb-prev:focus-visible, .gal-lb-next:focus-visible, .gal-slider-dot:focus-visible {
+            outline: 2px solid var(--terracotta); outline-offset: 2px;
         }
     </style>
 </head>
@@ -503,12 +511,12 @@
                 <h2 class="s-title reveal d1" id="about-title">Mehr als nur<br><em>ein Café</em></h2>
                 <p class="reveal d2">Das QUITO ist ein Ort zum Ankommen. Ob du deinen Morgen mit uns beginnst, in der Mittagspause durchatmest oder einfach einen guten Kaffee genießt — wir freuen uns, dass du hier bist.</p>
                 <div class="about-photo-mobile reveal d3">
-<img src="bilder/story-bild.WEBP" alt="Café QUITO Innenraum mit gemütlicher Atmosphäre">
+<img src="bilder/story-bild.WEBP" alt="Café QUITO Innenraum mit gemütlicher Atmosphäre" loading="lazy">
                 </div>
                 <blockquote class="about-quote reveal d5">„Ein guter Kaffee, ein gutes Gespräch — mehr braucht es manchmal nicht."</blockquote>
             </div>
             <div class="about-photo reveal d2">
-<img src="bilder/story-bild.WEBP" alt="Café QUITO Innenraum mit gemütlicher Atmosphäre">
+<img src="bilder/story-bild.WEBP" alt="Café QUITO Innenraum mit gemütlicher Atmosphäre" loading="lazy">
             </div>
         </div>
     </div>
@@ -615,8 +623,8 @@
     const subMenu = document.getElementById('subMenu');
     const subOverlay = document.getElementById('subOverlay');
     const subToggle = document.getElementById('subToggle');
-    const closeSub = () => { subMenu.classList.remove('open'); subOverlay.classList.remove('open'); subToggle.setAttribute('aria-expanded','false'); document.body.style.overflow = ''; };
-    const openSub  = () => { subMenu.classList.add('open'); subOverlay.classList.add('open'); subToggle.setAttribute('aria-expanded','true'); document.body.style.overflow = 'hidden'; };
+    const closeSub = () => { subMenu.classList.remove('open'); subOverlay.classList.remove('open'); subToggle.setAttribute('aria-expanded','false'); document.body.style.overflow = ''; subToggle.focus(); };
+    const openSub  = () => { subMenu.classList.add('open'); subOverlay.classList.add('open'); subToggle.setAttribute('aria-expanded','true'); document.body.style.overflow = 'hidden'; var fl = subMenu.querySelector('a'); if (fl) fl.focus(); };
     subToggle.addEventListener('click', () => { subMenu.classList.contains('open') ? closeSub() : openSub(); });
     document.getElementById('subClose').addEventListener('click', closeSub);
     subOverlay.addEventListener('click', closeSub);

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Galerie — QUITO Café</title>
     <meta name="description" content="Bilder aus dem Café QUITO in Frankenthal — Interieur, Kaffee, Frühstück, Team und mehr.">
+    <meta name="theme-color" content="#0a0a08">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <style>
         :root {
             --black:      #1A1A1A;
@@ -18,465 +18,595 @@
             --warm-white: #FDFAF4;
             --muted:      #6B6153;
             --font-d: 'DM Serif Display', serif;
-            --font-b: 'Source Sans 3', sans-serif;
-            --nav-h: 72px;
-            --pad: clamp(1.5rem, 5vw, 3rem);
-            --max: min(1320px, 94vw);
+            --font-m: 'Space Mono', monospace;
             --ease: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
-        body { font-family: var(--font-b); background: var(--cream); color: var(--black); overflow-x: hidden; font-size: 16px; line-height: 1.6; }
-        img { max-width: 100%; display: block; }
+        html, body { height: 100%; overflow: hidden; }
+        body {
+            font-family: var(--font-m);
+            background: #0a0a08;
+            color: #fff;
+            font-size: 16px;
+            line-height: 1.4;
+            cursor: crosshair;
+            -webkit-font-smoothing: antialiased;
+        }
         a { text-decoration: none; color: inherit; }
+        img { display: block; }
 
-        body::before {
-            content: '';
-            position: fixed; inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-            background-size: 180px;
-            pointer-events: none; z-index: 9999; mix-blend-mode: multiply;
+        /* ── GRAIN OVERLAY ── */
+        .grain {
+            position: fixed; inset: 0; z-index: 900;
+            pointer-events: none;
+            opacity: .35;
+            mix-blend-mode: overlay;
+        }
+        .grain canvas { width: 100%; height: 100%; }
+
+        /* ── SCANLINES ── */
+        .scanlines {
+            position: fixed; inset: 0; z-index: 800;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,.06) 2px,
+                rgba(0,0,0,.06) 4px
+            );
         }
 
-        .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
-        .reveal.visible { opacity: 1; transform: none; }
-        .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; }
+        /* ── VIGNETTE ── */
+        .vignette {
+            position: fixed; inset: 0; z-index: 700;
+            pointer-events: none;
+            background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,.55) 100%);
+        }
 
-        /* === NAV === */
-        nav {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            height: calc(var(--nav-h) + env(safe-area-inset-top));
-            display: flex; align-items: center;
-            padding: 0 var(--pad);
-            padding-top: env(safe-area-inset-top);
-            background: var(--cream);
-            box-shadow: 0 1px 0 rgba(26,26,26,.09);
+        /* ── SLIDES CONTAINER ── */
+        .gallery {
+            position: fixed; inset: 0; z-index: 1;
         }
-        .nav-inner { width: 100%; max-width: var(--max); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; position: relative; }
-        .nav-inner > a { position: absolute; left: 50%; transform: translateX(-50%); }
-        .logo-img  { height: 38px; width: auto; display: block; }
-        .logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.35rem; letter-spacing: .12em; text-transform: uppercase; background: var(--black); color: #fff; padding: .3em .85em; border-radius: 999px; display: none; }
-        .nav-actions { display: flex; align-items: center; gap: .75rem; }
-        .nav-pill {
-            font-family: var(--font-b); font-size: .8rem; font-weight: 500;
-            letter-spacing: .07em; text-transform: uppercase;
-            padding: .55em 1.4em; border-radius: 999px;
-            border: 1.5px solid rgba(26,26,26,.25); color: var(--black);
-            transition: border-color .2s, color .2s, background .2s;
+        .slide {
+            position: absolute; inset: 0;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+            will-change: opacity;
         }
-        .nav-pill:hover { border-color: var(--terracotta); color: var(--terracotta); }
-        .nav-sub-toggle {
-            width: 42px; height: 42px; border-radius: 50%;
-            border: 1.5px solid rgba(26,26,26,.25); background: transparent;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 4px; cursor: pointer; transition: border-color .2s;
+        .slide.active { opacity: 1; }
+        .slide img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: saturate(.65) contrast(1.08) brightness(.88);
         }
-        .nav-sub-toggle:hover { border-color: var(--terracotta); }
-        .nav-sub-toggle span { display: block; width: 18px; height: 1.5px; background: var(--black); transition: background .2s; }
+        .slide-overlay {
+            position: absolute; inset: 0;
+            background: rgba(10, 10, 8, .32);
+        }
 
-        /* Submenu panel */
-        .sub-menu {
-            position: fixed; top: 0; left: 0; z-index: 200;
-            width: min(340px, 80vw); height: 100dvh;
-            background: var(--warm-white);
-            box-shadow: 8px 0 40px rgba(0,0,0,.15);
-            padding: 2.5rem 2.5rem 2rem;
-            transform: translateX(-100%); pointer-events: none;
-            transition: transform .35s ease;
+        /* ── HUD LAYER ── */
+        .hud {
+            position: fixed; inset: 0; z-index: 600;
+            padding: clamp(1.2rem, 3vw, 2.5rem);
+            padding-top: calc(clamp(1.2rem, 3vw, 2.5rem) + env(safe-area-inset-top));
+            padding-bottom: calc(clamp(1.2rem, 3vw, 2.5rem) + env(safe-area-inset-bottom));
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            grid-template-columns: 1fr 1fr;
+            pointer-events: none;
         }
-        .sub-menu.open { transform: none; pointer-events: auto; }
-        .sub-menu-close {
-            position: absolute; top: 1.4rem; right: 1.4rem;
-            width: 32px; height: 32px; border: 1px solid rgba(26,26,26,.2);
-            border-radius: 50%; background: none; cursor: pointer;
+        .hud > * { pointer-events: auto; }
+
+        /* ── TOP LEFT ── */
+        .hud-tl {
+            grid-row: 1; grid-column: 1;
+            display: flex; flex-direction: column; gap: .25rem;
+        }
+        .hud-tl a {
+            font-size: .65rem;
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.7);
+            transition: color .3s;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-color: rgba(255,255,255,.25);
+        }
+        .hud-tl a:hover { color: #fff; text-decoration-color: var(--terracotta); }
+
+        /* ── TOP RIGHT ── */
+        .hud-tr {
+            grid-row: 1; grid-column: 2;
+            text-align: right;
+            max-width: 420px;
+            justify-self: end;
+        }
+        .hud-tr p {
+            font-size: .6rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.55);
+            line-height: 1.65;
+        }
+        .hud-tr .hl { color: var(--terracotta); }
+
+        /* ── CENTER TITLE ── */
+        .center-title {
+            grid-row: 2; grid-column: 1 / -1;
+            align-self: center; justify-self: center;
+            text-align: center;
+            pointer-events: none;
+        }
+        .glitch-title {
+            font-family: var(--font-m);
+            font-size: clamp(2.8rem, 8vw, 6.5rem);
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: #fff;
+            position: relative;
+            line-height: 1;
+        }
+        .glitch-title::before,
+        .glitch-title::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            overflow: hidden;
+        }
+        .glitch-title::before {
+            color: rgba(196, 121, 58, .7);
+            clip-path: inset(0 0 65% 0);
+            animation: glitch-top 3.5s steps(1) infinite;
+        }
+        .glitch-title::after {
+            color: rgba(139, 157, 106, .5);
+            clip-path: inset(60% 0 0 0);
+            animation: glitch-bottom 4s steps(1) infinite;
+        }
+
+        @keyframes glitch-top {
+            0%, 100% { transform: translate(0); }
+            5% { transform: translate(-3px, -1px); }
+            10% { transform: translate(2px, 1px); }
+            15% { transform: translate(0); }
+            50% { transform: translate(1px, -1px); }
+            55% { transform: translate(-2px, 0); }
+            60% { transform: translate(0); }
+        }
+        @keyframes glitch-bottom {
+            0%, 100% { transform: translate(0); }
+            8% { transform: translate(2px, 1px); }
+            13% { transform: translate(-3px, 0); }
+            18% { transform: translate(0); }
+            45% { transform: translate(-1px, 1px); }
+            50% { transform: translate(3px, -1px); }
+            55% { transform: translate(0); }
+        }
+
+        /* ── BOTTOM LEFT ── */
+        .hud-bl {
+            grid-row: 3; grid-column: 1;
+            align-self: end;
+        }
+        .keywords {
+            font-size: .6rem;
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.5);
+            line-height: 1.85;
+        }
+
+        /* ── BOTTOM CENTER ── */
+        .hud-bc {
+            position: fixed;
+            bottom: calc(clamp(1.2rem, 3vw, 2.5rem) + env(safe-area-inset-bottom));
+            left: 50%; transform: translateX(-50%);
+            z-index: 601;
+        }
+        .detail-btn {
+            font-family: var(--font-m);
+            font-size: .62rem;
+            font-weight: 700;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.75);
+            background: transparent;
+            border: 1px solid rgba(255,255,255,.3);
+            padding: .7em 2.4em;
+            cursor: pointer;
+            transition: all .3s;
+        }
+        .detail-btn:hover {
+            border-color: var(--terracotta);
+            color: #fff;
+            background: rgba(196, 121, 58, .12);
+        }
+
+        /* ── BOTTOM RIGHT ── */
+        .hud-br {
+            grid-row: 3; grid-column: 2;
+            align-self: end; justify-self: end;
+            display: flex; align-items: baseline; gap: .6rem;
+        }
+        .counter-current {
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: .04em;
+            line-height: 1;
+        }
+        .counter-sep {
+            font-size: .7rem;
+            color: rgba(255,255,255,.3);
+            margin: 0 .15rem;
+        }
+        .counter-total {
+            font-size: clamp(.85rem, 1.5vw, 1rem);
+            font-weight: 400;
+            color: rgba(255,255,255,.4);
+            letter-spacing: .04em;
+            line-height: 1;
+        }
+
+        /* ── PROGRESS BAR ── */
+        .progress-track {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: rgba(255,255,255,.08);
+            z-index: 650;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--terracotta);
+            transition: width .6s var(--ease);
+            width: 0%;
+        }
+
+        /* ── NAV ARROWS (SIDE) ── */
+        .nav-arrow {
+            position: fixed;
+            top: 50%; transform: translateY(-50%);
+            z-index: 601;
+            background: none; border: none;
+            color: rgba(255,255,255,.3);
+            font-size: 1.6rem;
+            cursor: pointer;
+            padding: 1.5rem .8rem;
+            transition: color .3s;
+            font-family: var(--font-m);
+            line-height: 1;
+        }
+        .nav-arrow:hover { color: rgba(255,255,255,.8); }
+        .nav-prev { left: clamp(.5rem, 1.5vw, 1.2rem); }
+        .nav-next { right: clamp(.5rem, 1.5vw, 1.2rem); }
+
+        /* ── LIGHTBOX (detail view) ── */
+        .lightbox {
+            position: fixed; inset: 0; z-index: 950;
+            background: rgba(10,10,8,.92);
             display: flex; align-items: center; justify-content: center;
-            font-size: 1rem; color: var(--black); transition: border-color .2s;
+            padding: 2rem;
+            opacity: 0; pointer-events: none;
+            transition: opacity .5s ease;
         }
-        .sub-menu-close:hover { border-color: var(--terracotta); color: var(--terracotta); }
-        .sub-menu a {
-            display: block; font-family: var(--font-b); font-size: 1.15rem; font-weight: 500;
-            letter-spacing: .02em; color: var(--black); padding: 1rem 0;
-            border-bottom: 1px solid rgba(26,26,26,.08); transition: color .2s;
+        .lightbox.open { opacity: 1; pointer-events: auto; }
+        .lightbox img {
+            max-height: 85vh; max-width: 90vw;
+            object-fit: contain;
+            border-radius: 2px;
+            filter: saturate(.7) contrast(1.05);
         }
-        .sub-menu a:first-of-type { margin-top: 3rem; }
-        .sub-menu a:last-of-type { border-bottom: none; }
-        .sub-menu a:hover { color: var(--terracotta); }
-        .sub-menu a.active { color: var(--terracotta); }
-        .sub-menu-overlay {
-            position: fixed; inset: 0; z-index: 199;
-            background: rgba(0,0,0,.3); opacity: 0; pointer-events: none;
-            transition: opacity .35s ease;
+        .lb-close {
+            position: absolute;
+            top: clamp(1rem, 3vw, 2rem);
+            right: clamp(1rem, 3vw, 2rem);
+            background: none; border: 1px solid rgba(255,255,255,.25);
+            color: rgba(255,255,255,.7);
+            width: 40px; height: 40px;
+            font-size: .9rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all .3s;
+            font-family: var(--font-m);
         }
-        .sub-menu-overlay.open { opacity: 1; pointer-events: auto; }
-
-        /* === PAGE HEADER === */
-        .page-header {
-            padding-top: calc(var(--nav-h) + clamp(3rem, 6vw, 5rem));
-            padding-bottom: clamp(2rem, 4vw, 3rem);
-            background: var(--warm-white);
+        .lb-close:hover { border-color: #fff; color: #fff; }
+        .lb-info {
+            position: absolute;
+            bottom: clamp(1.5rem, 3vw, 2.5rem);
+            left: 50%; transform: translateX(-50%);
+            text-align: center;
         }
-        .page-header .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
-        .s-label { display: inline-flex; align-items: center; gap: .75rem; font-size: .7rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 1.1rem; }
-        .s-label::before { content: ''; display: inline-block; width: 22px; height: 1.5px; background: var(--terracotta); }
-        .s-title { font-family: var(--font-d); font-size: clamp(2.2rem,5vw,3.8rem); line-height: 1.1; }
-        .s-title em { font-style: italic; color: var(--terracotta); }
+        .lb-info-title {
+            font-family: var(--font-d);
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: #fff;
+            margin-bottom: .4rem;
+        }
+        .lb-info-cat {
+            font-family: var(--font-m);
+            font-size: .58rem;
+            font-weight: 700;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: var(--terracotta);
+        }
 
-        /* === GALLERY === */
-        #galerie { background: var(--cream); overflow: hidden; padding-top: clamp(3rem,6vw,5rem); padding-bottom: clamp(3rem,6vw,5rem); }
-        .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
-        .gallery-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
-        .gs-filters { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:2.5rem; }
-        .gs-filter { font-family:var(--font-b); font-size:.78rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; padding:.55em 1.3em; border-radius:999px; border:1.5px solid rgba(26,26,26,.2); background:transparent; color:var(--muted); cursor:pointer; transition:all .2s; }
-        .gs-filter:hover { border-color:var(--terracotta); color:var(--terracotta); }
-        .gs-filter.active { background:var(--black); border-color:var(--black); color:#fff; }
-
-        .gal-grid { columns: 3; column-gap: 1.25rem; }
-        .gal-item { break-inside: avoid; margin-bottom: 1.25rem; position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; opacity: 0; transform: translateY(10px); transition: opacity .4s var(--ease), transform .4s var(--ease); }
-        .gal-item.visible { opacity: 1; transform: none; }
-        .gal-item.hidden { opacity: 0; transform: scale(0.95); pointer-events: none; position: absolute; }
-        .gal-item img { width: 100%; height: auto; display: block; border-radius: 12px; transition: transform .5s var(--ease); }
-        @media (hover: hover) { .gal-item:hover img { transform: scale(1.04); } }
-
-        .gal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .3s; border-radius: 12px; pointer-events: none; }
-        @media (hover: hover) { .gal-item:hover .gal-overlay { opacity: 1; } }
-        .gal-overlay span { font-family: var(--font-b); font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #fff; background: rgba(255,255,255,.18); padding: .4em 1em; border-radius: 999px; }
-
-        .gal-lb { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.85); align-items: center; justify-content: center; padding: 1.5rem; }
-        .gal-lb.open { display: flex; }
-        .gal-lb-wrap { position: relative; max-width: 900px; width: 100%; display: flex; flex-direction: column; align-items: center; }
-        .gal-lb-img { max-height: 82vh; width: auto; max-width: 100%; border-radius: 12px; }
-        .gal-lb-info { margin-top: 1.25rem; text-align: center; }
-        .gal-lb-title { font-family: var(--font-d); font-size: 1.3rem; color: #fff; margin-bottom: .5rem; }
-        .gal-lb-badge { font-size: .65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; background: rgba(255,255,255,.2); padding: .3em .85em; border-radius: 999px; color: #fff; }
-        .gal-lb-close { position: absolute; top: -3rem; right: 0; background: none; border: none; color: rgba(255,255,255,.7); font-size: 1.5rem; cursor: pointer; padding: .5rem; transition: color .2s; line-height: 1; }
-        .gal-lb-close:hover { color: #fff; }
-        .gal-lb-prev, .gal-lb-next { position: absolute; top: 40%; transform: translateY(-50%); background: rgba(255,255,255,.12); border: none; color: #fff; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.4rem; transition: background .2s; z-index: 1; line-height: 1; }
-        .gal-lb-prev { left: -56px; } .gal-lb-next { right: -56px; }
-        .gal-lb-prev:hover, .gal-lb-next:hover { background: rgba(255,255,255,.22); }
-
-        @media (max-width: 1024px) { .gal-grid { columns: 2; } }
+        /* ── MOBILE ── */
         @media (max-width: 768px) {
-            .nav-pill { display: none; }
-            .nav-actions { position: absolute; left: var(--pad); right: auto; }
-            .gal-grid { columns: unset; display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
-            .gal-item { margin-bottom: 0; }
-            .gal-item img { aspect-ratio: 4/5; object-fit: cover; }
-            .gal-grid.slider-mode {
-                display: flex; overflow-x: scroll; scroll-snap-type: x mandatory;
-                scrollbar-width: none; -webkit-overflow-scrolling: touch;
-                gap: 0; column-gap: 0;
+            .hud {
+                padding: 1rem;
+                padding-top: calc(1rem + env(safe-area-inset-top));
+                padding-bottom: calc(1rem + env(safe-area-inset-bottom));
             }
-            .gal-grid.slider-mode::-webkit-scrollbar { display: none; }
-            .gal-page {
-                flex: 0 0 100%; scroll-snap-align: start;
-                display: grid; grid-template-columns: 1fr 1fr;
-                gap: .75rem; padding: 0 .1px;
-            }
-            .gal-slider-wrap { position: relative; }
-            .gal-slider-dots { display: flex; align-items: center; justify-content: center; gap: .5rem; margin-top: 1.25rem; }
-            .gal-slider-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(26,26,26,.18); border: none; padding: 0; cursor: pointer; transition: background .25s, transform .25s; }
-            .gal-slider-dot.active { background: var(--terracotta); transform: scale(1.5); }
+            .hud-tr { display: none; }
+            .glitch-title { font-size: clamp(2rem, 12vw, 3.2rem); }
+            .nav-arrow { display: none; }
+            .keywords { font-size: .52rem; }
+            .hud-bc { bottom: calc(3.2rem + env(safe-area-inset-bottom)); }
         }
-        @media (min-width: 769px) {
-            .gal-slider-dots { display: none; }
-            .gal-page { display: contents; }
-        }
-        @media (max-width: 900px) { .gal-lb-prev { left: .5rem; } .gal-lb-next { right: .5rem; } }
 
-        /* === FOOTER === */
-        footer { background: var(--black); color: #fff; padding: clamp(3rem,6vw,5rem) 0 clamp(2rem,4vw,3rem); }
-        .foot-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center; }
-        .foot-logo { margin-bottom: 2rem; }
-        .foot-logo img { height: 30px; filter: invert(1); margin: 0 auto; }
-        .foot-logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.6rem; letter-spacing: .12em; text-transform: uppercase; color: #fff; display: none; }
-        .foot-info { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0; margin-bottom: 1.75rem; }
-        .foot-info p { font-size: .95rem; color: rgba(255,255,255,.55); line-height: 1.7; }
-        .foot-info p + p::before { content: '·'; margin: 0 1.25rem; color: rgba(255,255,255,.25); }
-        .foot-info a { color: rgba(255,255,255,.55); transition: color .2s; }
-        .foot-info a:hover { color: #fff; }
-        .foot-social { display: flex; align-items: center; justify-content: center; gap: .6rem; margin-bottom: 2.5rem; color: rgba(255,255,255,.55); font-size: .92rem; transition: color .2s; }
-        .foot-social:hover { color: #fff; }
-        .foot-social svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
-        .foot-divider { width: 48px; height: 1px; background: rgba(255,255,255,.15); margin: 0 auto 2rem; }
-        .foot-bottom { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; }
-        .foot-copy { font-size: .78rem; color: rgba(255,255,255,.3); }
-        .foot-links { display: flex; gap: 2rem; list-style: none; }
-        .foot-links a { font-size: .78rem; color: rgba(255,255,255,.4); transition: color .2s; }
-        .foot-links a:hover { color: #fff; }
+        @media (max-width: 480px) {
+            .glitch-title { font-size: 2rem; letter-spacing: .03em; }
+            .counter-current { font-size: 1.2rem; }
+        }
+
+        /* ── INITIAL LOAD ── */
+        .hud-tl, .hud-tr, .hud-bl, .hud-br, .hud-bc, .center-title, .nav-arrow {
+            opacity: 0;
+            transform: translateY(12px);
+            animation: fadeUp .8s var(--ease) forwards;
+        }
+        .hud-tl      { animation-delay: .3s; }
+        .hud-tr      { animation-delay: .5s; }
+        .center-title { animation-delay: .15s; transform: translateY(0) scale(.97); animation-name: fadeScale; }
+        .hud-bl      { animation-delay: .6s; }
+        .hud-bc      { animation-delay: .7s; }
+        .hud-br      { animation-delay: .45s; }
+        .nav-prev    { animation-delay: .8s; }
+        .nav-next    { animation-delay: .85s; }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeScale {
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ── FOCUS STYLES ── */
+        .nav-arrow:focus-visible, .detail-btn:focus-visible,
+        .lb-close:focus-visible, .hud-tl a:focus-visible {
+            outline: 2px solid var(--terracotta); outline-offset: 3px;
+        }
+
         @media (prefers-reduced-motion: reduce) {
-            .reveal { opacity: 1; transform: none; transition: none; }
+            .glitch-title::before, .glitch-title::after { animation: none; }
+            .slide { transition: opacity .3s ease; }
+            .hud-tl, .hud-tr, .hud-bl, .hud-br, .hud-bc, .center-title, .nav-arrow {
+                animation: none; opacity: 1; transform: none;
+            }
         }
     </style>
 </head>
 <body>
 
-<nav role="navigation" aria-label="Hauptnavigation">
-    <div class="nav-inner">
-        <a href="index.html" aria-label="QUITO — zur Startseite">
-            <img src="../bilder/logo.png" alt="QUITO" class="logo-img"
-                 onerror="this.style.display='none';document.querySelectorAll('.logo-text').forEach(el=>el.style.display='block')">
-            <span class="logo-text">QUITO</span>
-        </a>
-        <div class="nav-actions">
-            <a href="speisekarte.html" class="nav-pill">Speisekarte</a>
-            <button class="nav-sub-toggle" id="subToggle" aria-label="Menü öffnen" aria-expanded="false">
-                <span></span><span></span><span></span>
-            </button>
+<!-- SLIDES -->
+<div class="gallery" id="gallery" aria-label="Galerie Slideshow"></div>
+
+<!-- EFFECTS -->
+<div class="vignette"></div>
+<div class="scanlines"></div>
+<div class="grain" id="grain"><canvas></canvas></div>
+
+<!-- PROGRESS -->
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- NAV ARROWS -->
+<button class="nav-arrow nav-prev" id="prevBtn" aria-label="Vorheriges Bild">&#8592;</button>
+<button class="nav-arrow nav-next" id="nextBtn" aria-label="Nächstes Bild">&#8594;</button>
+
+<!-- HUD -->
+<div class="hud">
+    <div class="hud-tl">
+        <a href="index.html">Zurück zur Startseite</a>
+    </div>
+
+    <div class="hud-tr">
+        <p>Ein Blick hinter die Kulissen des <span class="hl">Café</span> QUITO.<br>
+        Frühstück, Kaffee und Momente<br>
+        aus Frankenthal.</p>
+    </div>
+
+    <div class="center-title">
+        <div class="glitch-title" id="glitchTitle" data-text="(DAS CAFÉ)">(DAS CAFÉ)</div>
+    </div>
+
+    <div class="hud-bl">
+        <div class="keywords">
+            Atmosphäre<br>
+            Genuss<br>
+            Handwerk<br>
+            Leidenschaft
         </div>
     </div>
-</nav>
 
-<div class="sub-menu-overlay" id="subOverlay"></div>
-<div class="sub-menu" id="subMenu" role="dialog" aria-label="Navigation">
-    <button class="sub-menu-close" id="subClose" aria-label="Menü schließen">✕</button>
-    <a href="speisekarte.html">Speisekarte</a>
-    <a href="index.html#ueber-uns">Über uns</a>
-    <a href="galerie.html" class="active">Galerie</a>
-    <a href="index.html#kontakt">Kontakt</a>
+    <div class="hud-br">
+        <span class="counter-current" id="counterCurrent">01</span>
+        <span class="counter-sep">/</span>
+        <span class="counter-total" id="counterTotal">07</span>
+    </div>
 </div>
 
-<div class="page-header">
-    <div class="container">
-        <div class="s-label reveal">Atmosphäre</div>
-        <h1 class="s-title reveal d1">Das <em>QUITO</em></h1>
-    </div>
+<!-- DETAIL BUTTON -->
+<div class="hud-bc">
+    <button class="detail-btn" id="detailBtn">Details</button>
 </div>
 
-<section id="galerie" aria-labelledby="gallery-title">
-    <div class="container">
-        <div class="gs-filters reveal d2" role="group" aria-label="Galerie filtern">
-            <button class="gs-filter active" data-cat="Alle">Alle</button>
-            <button class="gs-filter" data-cat="Interieur">Interieur</button>
-            <button class="gs-filter" data-cat="Kaffee">Kaffee</button>
-            <button class="gs-filter" data-cat="Frühstück">Frühstück</button>
-            <button class="gs-filter" data-cat="Team">Team</button>
-            <button class="gs-filter" data-cat="Essen">Essen</button>
-        </div>
-        <div class="gal-slider-wrap" id="galSliderWrap">
-            <div class="gal-grid" id="galGrid">
-                <div class="gal-item" data-index="0" data-category="Interieur" tabindex="0" role="button" aria-label="Café Innenraum öffnen">
-                    <img src="../bilder/cafe-innen.JPG" alt="Café QUITO Innenansicht" loading="lazy" decoding="async">
-                    <div class="gal-overlay" aria-hidden="true"><span>Interieur</span></div>
-                </div>
-                <div class="gal-item" data-index="1" data-category="Kaffee" tabindex="0" role="button" aria-label="Specialty Coffee öffnen">
-                    <img src="../bilder/kaffee.jpeg" alt="Kaffee im Café QUITO" loading="lazy" decoding="async">
-                    <div class="gal-overlay" aria-hidden="true"><span>Kaffee</span></div>
-                </div>
-                <div class="gal-item" data-index="2" data-category="Frühstück" tabindex="0" role="button" aria-label="Frühstück öffnen">
-                    <img src="../bilder/fruehstueck.jpeg" alt="Frühstück im Café QUITO" loading="lazy" decoding="async">
-                    <div class="gal-overlay" aria-hidden="true"><span>Frühstück</span></div>
-                </div>
-                <div class="gal-item" data-index="3" data-category="Team" tabindex="0" role="button" aria-label="Unser Team öffnen">
-                    <img src="../bilder/team.JPG" alt="Das Team des Café QUITO" loading="lazy" decoding="async">
-                    <div class="gal-overlay" aria-hidden="true"><span>Team</span></div>
-                </div>
-                <div class="gal-item" data-index="4" data-category="Essen" tabindex="0" role="button" aria-label="Mittagessen öffnen">
-                    <img src="../bilder/essen.JPG.jpg" alt="Essen im Café QUITO" loading="lazy" decoding="async">
-                    <div class="gal-overlay" aria-hidden="true"><span>Essen</span></div>
-                </div>
-            </div>
-        </div>
-        <div class="gal-slider-dots" id="galDots"></div>
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Bild vergrößert">
+    <button class="lb-close" id="lbClose" aria-label="Schließen">&#10005;</button>
+    <img id="lbImg" src="" alt="">
+    <div class="lb-info">
+        <div class="lb-info-title" id="lbTitle"></div>
+        <div class="lb-info-cat" id="lbCat"></div>
     </div>
-    <!-- Lightbox -->
-    <div class="gal-lb" id="galLightbox" role="dialog" aria-modal="true" aria-label="Bild vergrößert">
-        <div class="gal-lb-wrap">
-            <button class="gal-lb-close" aria-label="Schließen">✕</button>
-            <button class="gal-lb-prev" aria-label="Vorheriges Bild">‹</button>
-            <button class="gal-lb-next" aria-label="Nächstes Bild">›</button>
-            <img class="gal-lb-img" id="galLbImg" src="" alt="">
-            <div class="gal-lb-info">
-                <div class="gal-lb-title" id="galLbTitle"></div>
-                <span class="gal-lb-badge" id="galLbBadge"></span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<footer>
-    <div class="foot-inner">
-        <div class="foot-logo">
-            <img src="../bilder/logo.png" alt="QUITO"
-                 onerror="this.style.display='none';document.querySelectorAll('.foot-logo-text').forEach(el=>el.style.display='block')">
-            <span class="foot-logo-text">QUITO</span>
-        </div>
-        <div class="foot-info">
-            <p>Speyerer Straße 24, 67227 Frankenthal (Pfalz)</p>
-            <p>Mo–Fr 9–18 Uhr · Sa 9–16 Uhr</p>
-            <p><a href="mailto:info@cafe-quito.de">info@cafe-quito.de</a></p>
-        </div>
-        <a href="https://www.instagram.com" target="_blank" rel="noopener" class="foot-social" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/></svg>
-            @cafe.quito
-        </a>
-        <div class="foot-divider"></div>
-        <div class="foot-bottom">
-            <p class="foot-copy">© 2025 Café QUITO. Alle Rechte vorbehalten.</p>
-            <ul class="foot-links">
-                <li><a href="impressum.html">Impressum</a></li>
-                <li><a href="#">Datenschutz</a></li>
-            </ul>
-        </div>
-    </div>
-</footer>
+</div>
 
 <script>
-    const ro = new IntersectionObserver(
-        entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } }),
-        { threshold: 0.1 }
-    );
-    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+(function() {
+    var SLIDES = [
+        { src: '../bilder/hero.WEBP',          title: 'Das Café',          cat: 'Interieur',  label: '(DAS CAFÉ)' },
+        { src: '../bilder/cafe-innen.JPG',     title: 'Innenraum',         cat: 'Interieur',  label: '(DER RAUM)' },
+        { src: '../bilder/kaffee.jpeg',        title: 'Specialty Coffee',  cat: 'Kaffee',     label: '(DER KAFFEE)' },
+        { src: '../bilder/fruehstueck.jpeg',   title: 'Frühstück',         cat: 'Frühstück',  label: '(DAS FRÜHSTÜCK)' },
+        { src: '../bilder/essen.JPG.jpg',      title: 'Mittagessen',       cat: 'Essen',      label: '(DAS ESSEN)' },
+        { src: '../bilder/team.JPG',           title: 'Unser Team',        cat: 'Team',        label: '(DAS TEAM)' },
+        { src: '../bilder/story-bild.WEBP',    title: 'Unsere Geschichte', cat: 'Geschichte',  label: '(DIE STORY)' }
+    ];
 
-    // Sub menu
-    const subMenu = document.getElementById('subMenu');
-    const subOverlay = document.getElementById('subOverlay');
-    const subToggle = document.getElementById('subToggle');
-    const closeSub = () => { subMenu.classList.remove('open'); subOverlay.classList.remove('open'); subToggle.setAttribute('aria-expanded','false'); document.body.style.overflow = ''; };
-    const openSub  = () => { subMenu.classList.add('open'); subOverlay.classList.add('open'); subToggle.setAttribute('aria-expanded','true'); document.body.style.overflow = 'hidden'; };
-    subToggle.addEventListener('click', () => { subMenu.classList.contains('open') ? closeSub() : openSub(); });
-    document.getElementById('subClose').addEventListener('click', closeSub);
-    subOverlay.addEventListener('click', closeSub);
-    subMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', closeSub));
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSub(); });
+    var gallery     = document.getElementById('gallery');
+    var glitchTitle = document.getElementById('glitchTitle');
+    var counterCur  = document.getElementById('counterCurrent');
+    var counterTot  = document.getElementById('counterTotal');
+    var progressFill= document.getElementById('progressFill');
+    var lightbox    = document.getElementById('lightbox');
+    var lbImg       = document.getElementById('lbImg');
+    var lbTitle     = document.getElementById('lbTitle');
+    var lbCat       = document.getElementById('lbCat');
+    var current     = 0;
+    var total       = SLIDES.length;
+    var autoTimer   = null;
+    var AUTO_MS     = 6000;
 
-    // Gallery
-    (function () {
-        var IMAGES = [
-            { src: '../bilder/cafe-innen.JPG',   title: 'Café Innenraum',   cat: 'Interieur', alt: 'Café QUITO Innenansicht' },
-            { src: '../bilder/kaffee.jpeg',      title: 'Specialty Coffee', cat: 'Kaffee',    alt: 'Kaffee im Café QUITO' },
-            { src: '../bilder/fruehstueck.jpeg', title: 'Frühstück',        cat: 'Frühstück', alt: 'Frühstück im Café QUITO' },
-            { src: '../bilder/team.JPG',         title: 'Unser Team',       cat: 'Team',      alt: 'Das Team des Café QUITO' },
-            { src: '../bilder/essen.JPG.jpg',    title: 'Mittagessen',      cat: 'Essen',     alt: 'Essen im Café QUITO' },
-        ];
+    counterTot.textContent = total < 10 ? '0' + total : total;
 
-        var grid  = document.getElementById('galGrid');
-        var items = Array.from(grid.querySelectorAll('.gal-item'));
+    // Build slides
+    SLIDES.forEach(function(s, i) {
+        var div = document.createElement('div');
+        div.className = 'slide' + (i === 0 ? ' active' : '');
+        div.innerHTML = '<img src="' + s.src + '" alt="' + s.title + ' — Café QUITO" loading="' + (i < 2 ? 'eager' : 'lazy') + '" decoding="async"><div class="slide-overlay"></div>';
+        gallery.appendChild(div);
+    });
 
-        var revealObs = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObs.unobserve(entry.target); }
-            });
-        }, { threshold: 0.1 });
-        items.forEach(function(item) { revealObs.observe(item); });
+    var slides = gallery.querySelectorAll('.slide');
 
-        var dotsWrap  = document.getElementById('galDots');
-        var sliderWrap = document.getElementById('galSliderWrap');
+    function goTo(idx) {
+        if (idx === current) return;
+        slides[current].classList.remove('active');
+        current = (idx + total) % total;
+        slides[current].classList.add('active');
+        update();
+        resetAuto();
+    }
 
-        function unwrapPages() {
-            Array.from(grid.querySelectorAll('.gal-page')).forEach(function(page) {
-                while (page.firstChild) { grid.insertBefore(page.firstChild, page); }
-                page.remove();
-            });
-        }
+    function update() {
+        var num = current + 1;
+        counterCur.textContent = num < 10 ? '0' + num : num;
+        glitchTitle.textContent = SLIDES[current].label;
+        glitchTitle.setAttribute('data-text', SLIDES[current].label);
+        progressFill.style.width = ((current + 1) / total * 100) + '%';
+    }
 
-        function updateSliderMode() {
-            var isMobile = window.innerWidth <= 768;
-            var vis = items.filter(function(i) { return !i.classList.contains('hidden'); });
-            unwrapPages();
-            if (isMobile && vis.length >= 5) {
-                grid.classList.add('slider-mode');
-                sliderWrap.classList.add('has-slider');
-                var pageCount = Math.ceil(vis.length / 4);
-                for (var p = 0; p < pageCount; p++) {
-                    var page = document.createElement('div');
-                    page.className = 'gal-page';
-                    var start = p * 4;
-                    var end = Math.min(start + 4, vis.length);
-                    grid.insertBefore(page, vis[start]);
-                    for (var j = start; j < end; j++) { page.appendChild(vis[j]); }
-                }
-                dotsWrap.innerHTML = '';
-                Array.from(grid.querySelectorAll('.gal-page')).forEach(function(pg, i) {
-                    var dot = document.createElement('button');
-                    dot.className = 'gal-slider-dot' + (i === 0 ? ' active' : '');
-                    dot.setAttribute('aria-label', 'Seite ' + (i + 1));
-                    dot.addEventListener('click', function() { pg.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' }); });
-                    dotsWrap.appendChild(dot);
-                });
-            } else {
-                grid.classList.remove('slider-mode');
-                sliderWrap.classList.remove('has-slider');
-                dotsWrap.innerHTML = '';
-            }
-        }
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
 
-        grid.addEventListener('scroll', function() {
-            if (!grid.classList.contains('slider-mode')) return;
-            var dots = Array.from(dotsWrap.querySelectorAll('.gal-slider-dot'));
-            var activeIdx = Math.round(grid.scrollLeft / grid.offsetWidth);
-            dots.forEach(function(d, i) { d.classList.toggle('active', i === activeIdx); });
-        });
+    function resetAuto() {
+        clearInterval(autoTimer);
+        autoTimer = setInterval(next, AUTO_MS);
+    }
 
-        updateSliderMode();
-        window.addEventListener('resize', updateSliderMode);
+    // Auto-advance
+    autoTimer = setInterval(next, AUTO_MS);
 
-        document.querySelectorAll('.gs-filter').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.gs-filter').forEach(function(b) { b.classList.remove('active'); });
-                btn.classList.add('active');
-                var cat = btn.dataset.cat;
-                items.forEach(function(item) {
-                    var match = cat === 'Alle' || item.dataset.category === cat;
-                    if (match) {
-                        item.classList.remove('hidden');
-                        item.style.position = '';
-                        if (!item.classList.contains('visible')) { revealObs.observe(item); }
-                    } else {
-                        item.classList.add('hidden');
-                        item.classList.remove('visible');
-                    }
-                });
-                updateSliderMode();
-            });
-        });
+    // Arrows
+    document.getElementById('prevBtn').addEventListener('click', prev);
+    document.getElementById('nextBtn').addEventListener('click', next);
 
-        var lb      = document.getElementById('galLightbox');
-        var lbImg   = document.getElementById('galLbImg');
-        var lbTitle = document.getElementById('galLbTitle');
-        var lbBadge = document.getElementById('galLbBadge');
-        var lbCur   = 0;
-
-        function visibleItems() { return items.filter(function(i) { return !i.classList.contains('hidden'); }); }
-
-        function openLb(idx) {
-            lbCur = idx;
-            var item = IMAGES[idx];
-            lbImg.src = item.src; lbImg.alt = item.alt;
-            lbTitle.textContent = item.title; lbBadge.textContent = item.cat;
-            lb.classList.add('open'); document.body.style.overflow = 'hidden';
-        }
-        function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; }
-
-        function lbNav(dir) {
-            var vis = visibleItems();
-            var curVisIdx = -1;
-            vis.forEach(function(item, i) { if (parseInt(item.dataset.index) === lbCur) curVisIdx = i; });
-            openLb(parseInt(vis[(curVisIdx + dir + vis.length) % vis.length].dataset.index));
-        }
-
-        grid.addEventListener('click', function(e) {
-            var item = e.target.closest('.gal-item');
-            if (item && !item.classList.contains('hidden')) { openLb(parseInt(item.dataset.index)); }
-        });
-        items.forEach(function(item) {
-            item.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(parseInt(item.dataset.index)); }
-            });
-        });
-
-        document.querySelector('.gal-lb-close').addEventListener('click', closeLb);
-        lb.addEventListener('click', closeLb);
-        document.querySelector('.gal-lb-wrap').addEventListener('click', function(e) { e.stopPropagation(); });
-        document.querySelector('.gal-lb-prev').addEventListener('click', function(e) { e.stopPropagation(); lbNav(-1); });
-        document.querySelector('.gal-lb-next').addEventListener('click', function(e) { e.stopPropagation(); lbNav(1); });
-        document.addEventListener('keydown', function(e) {
-            if (!lb.classList.contains('open')) return;
+    // Keyboard
+    document.addEventListener('keydown', function(e) {
+        if (lightbox.classList.contains('open')) {
             if (e.key === 'Escape') closeLb();
-            if (e.key === 'ArrowLeft') lbNav(-1);
-            if (e.key === 'ArrowRight') lbNav(1);
-        });
-    })();
+            if (e.key === 'ArrowLeft') { closeLb(); prev(); }
+            if (e.key === 'ArrowRight') { closeLb(); next(); }
+            return;
+        }
+        if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+        if (e.key === 'ArrowLeft') prev();
+        if (e.key === 'Enter') openLb();
+    });
+
+    // Touch / swipe
+    var touchStartX = 0, touchStartY = 0, swiping = false;
+    gallery.addEventListener('touchstart', function(e) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        swiping = true;
+    }, { passive: true });
+    gallery.addEventListener('touchend', function(e) {
+        if (!swiping) return;
+        swiping = false;
+        var dx = e.changedTouches[0].clientX - touchStartX;
+        var dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+            dx < 0 ? next() : prev();
+        }
+    }, { passive: true });
+
+    // Detail / Lightbox
+    function openLb() {
+        var s = SLIDES[current];
+        lbImg.src = s.src;
+        lbImg.alt = s.title + ' — Café QUITO';
+        lbTitle.textContent = s.title;
+        lbCat.textContent = s.cat;
+        lightbox.classList.add('open');
+        clearInterval(autoTimer);
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        resetAuto();
+    }
+    document.getElementById('detailBtn').addEventListener('click', openLb);
+    document.getElementById('lbClose').addEventListener('click', closeLb);
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) closeLb();
+    });
+
+    // Film grain (canvas-based for authentic look)
+    var grainCanvas = document.querySelector('.grain canvas');
+    var grainCtx = grainCanvas.getContext('2d');
+    var grainW, grainH;
+
+    function resizeGrain() {
+        grainW = grainCanvas.width = window.innerWidth / 2;
+        grainH = grainCanvas.height = window.innerHeight / 2;
+    }
+    resizeGrain();
+    window.addEventListener('resize', resizeGrain);
+
+    function renderGrain() {
+        var imageData = grainCtx.createImageData(grainW, grainH);
+        var data = imageData.data;
+        for (var i = 0; i < data.length; i += 4) {
+            var v = Math.random() * 255;
+            data[i] = data[i+1] = data[i+2] = v;
+            data[i+3] = 40;
+        }
+        grainCtx.putImageData(imageData, 0, 0);
+        requestAnimationFrame(renderGrain);
+    }
+    renderGrain();
+
+    // Init
+    update();
+})();
 </script>
+
 </body>
 </html>
