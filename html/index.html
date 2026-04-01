@@ -433,7 +433,7 @@
 <nav id="nav" role="navigation" aria-label="Hauptnavigation">
     <div class="nav-inner">
         <a href="#hero" aria-label="QUITO — zur Startseite">
-            <img src="logo.png" alt="QUITO" class="logo-img"
+            <img src="../bilder/logo.png" alt="QUITO" class="logo-img"
                  onerror="this.style.display='none';document.querySelectorAll('.logo-text').forEach(el=>el.style.display='block')">
             <span class="logo-text">QUITO</span>
         </a>
@@ -471,7 +471,7 @@
     </video>
     ════════════════════════════════════════════════════
     -->
-    <img class="hero-media" src="hero.WEBP" alt="Café QUITO — Innenansicht mit leuchtendem Logo" fetchpriority="high" decoding="async">
+    <img class="hero-media" src="bilder/hero.WEBP" alt="Café QUITO — Innenansicht mit leuchtendem Logo" fetchpriority="high" decoding="async">
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
@@ -501,12 +501,12 @@
                 <h2 class="s-title reveal d1" id="about-title">Mehr als nur<br><em>ein Café</em></h2>
                 <p class="reveal d2">Das QUITO ist ein Ort zum Ankommen. Ob du deinen Morgen mit uns beginnst, in der Mittagspause durchatmest oder einfach einen guten Kaffee genießt — wir freuen uns, dass du hier bist.</p>
                 <div class="about-photo-mobile reveal d3">
-                    <img src="story-bild.WEBP" alt="Café QUITO">
+<img src="bilder/story-bild.WEBP" alt="Café QUITO Innenraum mit gemütlicher Atmosphäre" class="about-photo-mobile reveal d3">
                 </div>
                 <blockquote class="about-quote reveal d5">„Ein guter Kaffee, ein gutes Gespräch — mehr braucht es manchmal nicht."</blockquote>
             </div>
             <div class="about-photo reveal d2">
-                <img src="story-bild.WEBP" alt="Café QUITO">
+<img src="bilder/story-bild.WEBP" alt="Café QUITO Innenraum mit gemütlicher Atmosphäre" class="about-photo-mobile reveal d3">
             </div>
         </div>
     </div>
@@ -572,7 +572,7 @@
 <footer>
     <div class="foot-inner">
         <div class="foot-logo">
-            <img src="logo.png" alt="QUITO"
+            <img src="../bilder/logo.png" alt="QUITO"
                  onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
             <span class="foot-logo-text">QUITO</span>
         </div>
@@ -640,11 +640,11 @@
     // ── Gallery Masonry + Filter + Lightbox ────────────────────────────────────
     (function () {
         var IMAGES = [
-            { src: 'cafe-innen.JPG',   title: 'Café Innenraum',   cat: 'Interieur', alt: 'Café QUITO Innenansicht' },
-            { src: 'kaffee.jpeg',      title: 'Specialty Coffee', cat: 'Kaffee',    alt: 'Kaffee im Café QUITO' },
-            { src: 'fruehstueck.jpeg', title: 'Frühstück',        cat: 'Frühstück', alt: 'Frühstück im Café QUITO' },
-            { src: 'team.JPG',         title: 'Unser Team',       cat: 'Team',      alt: 'Das Team des Café QUITO' },
-            { src: 'essen.JPG.jpg',    title: 'Mittagessen',      cat: 'Essen',     alt: 'Essen im Café QUITO' },
+            { src: 'bilder/cafe-innen.JPG',   title: 'Café Innenraum',   cat: 'Interieur', alt: 'Café QUITO Innenansicht' },
+            { src: 'bilder/kaffee.jpeg',      title: 'Specialty Coffee', cat: 'Kaffee',    alt: 'Kaffee im Café QUITO' },
+            { src: 'bilder/fruehstueck.jpeg', title: 'Frühstück',        cat: 'Frühstück', alt: 'Frühstück im Café QUITO' },
+            { src: 'bilder/team.JPG',         title: 'Unser Team',       cat: 'Team',      alt: 'Das Team des Café QUITO' },
+            { src: 'bilder/essen.JPG',        title: 'Mittagessen',      cat: 'Essen',     alt: 'Essen im Café QUITO' },
         ];
 
         var grid  = document.getElementById('galGrid');
