@@ -169,6 +169,10 @@
             .menu-grid { grid-template-columns: 1fr; gap: 0; }
             .mi { flex-direction: column; align-items: flex-start; gap: .35rem; }
             .mi-price { white-space: normal; text-align: left; }
+            .menu-head { justify-content: flex-start; }
+            .tabs { flex-wrap: nowrap; gap: .3rem; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+            .tabs::-webkit-scrollbar { display: none; }
+            .tab { flex: 0 0 auto; font-size: .74rem; padding: .38em .6em; letter-spacing: .03em; white-space: nowrap; }
         }
         @media (max-width: 480px) {
             .foot-info { flex-direction: column; gap: .35rem; }
@@ -224,9 +228,10 @@
         <div class="menu-head">
             <div class="tabs reveal" role="tablist" aria-label="Menü-Kategorien">
                 <button class="tab active" role="tab" aria-selected="true"  aria-controls="p-fr" data-panel="p-fr">Frühstück</button>
-                <button class="tab"        role="tab" aria-selected="false" aria-controls="p-sp" data-panel="p-sp">Speisekarte</button>
+                <button class="tab"        role="tab" aria-selected="false" aria-controls="p-sp" data-panel="p-sp">Mittagessen</button>
                 <button class="tab"        role="tab" aria-selected="false" aria-controls="p-ka" data-panel="p-ka">Kaffee &amp; Tee</button>
                 <button class="tab"        role="tab" aria-selected="false" aria-controls="p-ge" data-panel="p-ge">Getränke</button>
+                <button class="tab"        role="tab" aria-selected="false" aria-controls="p-su" data-panel="p-su">Süßes</button>
             </div>
         </div>
 
@@ -385,6 +390,15 @@
                     <div class="mi"><div><div class="mi-name">Andechser Hefeweizen</div><div class="mi-desc">0,5 l</div></div><div class="mi-price">4,70 €</div></div>
                     <div class="mi"><div><div class="mi-name">Paulaner Hefeweizen Alkoholfrei</div><div class="mi-desc">0,5 l</div></div><div class="mi-price">4,70 €</div></div>
                     <div class="mi"><div><div class="mi-name">Tyskie</div><div class="mi-desc">Polnisches Pilsener · 0,5 l</div></div><div class="mi-price">4,90 €</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Süßes -->
+        <div class="panel" id="p-su" role="tabpanel">
+            <div class="menu-grid">
+                <div>
+                    <div class="cat-title">Süßes</div>
                 </div>
             </div>
         </div>
