@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -471,7 +472,7 @@
     </video>
     ════════════════════════════════════════════════════
     -->
-    <img class="hero-media" src="bilder/hero.WEBP" alt="Café QUITO — Innenansicht mit leuchtendem Logo" fetchpriority="high" decoding="async">
+    <img class="hero-media" src="../bilder/hero.WEBP" alt="Café QUITO — Innenansicht mit leuchtendem Logo" fetchpriority="high" decoding="async">
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
@@ -501,12 +502,12 @@
                 <h2 class="s-title reveal d1" id="about-title">Mehr als nur<br><em>ein Café</em></h2>
                 <p class="reveal d2">Das QUITO ist ein Ort zum Ankommen. Ob du deinen Morgen mit uns beginnst, in der Mittagspause durchatmest oder einfach einen guten Kaffee genießt — wir freuen uns, dass du hier bist.</p>
                 <div class="about-photo-mobile reveal d3">
-<img src="bilder/story-bild.WEBP" alt="Café QUITO Innenraum mit gemütlicher Atmosphäre" class="about-photo-mobile reveal d3">
+<img src="../bilder/story-bild.WEBP" alt="Café QUITO Innenraum mit gemütlicher Atmosphäre">
                 </div>
                 <blockquote class="about-quote reveal d5">„Ein guter Kaffee, ein gutes Gespräch — mehr braucht es manchmal nicht."</blockquote>
             </div>
             <div class="about-photo reveal d2">
-<img src="bilder/story-bild.WEBP" alt="Café QUITO Innenraum mit gemütlicher Atmosphäre" class="about-photo-mobile reveal d3">
+<img src="../bilder/story-bild.WEBP" alt="Café QUITO Innenraum mit gemütlicher Atmosphäre">
             </div>
         </div>
     </div>
@@ -648,6 +649,7 @@
         ];
 
         var grid  = document.getElementById('galGrid');
+        if (!grid) return;
         var items = Array.from(grid.querySelectorAll('.gal-item'));
         var N     = items.length;
 

@@ -214,7 +214,7 @@
 <nav role="navigation" aria-label="Hauptnavigation">
     <div class="nav-inner">
         <a href="index.html" aria-label="QUITO — zur Startseite">
-            <img src="bilder/logo.png" alt="QUITO" class="logo-img"
+            <img src="../bilder/logo.png" alt="QUITO" class="logo-img"
                  onerror="this.style.display='none';document.querySelectorAll('.logo-text').forEach(el=>el.style.display='block')">
             <span class="logo-text">QUITO</span>
         </a>
@@ -256,23 +256,23 @@
         <div class="gal-slider-wrap" id="galSliderWrap">
             <div class="gal-grid" id="galGrid">
                 <div class="gal-item" data-index="0" data-category="Interieur" tabindex="0" role="button" aria-label="Café Innenraum öffnen">
-                    <img src="bilder/cafe-innen.JPG" alt="Café QUITO Innenansicht" loading="lazy" decoding="async">
+                    <img src="../bilder/cafe-innen.JPG" alt="Café QUITO Innenansicht" loading="lazy" decoding="async">
                     <div class="gal-overlay" aria-hidden="true"><span>Interieur</span></div>
                 </div>
                 <div class="gal-item" data-index="1" data-category="Kaffee" tabindex="0" role="button" aria-label="Specialty Coffee öffnen">
-                    <img src="bilder/kaffee.jpeg" alt="Kaffee im Café QUITO" loading="lazy" decoding="async">
+                    <img src="../bilder/kaffee.jpeg" alt="Kaffee im Café QUITO" loading="lazy" decoding="async">
                     <div class="gal-overlay" aria-hidden="true"><span>Kaffee</span></div>
                 </div>
                 <div class="gal-item" data-index="2" data-category="Frühstück" tabindex="0" role="button" aria-label="Frühstück öffnen">
-                    <img src="bilder/fruehstueck.jpeg" alt="Frühstück im Café QUITO" loading="lazy" decoding="async">
+                    <img src="../bilder/fruehstueck.jpeg" alt="Frühstück im Café QUITO" loading="lazy" decoding="async">
                     <div class="gal-overlay" aria-hidden="true"><span>Frühstück</span></div>
                 </div>
                 <div class="gal-item" data-index="3" data-category="Team" tabindex="0" role="button" aria-label="Unser Team öffnen">
-                    <img src="bilder/team.JPG" alt="Das Team des Café QUITO" loading="lazy" decoding="async">
+                    <img src="../bilder/team.JPG" alt="Das Team des Café QUITO" loading="lazy" decoding="async">
                     <div class="gal-overlay" aria-hidden="true"><span>Team</span></div>
                 </div>
                 <div class="gal-item" data-index="4" data-category="Essen" tabindex="0" role="button" aria-label="Mittagessen öffnen">
-                    <img src="bilder/essen.JPG.jpg" alt="Essen im Café QUITO" loading="lazy" decoding="async">
+                    <img src="../bilder/essen.JPG.jpg" alt="Essen im Café QUITO" loading="lazy" decoding="async">
                     <div class="gal-overlay" aria-hidden="true"><span>Essen</span></div>
                 </div>
             </div>
@@ -297,7 +297,7 @@
 <footer>
     <div class="foot-inner">
         <div class="foot-logo">
-            <img src="logo.png" alt="QUITO"
+            <img src="../bilder/logo.png" alt="QUITO"
                  onerror="this.style.display='none';document.querySelectorAll('.foot-logo-text').forEach(el=>el.style.display='block')">
             <span class="foot-logo-text">QUITO</span>
         </div>
@@ -343,11 +343,11 @@
     // Gallery
     (function () {
         var IMAGES = [
-            { src: 'bilder/cafe-innen.JPG',   title: 'Café Innenraum',   cat: 'Interieur', alt: 'Café QUITO Innenansicht' },
-            { src: 'bilder/kaffee.jpeg',      title: 'Specialty Coffee', cat: 'Kaffee',    alt: 'Kaffee im Café QUITO' },
-            { src: 'bilder/fruehstueck.jpeg', title: 'Frühstück',        cat: 'Frühstück', alt: 'Frühstück im Café QUITO' },
-            { src: 'bilder/team.JPG',         title: 'Unser Team',       cat: 'Team',      alt: 'Das Team des Café QUITO' },
-            { src: 'bilder/essen.JPG.jpg',    title: 'Mittagessen',      cat: 'Essen',     alt: 'Essen im Café QUITO' },
+            { src: '../bilder/cafe-innen.JPG',   title: 'Café Innenraum',   cat: 'Interieur', alt: 'Café QUITO Innenansicht' },
+            { src: '../bilder/kaffee.jpeg',      title: 'Specialty Coffee', cat: 'Kaffee',    alt: 'Kaffee im Café QUITO' },
+            { src: '../bilder/fruehstueck.jpeg', title: 'Frühstück',        cat: 'Frühstück', alt: 'Frühstück im Café QUITO' },
+            { src: '../bilder/team.JPG',         title: 'Unser Team',       cat: 'Team',      alt: 'Das Team des Café QUITO' },
+            { src: '../bilder/essen.JPG.jpg',    title: 'Mittagessen',      cat: 'Essen',     alt: 'Essen im Café QUITO' },
         ];
 
         var grid  = document.getElementById('galGrid');
