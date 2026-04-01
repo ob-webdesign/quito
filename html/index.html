@@ -435,6 +435,9 @@
         .gal-lb-prev:focus-visible, .gal-lb-next:focus-visible, .gal-slider-dot:focus-visible {
             outline: 2px solid var(--terracotta); outline-offset: 2px;
         }
+        @media (hover: none) and (pointer: coarse) {
+            :focus-visible { outline: none; }
+        }
     </style>
 </head>
 <body>
