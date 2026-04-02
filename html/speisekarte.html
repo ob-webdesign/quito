@@ -210,6 +210,9 @@
         .foot-links { display: flex; gap: 2rem; list-style: none; }
         .foot-links a { font-size: .78rem; color: rgba(255,255,255,.4); transition: color .2s; }
         .foot-links a:hover { color: #fff; }
+        .foot-credit { font-size: .78rem; color: rgba(255,255,255,.2); }
+        .foot-credit-sep { color: rgba(255,255,255,.15); margin: 0 .4em; }
+        .foot-credit-block { display: none; }
 
         @media (max-width: 768px) {
             .nav-pill { display: none; }
@@ -236,6 +239,8 @@
             .foot-info { flex-direction: column; gap: .35rem; }
             .foot-info p + p::before { content: none; }
             .foot-bottom { flex-direction: column; gap: .6rem; }
+            .foot-credit-inline, .foot-credit-sep { display: none; }
+            .foot-credit-block { display: block; text-align: center; margin-top: calc(-0.6rem + .15rem); }
         }
         @media (prefers-reduced-motion: reduce) {
             .reveal { opacity: 1; transform: none; transition: none; }
@@ -514,7 +519,8 @@
         </a>
         <div class="foot-divider"></div>
         <div class="foot-bottom">
-            <p class="foot-copy">© 2025 Café QUITO. Alle Rechte vorbehalten.</p>
+            <p class="foot-copy">© 2025 Café QUITO. <span class="foot-credit-sep">·</span> <span class="foot-credit foot-credit-inline">Webdesign by Dominik Orth</span></p>
+            <p class="foot-credit foot-credit-block">Webdesign by Dominik Orth</p>
             <ul class="foot-links">
                 <li><a href="impressum.html">Impressum</a></li>
                 <li><a href="#">Datenschutz</a></li>

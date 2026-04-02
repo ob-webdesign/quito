@@ -381,6 +381,37 @@
             .caption-cat, .caption-title { transition: opacity .2s ease; }
             .bar-top { animation: none; opacity: 1; }
         }
+
+        /* === FOOTER === */
+        footer { background: var(--black); color: #fff; padding: clamp(3rem,6vw,5rem) 0 calc(clamp(2rem,4vw,3rem) + env(safe-area-inset-bottom)); }
+        .foot-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center; }
+        .foot-logo { margin-bottom: 2rem; }
+        .foot-logo img  { height: 30px; filter: invert(1); margin: 0 auto; }
+        .foot-logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.6rem; letter-spacing: .12em; text-transform: uppercase; color: #fff; display: none; }
+        .foot-info { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0; margin-bottom: 1.75rem; }
+        .foot-info p { font-size: .95rem; color: rgba(255,255,255,.55); line-height: 1.7; }
+        .foot-info p + p::before { content: '·'; margin: 0 1.25rem; color: rgba(255,255,255,.25); }
+        .foot-info a { color: rgba(255,255,255,.55); transition: color .2s; }
+        .foot-info a:hover { color: #fff; }
+        .foot-social { display: flex; align-items: center; justify-content: center; gap: .6rem; margin-bottom: 2.5rem; color: rgba(255,255,255,.55); font-size: .92rem; transition: color .2s; }
+        .foot-social:hover { color: #fff; }
+        .foot-social svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+        .foot-divider { width: 48px; height: 1px; background: rgba(255,255,255,.15); margin: 0 auto 2rem; }
+        .foot-bottom { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+        .foot-copy { font-size: .78rem; color: rgba(255,255,255,.3); }
+        .foot-links { display: flex; gap: 2rem; list-style: none; }
+        .foot-links a { font-size: .78rem; color: rgba(255,255,255,.4); transition: color .2s; }
+        .foot-links a:hover { color: #fff; }
+        .foot-credit { font-size: .78rem; color: rgba(255,255,255,.2); }
+        .foot-credit-sep { color: rgba(255,255,255,.15); margin: 0 .4em; }
+        .foot-credit-block { display: none; }
+        @media (max-width: 480px) {
+            .foot-info { flex-direction: column; gap: .35rem; }
+            .foot-info p + p::before { content: none; }
+            .foot-bottom { flex-direction: column; gap: .6rem; }
+            .foot-credit-inline, .foot-credit-sep { display: none; }
+            .foot-credit-block { display: block; text-align: center; margin-top: calc(-0.6rem + .15rem); }
+        }
     </style>
 </head>
 <body>
