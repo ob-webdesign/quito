@@ -170,7 +170,13 @@
             .mi { flex-direction: column; align-items: flex-start; gap: .35rem; }
             .mi-price { white-space: normal; text-align: left; }
             .menu-head { justify-content: flex-start; }
-            .tabs { flex-wrap: nowrap; gap: .3rem; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+            .tabs-wrap { position: relative; width: 100%; }
+            .tabs-wrap::after {
+                content: ''; position: absolute; top: 0; right: 0; bottom: 0;
+                width: 3.5rem; pointer-events: none;
+                background: linear-gradient(to right, transparent, var(--warm-white));
+            }
+            .tabs { flex-wrap: nowrap; gap: .3rem; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-right: 2rem; }
             .tabs::-webkit-scrollbar { display: none; }
             .tab { flex: 0 0 auto; font-size: .74rem; padding: .38em .6em; letter-spacing: .03em; white-space: nowrap; }
         }
@@ -226,12 +232,14 @@
 <section id="speisekarte" aria-labelledby="menu-title">
     <div class="container">
         <div class="menu-head">
-            <div class="tabs reveal" role="tablist" aria-label="Menü-Kategorien">
-                <button class="tab active" role="tab" aria-selected="true"  aria-controls="p-fr" data-panel="p-fr">Frühstück</button>
-                <button class="tab"        role="tab" aria-selected="false" aria-controls="p-sp" data-panel="p-sp">Mittagessen</button>
-                <button class="tab"        role="tab" aria-selected="false" aria-controls="p-ka" data-panel="p-ka">Kaffee &amp; Tee</button>
-                <button class="tab"        role="tab" aria-selected="false" aria-controls="p-ge" data-panel="p-ge">Getränke</button>
-                <button class="tab"        role="tab" aria-selected="false" aria-controls="p-su" data-panel="p-su">Süßes</button>
+            <div class="tabs-wrap">
+                <div class="tabs reveal" role="tablist" aria-label="Menü-Kategorien">
+                    <button class="tab active" role="tab" aria-selected="true"  aria-controls="p-fr" data-panel="p-fr">Frühstück</button>
+                    <button class="tab"        role="tab" aria-selected="false" aria-controls="p-sp" data-panel="p-sp">Mittagessen</button>
+                    <button class="tab"        role="tab" aria-selected="false" aria-controls="p-ka" data-panel="p-ka">Kaffee &amp; Tee</button>
+                    <button class="tab"        role="tab" aria-selected="false" aria-controls="p-ge" data-panel="p-ge">Getränke</button>
+                    <button class="tab"        role="tab" aria-selected="false" aria-controls="p-su" data-panel="p-su">Süßes</button>
+                </div>
             </div>
         </div>
 
