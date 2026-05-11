@@ -444,61 +444,6 @@
             :focus-visible { outline: none !important; }
         }
 
-        /* === CUSTOM CURSOR === */
-        .cursor {
-            display: none; position: fixed;
-            width: 10px; height: 10px;
-            background: var(--terracotta); border-radius: 50%;
-            pointer-events: none; z-index: 99999;
-            transform: translate(-50%,-50%);
-            transition: width .2s var(--ease), height .2s var(--ease), opacity .2s;
-            will-change: left, top;
-        }
-        .cursor-ring {
-            display: none; position: fixed;
-            width: 38px; height: 38px;
-            border: 1.5px solid rgba(196,121,58,.35); border-radius: 50%;
-            pointer-events: none; z-index: 99998;
-            transform: translate(-50%,-50%);
-            transition: width .3s var(--ease), height .3s var(--ease), border-color .2s, opacity .25s;
-            will-change: left, top;
-        }
-        .cursor.hover { width: 16px; height: 16px; }
-        .cursor-ring.hover { width: 54px; height: 54px; border-color: rgba(196,121,58,.6); }
-        @media (hover: hover) and (pointer: fine) {
-            .cursor, .cursor-ring { display: block; }
-            * { cursor: none !important; }
-        }
-
-        /* === TICKER === */
-        .ticker-wrap {
-            background: var(--terracotta);
-            overflow: hidden; padding: .9rem 0;
-            position: relative; z-index: 10;
-        }
-        .ticker {
-            display: flex; white-space: nowrap;
-            animation: ticker-move 32s linear infinite;
-            will-change: transform;
-        }
-        .ticker-wrap:hover .ticker { animation-play-state: paused; }
-        .ticker-inner {
-            display: inline-flex; align-items: center;
-            flex-shrink: 0; padding-right: 0;
-        }
-        .ticker-inner span {
-            font-family: var(--font-b); font-size: .7rem;
-            font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
-            color: #fff; padding: 0 2.2rem;
-        }
-        .ticker-inner .tk-sep {
-            color: rgba(255,255,255,.45); font-size: .85rem;
-        }
-        @keyframes ticker-move {
-            from { transform: translateX(0); }
-            to   { transform: translateX(-50%); }
-        }
-
         /* === HERO BADGE === */
         .hero-badge {
             position: absolute;
@@ -561,10 +506,6 @@
     </style>
 </head>
 <body>
-
-<!-- CUSTOM CURSOR -->
-<div class="cursor" id="cursor" aria-hidden="true"></div>
-<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
 
 <!-- NAV -->
 <nav id="nav" role="navigation" aria-label="Hauptnavigation">
@@ -631,32 +572,6 @@
         <span>Scroll</span>
     </div>
 </section>
-
-<!-- TICKER -->
-<div class="ticker-wrap" aria-hidden="true">
-    <div class="ticker">
-        <div class="ticker-inner">
-            <span>Frühstück</span><span class="tk-sep">·</span>
-            <span>Mittagessen</span><span class="tk-sep">·</span>
-            <span>Specialty Coffee</span><span class="tk-sep">·</span>
-            <span>Frankenthal (Pfalz)</span><span class="tk-sep">·</span>
-            <span>Täglich frisch</span><span class="tk-sep">·</span>
-            <span>Lokal & regional</span><span class="tk-sep">·</span>
-            <span>Mit Liebe gemacht</span><span class="tk-sep">·</span>
-            <span>Mo – Sa geöffnet</span><span class="tk-sep">·</span>
-        </div>
-        <div class="ticker-inner" aria-hidden="true">
-            <span>Frühstück</span><span class="tk-sep">·</span>
-            <span>Mittagessen</span><span class="tk-sep">·</span>
-            <span>Specialty Coffee</span><span class="tk-sep">·</span>
-            <span>Frankenthal (Pfalz)</span><span class="tk-sep">·</span>
-            <span>Täglich frisch</span><span class="tk-sep">·</span>
-            <span>Lokal & regional</span><span class="tk-sep">·</span>
-            <span>Mit Liebe gemacht</span><span class="tk-sep">·</span>
-            <span>Mo – Sa geöffnet</span><span class="tk-sep">·</span>
-        </div>
-    </div>
-</div>
 
 <!-- GALERIE -->
 
@@ -766,27 +681,6 @@
 </footer>
 
 <script>
-    // === CUSTOM CURSOR ===
-    (function() {
-        var cursor = document.getElementById('cursor');
-        var ring   = document.getElementById('cursorRing');
-        if (!cursor || !ring) return;
-        if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-        var mx = 0, my = 0, rx = 0, ry = 0;
-        document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; });
-        (function raf() {
-            rx += (mx - rx) * 0.1;
-            ry += (my - ry) * 0.1;
-            cursor.style.left = mx + 'px'; cursor.style.top  = my + 'px';
-            ring.style.left   = rx + 'px'; ring.style.top    = ry + 'px';
-            requestAnimationFrame(raf);
-        })();
-        document.querySelectorAll('a,button').forEach(function(el) {
-            el.addEventListener('mouseenter', function() { cursor.classList.add('hover'); ring.classList.add('hover'); });
-            el.addEventListener('mouseleave', function() { cursor.classList.remove('hover'); ring.classList.remove('hover'); });
-        });
-    })();
-
     // === HERO PARALLAX ===
     (function() {
         var media = document.querySelector('.hero-media');
