@@ -553,7 +553,10 @@
     </video>
     ════════════════════════════════════════════════════
     -->
-    <img class="hero-media" src="bilder/hero.WEBP" alt="Café QUITO — Innenansicht mit leuchtendem Logo" fetchpriority="high" decoding="async">
+    <picture>
+        <source media="(min-width: 769px)" srcset="bilder/hero-desktop.WEBP">
+        <img class="hero-media" src="bilder/hero.WEBP" alt="Café QUITO — Innenansicht mit leuchtendem Logo" fetchpriority="high" decoding="async">
+    </picture>
     <div class="hero-overlay"></div>
 
     <a href="#kontakt" class="hero-badge" id="heroBadge">
