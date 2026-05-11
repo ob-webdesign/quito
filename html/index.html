@@ -443,9 +443,128 @@
         @media (hover: none) and (pointer: coarse) {
             :focus-visible { outline: none !important; }
         }
+
+        /* === CUSTOM CURSOR === */
+        .cursor {
+            display: none; position: fixed;
+            width: 10px; height: 10px;
+            background: var(--terracotta); border-radius: 50%;
+            pointer-events: none; z-index: 99999;
+            transform: translate(-50%,-50%);
+            transition: width .2s var(--ease), height .2s var(--ease), opacity .2s;
+            will-change: left, top;
+        }
+        .cursor-ring {
+            display: none; position: fixed;
+            width: 38px; height: 38px;
+            border: 1.5px solid rgba(196,121,58,.35); border-radius: 50%;
+            pointer-events: none; z-index: 99998;
+            transform: translate(-50%,-50%);
+            transition: width .3s var(--ease), height .3s var(--ease), border-color .2s, opacity .25s;
+            will-change: left, top;
+        }
+        .cursor.hover { width: 16px; height: 16px; }
+        .cursor-ring.hover { width: 54px; height: 54px; border-color: rgba(196,121,58,.6); }
+        @media (hover: hover) and (pointer: fine) {
+            .cursor, .cursor-ring { display: block; }
+            * { cursor: none !important; }
+        }
+
+        /* === TICKER === */
+        .ticker-wrap {
+            background: var(--terracotta);
+            overflow: hidden; padding: .9rem 0;
+            position: relative; z-index: 10;
+        }
+        .ticker {
+            display: flex; white-space: nowrap;
+            animation: ticker-move 32s linear infinite;
+            will-change: transform;
+        }
+        .ticker-wrap:hover .ticker { animation-play-state: paused; }
+        .ticker-inner {
+            display: inline-flex; align-items: center;
+            flex-shrink: 0; padding-right: 0;
+        }
+        .ticker-inner span {
+            font-family: var(--font-b); font-size: .7rem;
+            font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+            color: #fff; padding: 0 2.2rem;
+        }
+        .ticker-inner .tk-sep {
+            color: rgba(255,255,255,.45); font-size: .85rem;
+        }
+        @keyframes ticker-move {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        /* === HERO BADGE === */
+        .hero-badge {
+            position: absolute;
+            top: calc(var(--nav-h) + env(safe-area-inset-top) + 1.25rem);
+            right: var(--pad); z-index: 2;
+            display: inline-flex; align-items: center; gap: .5rem;
+            background: rgba(255,255,255,.1);
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 999px; padding: .45em 1.1em .45em .8em;
+            color: rgba(255,255,255,.9); font-size: .68rem;
+            font-weight: 500; letter-spacing: .08em;
+            transition: background .2s;
+        }
+        .hero-badge:hover { background: rgba(255,255,255,.16); }
+        .hero-badge-dot {
+            width: 7px; height: 7px; background: #6FCF6F;
+            border-radius: 50%; flex-shrink: 0;
+            animation: pulse-dot 2.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+
+        /* === ABOUT QUOTE DECO === */
+        .about-quote {
+            font-family: var(--font-d); font-size: clamp(1.3rem,2.2vw,1.8rem);
+            font-style: italic; color: var(--terracotta); line-height: 1.35;
+            margin-top: 2.5rem; padding-left: 1.5rem;
+            border-left: 2px solid var(--terracotta);
+            position: relative;
+        }
+        .about-quote::before {
+            content: '\201C';
+            font-family: var(--font-d); font-size: 7rem; line-height: 1;
+            color: var(--terracotta); opacity: .1;
+            position: absolute; top: -2.5rem; left: -.8rem;
+            pointer-events: none;
+        }
+
+        /* === BTN SHINE === */
+        .btn { position: relative; overflow: hidden; }
+        .btn::after {
+            content: '';
+            position: absolute; top: 0; left: -100%;
+            width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+            transform: skewX(-18deg);
+            transition: left .45s var(--ease);
+        }
+        .btn:hover::after { left: 140%; }
+
+        /* === FOOTER GRADIENT DIVIDER === */
+        .foot-divider {
+            width: 80px; height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,.18), transparent);
+            margin: 0 auto 2rem;
+        }
+
+        /* === HERO PARALLAX === */
+        .hero-media { will-change: transform; }
     </style>
 </head>
 <body>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
 
 <!-- NAV -->
 <nav id="nav" role="navigation" aria-label="Hauptnavigation">
@@ -492,6 +611,11 @@
     <img class="hero-media" src="bilder/hero.WEBP" alt="Café QUITO — Innenansicht mit leuchtendem Logo" fetchpriority="high" decoding="async">
     <div class="hero-overlay"></div>
 
+    <a href="#kontakt" class="hero-badge" id="heroBadge">
+        <span class="hero-badge-dot"></span>
+        <span id="heroBadgeText">Jetzt geöffnet</span>
+    </a>
+
     <div class="hero-content">
         <div class="hero-eyebrow">Frühstück · Mittagessen · Kaffee</div>
         <h1 class="hero-h1">Morgens.<br>Mittags.<br><em>Immer gut.</em></h1>
@@ -507,6 +631,32 @@
         <span>Scroll</span>
     </div>
 </section>
+
+<!-- TICKER -->
+<div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker">
+        <div class="ticker-inner">
+            <span>Frühstück</span><span class="tk-sep">·</span>
+            <span>Mittagessen</span><span class="tk-sep">·</span>
+            <span>Specialty Coffee</span><span class="tk-sep">·</span>
+            <span>Frankenthal (Pfalz)</span><span class="tk-sep">·</span>
+            <span>Täglich frisch</span><span class="tk-sep">·</span>
+            <span>Lokal & regional</span><span class="tk-sep">·</span>
+            <span>Mit Liebe gemacht</span><span class="tk-sep">·</span>
+            <span>Mo – Sa geöffnet</span><span class="tk-sep">·</span>
+        </div>
+        <div class="ticker-inner" aria-hidden="true">
+            <span>Frühstück</span><span class="tk-sep">·</span>
+            <span>Mittagessen</span><span class="tk-sep">·</span>
+            <span>Specialty Coffee</span><span class="tk-sep">·</span>
+            <span>Frankenthal (Pfalz)</span><span class="tk-sep">·</span>
+            <span>Täglich frisch</span><span class="tk-sep">·</span>
+            <span>Lokal & regional</span><span class="tk-sep">·</span>
+            <span>Mit Liebe gemacht</span><span class="tk-sep">·</span>
+            <span>Mo – Sa geöffnet</span><span class="tk-sep">·</span>
+        </div>
+    </div>
+</div>
 
 <!-- GALERIE -->
 
@@ -616,6 +766,59 @@
 </footer>
 
 <script>
+    // === CUSTOM CURSOR ===
+    (function() {
+        var cursor = document.getElementById('cursor');
+        var ring   = document.getElementById('cursorRing');
+        if (!cursor || !ring) return;
+        if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+        var mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; });
+        (function raf() {
+            rx += (mx - rx) * 0.1;
+            ry += (my - ry) * 0.1;
+            cursor.style.left = mx + 'px'; cursor.style.top  = my + 'px';
+            ring.style.left   = rx + 'px'; ring.style.top    = ry + 'px';
+            requestAnimationFrame(raf);
+        })();
+        document.querySelectorAll('a,button').forEach(function(el) {
+            el.addEventListener('mouseenter', function() { cursor.classList.add('hover'); ring.classList.add('hover'); });
+            el.addEventListener('mouseleave', function() { cursor.classList.remove('hover'); ring.classList.remove('hover'); });
+        });
+    })();
+
+    // === HERO PARALLAX ===
+    (function() {
+        var media = document.querySelector('.hero-media');
+        if (!media) return;
+        if (!window.matchMedia('(hover: hover)').matches) return;
+        window.addEventListener('scroll', function() {
+            var y = window.scrollY;
+            if (y < window.innerHeight) {
+                media.style.transform = 'translateY(' + (y * 0.28) + 'px)';
+            }
+        }, { passive: true });
+    })();
+
+    // === HERO BADGE: OPEN / CLOSED ===
+    (function() {
+        var badge = document.getElementById('heroBadge');
+        var dot   = badge ? badge.querySelector('.hero-badge-dot') : null;
+        var text  = document.getElementById('heroBadgeText');
+        if (!badge || !dot || !text) return;
+        var now  = new Date();
+        var day  = now.getDay(); // 0=So,1=Mo,...,6=Sa
+        var hour = now.getHours() + now.getMinutes() / 60;
+        var open = false;
+        if (day >= 1 && day <= 5 && hour >= 9 && hour < 18) open = true; // Mo–Fr
+        if (day === 6 && hour >= 9 && hour < 16) open = true;             // Sa
+        if (!open) {
+            dot.style.background = '#E07070';
+            dot.style.animation  = 'none';
+            text.textContent = 'Derzeit geschlossen';
+        }
+    })();
+
     // Nav scroll state
     const nav   = document.getElementById('nav');
     const hero  = document.getElementById('hero');
