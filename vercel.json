@@ -1,0 +1,5 @@
+{
+  "buildCommand": "echo 'Static site'",
+  "outputDirectory": ".",
+  "devCommand": "python -m http.server 3000"
+}
