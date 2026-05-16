@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Datenschutzerklärung — QUITO Café</title>
+    <meta name="description" content="Datenschutzerklärung des Café QUITO in Frankenthal (Pfalz) gemäß DSGVO.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black:      #1A1A1A;
+            --cream:      #F5EDD6;
+            --terracotta: #C4793A;
+            --warm-white: #FDFAF4;
+            --muted:      #6B6153;
+            --font-d: 'DM Serif Display', serif;
+            --font-b: 'Source Sans 3', sans-serif;
+            --nav-h: 72px;
+            --pad: clamp(1rem, 3.5vw, 2rem);
+            --max: min(1320px, 94vw);
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-b); background: var(--cream); color: var(--black); overflow-x: hidden; font-size: 16px; line-height: 1.6; }
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+        address { font-style: normal; }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            background-size: 180px;
+            pointer-events: none; z-index: 9999; mix-blend-mode: multiply;
+        }
+
+        /* === NAV === */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            height: calc(var(--nav-h) + env(safe-area-inset-top));
+            display: flex; align-items: center;
+            padding: 0 var(--pad);
+            padding-top: env(safe-area-inset-top);
+            background: var(--cream);
+            box-shadow: 0 1px 0 rgba(26,26,26,.09);
+        }
+        .nav-inner { width: 100%; max-width: var(--max); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; position: relative; }
+        .nav-inner > a { position: absolute; left: 50%; transform: translateX(-50%); }
+        .logo-img  { height: 38px; width: auto; display: block; }
+        .logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.35rem; letter-spacing: .12em; text-transform: uppercase; background: var(--black); color: #fff; padding: .3em .85em; border-radius: 999px; display: none; }
+        .nav-actions { display: flex; align-items: center; gap: .75rem; }
+        .nav-pill {
+            font-family: var(--font-b); font-size: .8rem; font-weight: 500;
+            letter-spacing: .07em; text-transform: uppercase;
+            padding: .55em 1.4em; border-radius: 999px;
+            border: 1.5px solid rgba(26,26,26,.25); color: var(--black);
+            transition: border-color .2s, color .2s;
+        }
+        .nav-pill:hover { border-color: var(--terracotta); color: var(--terracotta); }
+        .nav-sub-toggle {
+            width: 48px; height: 48px; border-radius: 50%;
+            border: 1.5px solid rgba(26,26,26,.25); background: transparent;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 4px; cursor: pointer; transition: border-color .2s;
+        }
+        .nav-sub-toggle:hover { border-color: var(--terracotta); }
+        .nav-sub-toggle span { display: block; width: 18px; height: 1.5px; background: var(--black); }
+
+        /* Submenu */
+        .sub-menu {
+            position: fixed; top: 0; left: 0; z-index: 200;
+            width: min(340px, 80vw); height: 100dvh;
+            background: var(--warm-white);
+            box-shadow: 8px 0 40px rgba(0,0,0,.15);
+            padding: 2.5rem 2.5rem 2rem;
+            transform: translateX(-100%); pointer-events: none;
+            transition: transform .35s ease;
+        }
+        .sub-menu.open { transform: none; pointer-events: auto; }
+        .sub-menu-close {
+            position: absolute; top: 1.4rem; right: 1.4rem;
+            width: 32px; height: 32px; border: 1px solid rgba(26,26,26,.2);
+            border-radius: 50%; background: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; color: var(--black); transition: border-color .2s;
+        }
+        .sub-menu-close:hover { border-color: var(--terracotta); color: var(--terracotta); }
+        .sub-menu a {
+            display: block; font-family: var(--font-b); font-size: 1.15rem; font-weight: 500;
+            letter-spacing: .02em; color: var(--black); padding: 1.15rem 0;
+            border-bottom: 1px solid rgba(26,26,26,.08); transition: color .2s;
+        }
+        .sub-menu a:first-of-type { margin-top: 3rem; }
+        .sub-menu a:last-of-type { border-bottom: none; }
+        .sub-menu a:hover { color: var(--terracotta); }
+        .sub-menu-overlay {
+            position: fixed; inset: 0; z-index: 199;
+            background: rgba(0,0,0,.3); opacity: 0; pointer-events: none;
+            transition: opacity .35s ease;
+        }
+        .sub-menu-overlay.open { opacity: 1; pointer-events: auto; }
+
+        /* === PAGE HEADER === */
+        .page-header {
+            padding-top: calc(var(--nav-h) + env(safe-area-inset-top) + clamp(3rem, 6vw, 5rem));
+            padding-bottom: clamp(2rem, 4vw, 3rem);
+            background: var(--warm-white);
+        }
+        .page-header .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+        .s-label { display: inline-flex; align-items: center; gap: .75rem; font-size: .7rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 1.1rem; }
+        .s-label::before { content: ''; display: inline-block; width: 22px; height: 1.5px; background: var(--terracotta); }
+        .s-title { font-family: var(--font-d); font-size: clamp(2.2rem,5vw,3.8rem); line-height: 1.1; }
+
+        /* === CONTENT === */
+        .impressum-body {
+            background: var(--warm-white);
+            padding: 0 0 clamp(5rem, 10vw, 8rem);
+        }
+        .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+        .imp-grid { max-width: 720px; }
+
+        .imp-section { margin-bottom: 3rem; }
+        .imp-section:last-child { margin-bottom: 0; }
+
+        .imp-h2 {
+            font-family: var(--font-d); font-size: clamp(1.15rem, 2vw, 1.4rem);
+            color: var(--black); margin-bottom: .9rem;
+            padding-bottom: .5rem; border-bottom: 1.5px solid rgba(26,26,26,.1);
+        }
+        .imp-h3 {
+            font-family: var(--font-b); font-size: .72rem; font-weight: 600;
+            letter-spacing: .13em; text-transform: uppercase;
+            color: var(--terracotta); margin: 1.25rem 0 .4rem;
+        }
+        .imp-p {
+            font-size: .97rem; color: var(--muted); line-height: 1.8; margin-bottom: .6rem;
+        }
+        .imp-p a { border-bottom: 1px solid rgba(26,26,26,.2); transition: color .2s, border-color .2s; }
+        .imp-p a:hover { color: var(--terracotta); border-color: var(--terracotta); }
+        .imp-p strong { color: var(--black); font-weight: 600; }
+        .imp-list {
+            font-size: .97rem; color: var(--muted); line-height: 1.8;
+            padding-left: 1.4rem; margin-bottom: .6rem;
+        }
+        .imp-list li { margin-bottom: .3rem; }
+        .imp-list a { border-bottom: 1px solid rgba(26,26,26,.2); transition: color .2s, border-color .2s; }
+        .imp-list a:hover { color: var(--terracotta); border-color: var(--terracotta); }
+
+        /* === FOOTER === */
+        footer { background: var(--black); color: #fff; padding: clamp(3rem,6vw,5rem) 0 calc(clamp(2rem,4vw,3rem) + env(safe-area-inset-bottom)); }
+        .foot-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center; }
+        .foot-logo { margin-bottom: 2rem; }
+        .foot-logo img { height: 30px; filter: invert(1); margin: 0 auto; }
+        .foot-logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.6rem; letter-spacing: .12em; text-transform: uppercase; color: #fff; display: none; }
+        .foot-info { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0; margin-bottom: 1.75rem; }
+        .foot-info p { font-size: .95rem; color: rgba(255,255,255,.55); line-height: 1.7; }
+        .foot-info p + p::before { content: '·'; margin: 0 1.25rem; color: rgba(255,255,255,.25); }
+        .foot-info a { color: rgba(255,255,255,.55); transition: color .2s; }
+        .foot-info a:hover { color: #fff; }
+        .foot-social { display: flex; align-items: center; justify-content: center; gap: .6rem; margin-bottom: 2.5rem; color: rgba(255,255,255,.55); font-size: .92rem; transition: color .2s; }
+        .foot-social:hover { color: #fff; }
+        .foot-social svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+        .foot-divider { width: 48px; height: 1px; background: rgba(255,255,255,.15); margin: 0 auto 2rem; }
+        .foot-bottom { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+        .foot-copy { font-size: .78rem; color: rgba(255,255,255,.3); }
+        .foot-links { display: flex; gap: 2rem; list-style: none; }
+        .foot-links a { font-size: .78rem; color: rgba(255,255,255,.4); transition: color .2s; }
+        .foot-links a:hover { color: #fff; }
+
+        @media (max-width: 768px) {
+            .nav-pill { display: none; }
+            .nav-actions { position: absolute; left: var(--pad); right: auto; }
+        }
+        .nav-sub-toggle:focus-visible, .sub-menu-close:focus-visible, .sub-menu a:focus-visible,
+        .nav-pill:focus-visible, .foot-social:focus-visible, .foot-links a:focus-visible {
+            outline: 2px solid var(--terracotta); outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+
+<nav role="navigation" aria-label="Hauptnavigation">
+    <div class="nav-inner">
+        <a href="index.html" aria-label="QUITO — zur Startseite">
+            <img src="bilder/logo.png" alt="QUITO" class="logo-img"
+                 onerror="this.style.display='none';document.querySelectorAll('.logo-text').forEach(el=>el.style.display='block')">
+            <span class="logo-text">QUITO</span>
+        </a>
+        <div class="nav-actions">
+            <a href="speisekarte.html" class="nav-pill">Speisekarte</a>
+            <button class="nav-sub-toggle" id="subToggle" aria-label="Menü öffnen" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<div class="sub-menu-overlay" id="subOverlay"></div>
+<div class="sub-menu" id="subMenu" role="dialog" aria-label="Navigation">
+    <button class="sub-menu-close" id="subClose" aria-label="Menü schließen">✕</button>
+    <a href="speisekarte.html">Speisekarte</a>
+    <a href="index.html#ueber-uns">Über uns</a>
+    <a href="galerie.html">Galerie</a>
+    <a href="index.html#kontakt">Kontakt</a>
+</div>
+
+<div class="page-header">
+    <div class="container">
+        <div class="s-label">Rechtliches</div>
+        <h1 class="s-title">Datenschutzerklärung</h1>
+    </div>
+</div>
+
+<div class="impressum-body">
+    <div class="container">
+        <div class="imp-grid">
+
+            <!-- 1. Verantwortlicher -->
+            <div class="imp-section">
+                <h2 class="imp-h2">1. Verantwortlicher</h2>
+                <p class="imp-p">
+                    Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO) und anderer nationaler Datenschutzgesetze sowie sonstiger datenschutzrechtlicher Bestimmungen ist:
+                </p>
+                <p class="imp-p">
+                    <strong>Max Mustermann</strong><br>
+                    Café QUITO<br>
+                    Speyerer Straße 24<br>
+                    67227 Frankenthal (Pfalz)<br><br>
+                    Telefon: <a href="tel:+4962333039095">+49 6233 3039095</a><br>
+                    E-Mail: <a href="mailto:info@cafe-quito.de">info@cafe-quito.de</a>
+                </p>
+            </div>
+
+            <!-- 2. Allgemeines -->
+            <div class="imp-section">
+                <h2 class="imp-h2">2. Allgemeines zur Datenverarbeitung</h2>
+                <div class="imp-h3">Umfang der Verarbeitung personenbezogener Daten</div>
+                <p class="imp-p">
+                    Wir verarbeiten personenbezogene Daten unserer Nutzer grundsätzlich nur, soweit dies zur Bereitstellung einer funktionsfähigen Website sowie unserer Inhalte und Leistungen erforderlich ist. Die Verarbeitung personenbezogener Daten erfolgt regelmäßig nur nach Einwilligung des Nutzers oder wenn die Verarbeitung gesetzlich zulässig ist.
+                </p>
+                <div class="imp-h3">Rechtsgrundlagen der Verarbeitung</div>
+                <p class="imp-p">
+                    Soweit wir für Verarbeitungsvorgänge personenbezogener Daten eine Einwilligung einholen, dient <strong>Art. 6 Abs. 1 lit. a DSGVO</strong> als Rechtsgrundlage. Bei Verarbeitungen zur Erfüllung eines Vertrags dient <strong>Art. 6 Abs. 1 lit. b DSGVO</strong> als Grundlage. Verarbeitungen zur Wahrung berechtigter Interessen stützen sich auf <strong>Art. 6 Abs. 1 lit. f DSGVO</strong>.
+                </p>
+                <div class="imp-h3">Datenlöschung und Speicherdauer</div>
+                <p class="imp-p">
+                    Die personenbezogenen Daten der betroffenen Person werden gelöscht oder gesperrt, sobald der Zweck der Speicherung entfällt. Eine Speicherung kann darüber hinaus erfolgen, wenn dies durch den europäischen oder nationalen Gesetzgeber vorgesehen wurde. Eine Sperrung oder Löschung der Daten erfolgt auch dann, wenn eine durch die genannten Normen vorgeschriebene Speicherfrist abläuft.
+                </p>
+            </div>
+
+            <!-- 3. Hosting -->
+            <div class="imp-section">
+                <h2 class="imp-h2">3. Hosting bei Vercel</h2>
+                <p class="imp-p">
+                    Diese Website wird gehostet von <strong>Vercel Inc.</strong>, 340 Pine Street, Suite 701, San Francisco, CA 94104, USA. Beim Aufruf unserer Website übermittelt Ihr Browser automatisch Daten an die Server von Vercel. Dies sind insbesondere:
+                </p>
+                <ul class="imp-list">
+                    <li>IP-Adresse des anfragenden Geräts</li>
+                    <li>Datum und Uhrzeit des Zugriffs</li>
+                    <li>Aufgerufene URL (Seite)</li>
+                    <li>Browsertyp und Betriebssystem</li>
+                    <li>Referrer-URL (zuvor besuchte Seite)</li>
+                    <li>Übertragene Datenmenge</li>
+                </ul>
+                <p class="imp-p">
+                    Diese Daten werden in Server-Logfiles gespeichert. Rechtsgrundlage ist <strong>Art. 6 Abs. 1 lit. f DSGVO</strong> (berechtigtes Interesse an einem sicheren und stabilen Betrieb der Website). Die Logfiles werden nach spätestens 30 Tagen automatisch gelöscht.
+                </p>
+                <p class="imp-p">
+                    Da Vercel ein US-amerikanisches Unternehmen ist, können Daten in die USA übermittelt werden. Vercel hat sich dem EU-US Data Privacy Framework angeschlossen und setzt zudem Standardvertragsklauseln (SCC) gemäß Art. 46 Abs. 2 lit. c DSGVO ein. Mit Vercel wurde ein Auftragsverarbeitungsvertrag (Data Processing Agreement) abgeschlossen. Weitere Informationen finden Sie in der Datenschutzerklärung von Vercel: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">vercel.com/legal/privacy-policy</a>.
+                </p>
+            </div>
+
+            <!-- 4. Google Fonts -->
+            <div class="imp-section">
+                <h2 class="imp-h2">4. Google Fonts</h2>
+                <p class="imp-p">
+                    Diese Website verwendet <strong>Google Fonts</strong>, einen Dienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Beim Laden der Seite stellt Ihr Browser eine Verbindung zu den Servern von Google her, um die Schriftarten zu laden. Dabei wird Ihre IP-Adresse an Google übermittelt.
+                </p>
+                <p class="imp-p">
+                    Rechtsgrundlage ist <strong>Art. 6 Abs. 1 lit. f DSGVO</strong>. Das berechtigte Interesse liegt in der einheitlichen Darstellung des Schriftbilds auf dieser Website. Google kann Ihre Daten in die USA übermitteln. Google LLC ist im EU-US Data Privacy Framework zertifiziert. Weitere Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">policies.google.com/privacy</a>.
+                </p>
+            </div>
+
+            <!-- 5. Google Maps -->
+            <div class="imp-section">
+                <h2 class="imp-h2">5. Google Maps</h2>
+                <p class="imp-p">
+                    Auf unserer Website verwenden wir <strong>Google Maps</strong>, einen Kartendienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland (Muttergesellschaft: Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA).
+                </p>
+                <p class="imp-p">
+                    Durch die Einbindung von Google Maps werden beim Aufruf der entsprechenden Seite Daten an Google übertragen. Dies umfasst insbesondere Ihre IP-Adresse sowie Ihren Standort, sofern Sie dessen Erfassung erlaubt haben. Google kann diese Daten für eigene Zwecke — etwa Werbung oder Marktforschung — verarbeiten und mit anderen Google-Diensten verknüpfen.
+                </p>
+                <p class="imp-p">
+                    Rechtsgrundlage der Verarbeitung ist <strong>Art. 6 Abs. 1 lit. f DSGVO</strong>. Das berechtigte Interesse besteht in der anschaulichen Darstellung unseres Standorts für unsere Gäste. Eine Datenübermittlung in die USA kann stattfinden; Google LLC ist im EU-US Data Privacy Framework zertifiziert.
+                </p>
+                <p class="imp-p">
+                    Wenn Sie die Verarbeitung Ihrer Daten durch Google Maps nicht wünschen, können Sie JavaScript in Ihrem Browser deaktivieren oder die Ausführung von Drittanbieter-Skripten über ein Browser-Plugin blockieren. Weitere Informationen zum Datenschutz bei Google: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">policies.google.com/privacy</a>.
+                </p>
+            </div>
+
+            <!-- 6. Kontaktaufnahme per E-Mail -->
+            <div class="imp-section">
+                <h2 class="imp-h2">6. Kontaktaufnahme per E-Mail oder Telefon</h2>
+                <p class="imp-p">
+                    Wenn Sie uns per E-Mail oder Telefon kontaktieren, werden die von Ihnen übermittelten Daten (z. B. Name, Telefonnummer, E-Mail-Adresse, Nachrichteninhalt) zum Zweck der Bearbeitung Ihrer Anfrage bei uns gespeichert. Rechtsgrundlage ist <strong>Art. 6 Abs. 1 lit. b DSGVO</strong> (Vertragsanbahnung) bzw. <strong>Art. 6 Abs. 1 lit. f DSGVO</strong> (berechtigtes Interesse an der Beantwortung Ihrer Anfrage).
+                </p>
+                <p class="imp-p">
+                    Die Daten werden gelöscht, sobald sie für die Erreichung des Zweckes ihrer Erhebung nicht mehr erforderlich sind, spätestens jedoch nach Ablauf gesetzlicher Aufbewahrungsfristen.
+                </p>
+            </div>
+
+            <!-- 7. Keine Cookies -->
+            <div class="imp-section">
+                <h2 class="imp-h2">7. Cookies</h2>
+                <p class="imp-p">
+                    Unsere Website selbst setzt keine eigenen Cookies. Durch die Einbindung von Drittdiensten (Google Fonts, Google Maps) können jedoch Cookies dieser Anbieter in Ihrem Browser gesetzt werden. Bitte beachten Sie die Datenschutzhinweise der jeweiligen Anbieter. Über die Einstellungen Ihres Browsers können Sie das Setzen von Cookies jederzeit einschränken oder deaktivieren.
+                </p>
+            </div>
+
+            <!-- 8. Keine Analyse-Tools -->
+            <div class="imp-section">
+                <h2 class="imp-h2">8. Analyse- und Tracking-Tools</h2>
+                <p class="imp-p">
+                    Wir setzen auf dieser Website keine eigenen Analyse- oder Tracking-Tools ein (z. B. Google Analytics, Matomo o. Ä.). Es findet keine weitergehende Analyse Ihres Nutzerverhaltens durch uns statt.
+                </p>
+            </div>
+
+            <!-- 9. Rechte der Betroffenen -->
+            <div class="imp-section">
+                <h2 class="imp-h2">9. Ihre Rechte als betroffene Person</h2>
+                <p class="imp-p">
+                    Werden personenbezogene Daten von Ihnen verarbeitet, stehen Ihnen als betroffener Person folgende Rechte gegenüber dem Verantwortlichen zu:
+                </p>
+                <div class="imp-h3">Auskunftsrecht (Art. 15 DSGVO)</div>
+                <p class="imp-p">
+                    Sie haben das Recht, eine Bestätigung darüber zu verlangen, ob betreffende Daten verarbeitet werden, und eine Auskunft über diese Daten sowie weitere Informationen und eine Kopie der Daten zu erhalten.
+                </p>
+                <div class="imp-h3">Recht auf Berichtigung (Art. 16 DSGVO)</div>
+                <p class="imp-p">
+                    Sie haben das Recht, die Vervollständigung oder Berichtigung unrichtiger Sie betreffender Daten zu verlangen.
+                </p>
+                <div class="imp-h3">Recht auf Löschung (Art. 17 DSGVO)</div>
+                <p class="imp-p">
+                    Sie haben das Recht, die Löschung der Sie betreffenden personenbezogenen Daten zu verlangen, sofern kein gesetzlicher Aufbewahrungsgrund entgegensteht.
+                </p>
+                <div class="imp-h3">Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO)</div>
+                <p class="imp-p">
+                    Sie haben das Recht, die Einschränkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.
+                </p>
+                <div class="imp-h3">Recht auf Datenübertragbarkeit (Art. 20 DSGVO)</div>
+                <p class="imp-p">
+                    Sie haben das Recht, die Sie betreffenden personenbezogenen Daten, die Sie uns bereitgestellt haben, in einem strukturierten, gängigen und maschinenlesbaren Format zu erhalten oder die Übermittlung an einen anderen Verantwortlichen zu verlangen.
+                </p>
+                <div class="imp-h3">Widerspruchsrecht (Art. 21 DSGVO)</div>
+                <p class="imp-p">
+                    Sie haben das Recht, aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit gegen die Verarbeitung der Sie betreffenden personenbezogenen Daten, die auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO erfolgt, Widerspruch einzulegen. Wir verarbeiten die personenbezogenen Daten dann nicht mehr, es sei denn, es liegen zwingende schutzwürdige Gründe vor, die Ihre Interessen, Rechte und Freiheiten überwiegen.
+                </p>
+                <div class="imp-h3">Widerruf erteilter Einwilligungen</div>
+                <p class="imp-p">
+                    Sofern die Verarbeitung auf einer Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO beruht, haben Sie das Recht, diese jederzeit zu widerrufen. Die Rechtmäßigkeit der bis zum Widerruf erfolgten Verarbeitung bleibt davon unberührt.
+                </p>
+                <p class="imp-p" style="margin-top:1rem;">
+                    Zur Ausübung Ihrer Rechte wenden Sie sich bitte an:<br>
+                    <a href="mailto:info@cafe-quito.de">info@cafe-quito.de</a>
+                </p>
+            </div>
+
+            <!-- 10. Beschwerderecht -->
+            <div class="imp-section">
+                <h2 class="imp-h2">10. Beschwerderecht bei der Aufsichtsbehörde</h2>
+                <p class="imp-p">
+                    Unbeschadet eines anderweitigen verwaltungsrechtlichen oder gerichtlichen Rechtsbehelfs steht Ihnen das Recht auf Beschwerde bei einer Datenschutz-Aufsichtsbehörde zu, wenn Sie der Ansicht sind, dass die Verarbeitung der Sie betreffenden personenbezogenen Daten gegen die DSGVO verstößt (Art. 77 DSGVO).
+                </p>
+                <p class="imp-p">
+                    Zuständige Aufsichtsbehörde für Rheinland-Pfalz ist der:
+                </p>
+                <p class="imp-p">
+                    <strong>Landesbeauftragte für den Datenschutz und die Informationsfreiheit Rheinland-Pfalz (LfDI)</strong><br>
+                    Hintere Bleiche 34<br>
+                    55116 Mainz<br><br>
+                    Telefon: +49 6131 8920-0<br>
+                    E-Mail: <a href="mailto:poststelle@datenschutz.rlp.de">poststelle@datenschutz.rlp.de</a><br>
+                    Website: <a href="https://www.datenschutz.rlp.de" target="_blank" rel="noopener noreferrer">www.datenschutz.rlp.de</a>
+                </p>
+            </div>
+
+            <!-- 11. Aktualität -->
+            <div class="imp-section">
+                <h2 class="imp-h2">11. Aktualität und Änderung dieser Datenschutzerklärung</h2>
+                <p class="imp-p">
+                    Diese Datenschutzerklärung ist aktuell gültig und hat den Stand <strong>Mai 2026</strong>. Durch die Weiterentwicklung unserer Website oder aufgrund geänderter gesetzlicher bzw. behördlicher Vorgaben kann es notwendig werden, diese Datenschutzerklärung zu ändern. Die jeweils aktuelle Datenschutzerklärung kann jederzeit auf dieser Seite abgerufen werden.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="foot-inner">
+        <div class="foot-logo">
+            <img src="bilder/logo.png" alt="QUITO"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+            <span class="foot-logo-text">QUITO</span>
+        </div>
+        <div class="foot-info">
+            <p>Speyerer Straße 24, 67227 Frankenthal (Pfalz)</p>
+            <p>Mo–Fr 9–18 Uhr · Sa 9–16 Uhr</p>
+            <p><a href="mailto:info@cafe-quito.de">info@cafe-quito.de</a></p>
+        </div>
+        <a href="https://www.instagram.com" target="_blank" rel="noopener" class="foot-social" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/></svg>
+            @cafe.quito
+        </a>
+        <div class="foot-divider"></div>
+        <div class="foot-bottom">
+            <p class="foot-copy">© 2026 Café QUITO <span class="foot-credit-sep">·</span> <span class="foot-credit foot-credit-inline">Webdesign by Dominik Orth</span></p>
+            <ul class="foot-links">
+                <li><a href="impressum.html">Impressum</a></li>
+                <li><a href="datenschutz.html" aria-current="page">Datenschutz</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const subMenu = document.getElementById('subMenu');
+    const subOverlay = document.getElementById('subOverlay');
+    const subToggle = document.getElementById('subToggle');
+    const closeSub = () => { subMenu.classList.remove('open'); subOverlay.classList.remove('open'); subToggle.setAttribute('aria-expanded','false'); document.body.style.overflow = ''; };
+    const openSub  = () => { subMenu.classList.add('open'); subOverlay.classList.add('open'); subToggle.setAttribute('aria-expanded','true'); document.body.style.overflow = 'hidden'; };
+    subToggle.addEventListener('click', () => { subMenu.classList.contains('open') ? closeSub() : openSub(); });
+    document.getElementById('subClose').addEventListener('click', closeSub);
+    subOverlay.addEventListener('click', closeSub);
+    subMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', closeSub));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSub(); });
+</script>
+</body>
+</html>
