@@ -58,10 +58,10 @@
         }
         .nav-inner { width: 100%; max-width: var(--max); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; position: relative; }
         .nav-inner > a { position: absolute; left: 50%; transform: translateX(-50%); }
-        .logo-img  { height: 38px; width: auto; display: block; }
+        .logo-img  { height: 34px; width: auto; display: block; }
         .logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.35rem; letter-spacing: .12em; text-transform: uppercase; background: var(--black); color: #fff; padding: .3em .85em; border-radius: 999px; display: none; }
-        /* Nav actions (right side) */
-        .nav-actions { display: flex; align-items: center; gap: .75rem; }
+        /* Nav actions */
+        .nav-actions { display: flex; align-items: center; gap: .75rem; position: absolute; left: 0; }
         .nav-pill {
             font-family: var(--font-b); font-size: .8rem; font-weight: 500;
             letter-spacing: .07em; text-transform: uppercase;
@@ -72,7 +72,7 @@
         .nav-pill:hover { border-color: var(--terracotta); color: var(--terracotta); }
         .nav-pill.active { border-color: var(--terracotta); color: var(--terracotta); }
         .nav-sub-toggle {
-            width: 48px; height: 48px; border-radius: 50%;
+            width: 42px; height: 42px; border-radius: 50%;
             border: 1.5px solid rgba(26,26,26,.25); background: transparent;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             gap: 4px; cursor: pointer; transition: border-color .2s;
@@ -219,8 +219,8 @@
         .foot-credit-block { display: none; }
 
         @media (max-width: 768px) {
+            .nav-sub-toggle { width: 38px; height: 38px; }
             .nav-pill { display: none; }
-            .nav-actions { position: absolute; left: var(--pad); right: auto; }
             .menu-grid { grid-template-columns: 1fr; gap: 0; }
             .mi { flex-direction: column; align-items: flex-start; gap: .35rem; }
             .mi-price { white-space: normal; text-align: left; }
