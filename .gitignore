@@ -8,3 +8,10 @@ skills-lock.json
 hero.JPG
 IMG_1863.jpeg
 .vercel
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
