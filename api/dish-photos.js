@@ -28,12 +28,24 @@ async function readJsonBody(req) {
   return null;
 }
 
+function blobErrorMessage(err) {
+  const msg = err && err.message ? err.message : '';
+  if (msg.includes('No blob credentials') || msg.includes('BLOB_READ_WRITE_TOKEN')) {
+    return 'Kein Blob-Store verbunden — im Vercel-Projekt unter Storage einen Blob-Store anlegen und mit diesem Projekt verknüpfen, dann neu deployen.';
+  }
+  return 'Foto-Speicher ist gerade nicht erreichbar. Bitte später erneut versuchen.';
+}
+
 export default async function handler(req, res) {
   if (req.method === 'GET') {
-    const { blobs } = await list({ prefix: PREFIX });
-    return res.status(200).json({
-      photos: blobs.map((b) => ({ pathname: b.pathname, url: b.url })),
-    });
+    try {
+      const { blobs } = await list({ prefix: PREFIX });
+      return res.status(200).json({
+        photos: blobs.map((b) => ({ pathname: b.pathname, url: b.url })),
+      });
+    } catch (err) {
+      return res.status(502).json({ error: blobErrorMessage(err) });
+    }
   }
 
   if (req.method === 'POST') {
@@ -48,13 +60,17 @@ export default async function handler(req, res) {
     if (!buffer) return res.status(400).json({ error: 'image must be a JPEG data URL' });
     if (buffer.byteLength > MAX_IMAGE_BYTES) return res.status(413).json({ error: 'Bild zu groß' });
 
-    const blob = await put(pathname, buffer, {
-      access: 'public',
-      contentType: 'image/jpeg',
-      addRandomSuffix: false,
-      allowOverwrite: true,
-    });
-    return res.status(200).json({ url: blob.url });
+    try {
+      const blob = await put(pathname, buffer, {
+        access: 'public',
+        contentType: 'image/jpeg',
+        addRandomSuffix: false,
+        allowOverwrite: true,
+      });
+      return res.status(200).json({ url: blob.url });
+    } catch (err) {
+      return res.status(502).json({ error: blobErrorMessage(err) });
+    }
   }
 
   if (req.method === 'DELETE') {
@@ -65,8 +81,12 @@ export default async function handler(req, res) {
     const pathname = pathFor(body.name);
     if (!pathname) return res.status(400).json({ error: 'name is required' });
 
-    await del(pathname);
-    return res.status(200).json({ ok: true });
+    try {
+      await del(pathname);
+      return res.status(200).json({ ok: true });
+    } catch (err) {
+      return res.status(502).json({ error: blobErrorMessage(err) });
+    }
   }
 
   res.setHeader('Allow', 'GET, POST, DELETE');
