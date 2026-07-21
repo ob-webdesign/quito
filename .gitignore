@@ -8,3 +8,8 @@ skills-lock.json
 hero.JPG
 IMG_1863.jpeg
 .vercel
+
+# Node
+node_modules/
+.env
+.env*.local

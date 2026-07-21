@@ -585,24 +585,50 @@
     lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
 
     // ── ADMIN AUTH ────────────────────────────────────────────
-    const ADMIN_PW   = 'quito2026';          // ← Passwort hier ändern
-    const ADMIN_KEY  = 'quito_admin_session';
-    const isAdmin    = () => sessionStorage.getItem(ADMIN_KEY) === '1';
-    const setAdmin   = () => { sessionStorage.setItem(ADMIN_KEY, '1'); document.body.classList.add('admin-mode'); document.getElementById('adminBadge').classList.add('visible'); };
+    // Das Passwort wird serverseitig geprüft (api/dish-auth.js) und lebt dort in der
+    // Env-Var DISH_ADMIN_PASSWORD — hier im Client steht es nicht mehr im Klartext.
+    const ADMIN_KEY  = 'quito_admin_token';
+    const getToken   = () => sessionStorage.getItem(ADMIN_KEY) || '';
+    const tokenValid = t => { const exp = Number((t || '').split('.')[0]); return Number.isFinite(exp) && exp > Date.now(); };
+    const isAdmin    = () => tokenValid(getToken());
+    const setAdmin   = token => { sessionStorage.setItem(ADMIN_KEY, token); document.body.classList.add('admin-mode'); document.getElementById('adminBadge').classList.add('visible'); };
+    const clearAdmin = () => { sessionStorage.removeItem(ADMIN_KEY); document.body.classList.remove('admin-mode'); document.getElementById('adminBadge').classList.remove('visible'); };
 
     const adminModal  = document.getElementById('adminModal');
     const adminPw     = document.getElementById('adminPw');
     const adminPwErr  = document.getElementById('adminPwErr');
+    const adminOkBtn  = document.getElementById('adminOk');
+    const showAdminErr = msg => { adminPwErr.textContent = msg; adminPwErr.style.display = 'block'; };
     const openAdminModal  = () => { adminPw.value = ''; adminPwErr.style.display = 'none'; adminModal.classList.add('open'); document.body.style.overflow = 'hidden'; setTimeout(() => adminPw.focus(), 50); };
     const closeAdminModal = () => { adminModal.classList.remove('open'); document.body.style.overflow = ''; };
 
     document.getElementById('adminCancel').addEventListener('click', closeAdminModal);
     adminModal.addEventListener('click', e => { if (e.target === adminModal) closeAdminModal(); });
-    document.getElementById('adminOk').addEventListener('click', () => {
-        if (adminPw.value === ADMIN_PW) { setAdmin(); closeAdminModal(); }
-        else { adminPwErr.style.display = 'block'; adminPw.value = ''; adminPw.focus(); }
-    });
-    adminPw.addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('adminOk').click(); });
+    async function tryLogin() {
+        adminOkBtn.disabled = true;
+        try {
+            const res = await fetch('/api/dish-auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: adminPw.value }),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (res.ok && data.token) {
+                setAdmin(data.token);
+                closeAdminModal();
+                loadDishPhotos(); // Admin-Platzhalter für leere Gerichte einblenden
+            } else {
+                showAdminErr(data.error || 'Falsches Passwort');
+                adminPw.value = ''; adminPw.focus();
+            }
+        } catch {
+            showAdminErr('Verbindung fehlgeschlagen — bitte erneut versuchen');
+        } finally {
+            adminOkBtn.disabled = false;
+        }
+    }
+    adminOkBtn.addEventListener('click', tryLogin);
+    adminPw.addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
 
     // Footer-Logo: 5× klicken → Admin-Modal
     let logoTaps = 0, logoTimer;
@@ -615,8 +641,19 @@
         if (logoTaps >= 5) { logoTaps = 0; openAdminModal(); }
     });
     if (isAdmin()) { document.body.classList.add('admin-mode'); document.getElementById('adminBadge').classList.add('visible'); }
+    else { sessionStorage.removeItem(ADMIN_KEY); } // abgelaufenes Token aufräumen
 
-    // ── BILD-UPLOAD ───────────────────────────────────────────
+    // ── BILD-UPLOAD (persistiert für alle Besucher:innen via Vercel Blob) ──────
+    // slugify() muss exakt zum serverseitigen Pendant in api/_dish-utils.js passen.
+    function slugify(name) {
+        return String(name)
+            .normalize('NFKD')
+            .replace(/[̀-ͯ]/g, '')
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    }
+
     const imgInput = document.createElement('input');
     imgInput.type = 'file'; imgInput.accept = 'image/*'; imgInput.style.display = 'none';
     document.body.appendChild(imgInput);
@@ -636,11 +673,24 @@
         if (p) p.src = '';
     }
 
-    // localStorage-Restore beim Laden
-    document.querySelectorAll('.mi-img-btn').forEach(btn => {
-        const saved = localStorage.getItem('quito_dish_' + btn.dataset.name);
-        if (saved) setPreview(btn, saved);
-    });
+    // Bestehende Foto-URLs beim Laden abrufen — sichtbar für alle Besucher:innen,
+    // nicht nur im Browser der Person, die das Foto hochgeladen hat.
+    async function loadDishPhotos() {
+        let photos;
+        try {
+            const res = await fetch('/api/dish-photos');
+            if (!res.ok) return;
+            ({ photos } = await res.json());
+        } catch {
+            return; // Speisekarte funktioniert auch ohne Fotos weiter
+        }
+        const byPath = new Map(photos.map(p => [p.pathname, p.url]));
+        document.querySelectorAll('.mi-img-btn').forEach(btn => {
+            const url = byPath.get(`dishes/${slugify(btn.dataset.name)}.jpg`);
+            if (url) setPreview(btn, url);
+        });
+    }
+    loadDishPhotos();
 
     // Thumbnail-Klick
     document.querySelectorAll('.mi-img-btn').forEach(btn => {
@@ -671,6 +721,44 @@
         });
     }
 
+    async function uploadDishPhoto(btn, file) {
+        const token = getToken();
+        if (!tokenValid(token)) { clearAdmin(); alert('Admin-Sitzung abgelaufen. Bitte erneut anmelden.'); return; }
+        const dataUrl = await compressImage(file);
+        setPreview(btn, dataUrl); // sofortige Vorschau, während der Upload läuft
+        try {
+            const res = await fetch('/api/dish-photos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: btn.dataset.name, image: dataUrl, token }),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) throw new Error(data.error || 'Upload fehlgeschlagen');
+            setPreview(btn, data.url); // finale, dauerhafte URL
+        } catch (err) {
+            clearPreview(btn);
+            alert('Foto konnte nicht gespeichert werden: ' + err.message);
+        }
+    }
+
+    async function removeDishPhoto(btn) {
+        const token = getToken();
+        if (!tokenValid(token)) { clearAdmin(); alert('Admin-Sitzung abgelaufen. Bitte erneut anmelden.'); return; }
+        const previousSrc = btn.dataset.src;
+        clearPreview(btn);
+        try {
+            const res = await fetch('/api/dish-photos', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: btn.dataset.name, token }),
+            });
+            if (!res.ok) throw new Error();
+        } catch {
+            setPreview(btn, previousSrc); // Löschen fehlgeschlagen → Zustand zurücksetzen
+            alert('Foto konnte nicht entfernt werden.');
+        }
+    }
+
     // Datei ausgewählt
     imgInput.addEventListener('change', async () => {
         const file = imgInput.files[0];
@@ -678,9 +766,7 @@
         const btn = activeBtn;
         activeBtn = null;
         imgInput.value = '';
-        const src = await compressImage(file);
-        setPreview(btn, src);
-        try { localStorage.setItem('quito_dish_' + btn.dataset.name, src); } catch(err) { alert('Bild zu groß für den Browser-Speicher. Bitte ein kürzeres Foto wählen.'); }
+        await uploadDishPhoto(btn, file);
     });
 
     // Lightbox Admin-Aktionen
@@ -691,7 +777,7 @@
     });
     document.getElementById('miLbRemove').addEventListener('click', () => {
         const btn = document.querySelector(`.mi-img-btn[data-name="${lbCap.textContent}"]`);
-        if (btn) { clearPreview(btn); try { localStorage.removeItem('quito_dish_' + btn.dataset.name); } catch(err) {} }
+        if (btn) removeDishPhoto(btn);
         closeLb();
     });
 </script>
