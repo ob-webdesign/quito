@@ -492,6 +492,13 @@
         .admin-add-photo:hover { background: rgba(244,239,230,.2); }
         body.admin-mode .admin-add-photo { display: inline-flex; }
 
+        /* Admin-Button "Foto löschen" direkt in der Slideshow-Bar */
+        .admin-delete-photo { display: none; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 999px; color: var(--warm-white); background: rgba(244,239,230,.12); border: 1px solid rgba(244,239,230,.25); cursor: pointer; }
+        .admin-delete-photo svg { width: 14px; height: 14px; }
+        .admin-delete-photo:hover { background: rgba(196,121,58,.35); border-color: var(--terracotta); }
+        .admin-delete-photo:disabled { opacity: .5; cursor: default; }
+        body.admin-mode .admin-delete-photo { display: inline-flex; }
+
         /* Admin-Bearbeiten-Button in der Lightbox */
         .lb-edit { display: none; align-items: center; gap: .4rem; font-family: var(--font-b); font-size: .68rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--warm-white); background: rgba(244,239,230,.12); border: 1px solid rgba(244,239,230,.25); padding: .45em 1em; border-radius: 999px; cursor: pointer; margin-top: .8rem; }
         body.admin-mode .lb-edit { display: inline-flex; }
@@ -544,6 +551,9 @@
         </a>
         <span class="bar-label">Galerie</span>
         <div class="bar-right">
+            <button class="admin-delete-photo" id="deletePhotoBtn" type="button" aria-label="Foto löschen">
+                <svg viewBox="0 0 14 14"><path d="M2 3.5h10M5 3.5V2h4v1.5M3 3.5l.5 8.5h7l.5-8.5" stroke="currentColor" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
             <button class="admin-add-photo" id="addPhotoBtn" type="button">+ Foto</button>
             <div class="counter">
                 <span class="counter-cur" id="counterCur">01</span>
@@ -1379,17 +1389,18 @@ window.ALBEN_DATA = {
         renderFromState();
     });
 
-    photoEditDelete.addEventListener('click', async function () {
-        if (!confirm('Foto wirklich löschen?')) return;
-        var photo = ALL_PHOTOS.find(function (p) { return p.id === editingPhotoId; });
-        if (!photo) return;
+    // Löscht ein Foto (Metadaten + ggf. Blob-Datei) und rendert die Ansicht neu.
+    // Gibt true zurück bei Erfolg, false wenn abgebrochen/fehlgeschlagen.
+    async function deletePhoto(photoId, busyBtn) {
+        var photo = ALL_PHOTOS.find(function (p) { return p.id === photoId; });
+        if (!photo) return false;
         var prevPhotos = ALL_PHOTOS;
-        ALL_PHOTOS = ALL_PHOTOS.filter(function (p) { return p.id !== editingPhotoId; });
+        ALL_PHOTOS = ALL_PHOTOS.filter(function (p) { return p.id !== photoId; });
 
-        photoEditDelete.disabled = true;
+        if (busyBtn) busyBtn.disabled = true;
         var ok = await saveGalleryData();
-        photoEditDelete.disabled = false;
-        if (!ok) { ALL_PHOTOS = prevPhotos; return; }
+        if (busyBtn) busyBtn.disabled = false;
+        if (!ok) { ALL_PHOTOS = prevPhotos; return false; }
 
         if (photo.source === 'blob') {
             var token = getToken();
@@ -1401,9 +1412,24 @@ window.ALBEN_DATA = {
                 });
             } catch (err) { /* Metadaten sind bereits entfernt; Datei-Löschung best effort */ }
         }
+        renderFromState();
+        return true;
+    }
+
+    photoEditDelete.addEventListener('click', async function () {
+        if (!confirm('Foto wirklich löschen?')) return;
+        var deleted = await deletePhoto(editingPhotoId, photoEditDelete);
+        if (!deleted) return;
         closePhotoEditModal();
         closeLb();
-        renderFromState();
+    });
+
+    var deletePhotoBtn = document.getElementById('deletePhotoBtn');
+    deletePhotoBtn.addEventListener('click', async function () {
+        var s = SLIDES[current];
+        if (!s || !s.photo) return;
+        if (!confirm('Foto „' + (s.photo.title || 'ohne Titel') + '" wirklich löschen?')) return;
+        await deletePhoto(s.photo.id, deletePhotoBtn);
     });
 
     // ── FOTO HOCHLADEN (persistiert für alle Besucher:innen via Vercel Blob) ──
@@ -1427,15 +1453,15 @@ window.ALBEN_DATA = {
 
     var addPhotoBtn = document.getElementById('addPhotoBtn');
     var galleryImgInput = document.createElement('input');
-    galleryImgInput.type = 'file'; galleryImgInput.accept = 'image/*'; galleryImgInput.style.display = 'none';
+    galleryImgInput.type = 'file'; galleryImgInput.accept = 'image/*'; galleryImgInput.multiple = true; galleryImgInput.style.display = 'none';
     document.body.appendChild(galleryImgInput);
 
     addPhotoBtn.addEventListener('click', function () { galleryImgInput.click(); });
 
     galleryImgInput.addEventListener('change', async function () {
-        var file = galleryImgInput.files[0];
+        var files = Array.prototype.slice.call(galleryImgInput.files);
         galleryImgInput.value = '';
-        if (!file) return;
+        if (!files.length) return;
 
         var token = getToken();
         if (!tokenValid(token)) { clearAdmin(); alert('Admin-Sitzung abgelaufen. Bitte erneut anmelden.'); return; }
@@ -1444,35 +1470,48 @@ window.ALBEN_DATA = {
         var targetAlbum = s.album && ALBEN[s.album] ? s.album : 'sonstige';
 
         addPhotoBtn.disabled = true;
+        var btnLabel = addPhotoBtn.textContent;
+        var prevPhotos = ALL_PHOTOS;
+        var failed = [];
         try {
-            var compressed = await compressImage(file);
-            var res = await fetch('/api/gallery-photos', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ image: compressed.dataUrl, token: token }),
-            });
-            var data = await res.json().catch(function () { return {}; });
-            if (!res.ok) throw new Error(data.error || 'Upload fehlgeschlagen');
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                addPhotoBtn.textContent = '+ Foto (' + (i + 1) + '/' + files.length + ')';
+                try {
+                    var compressed = await compressImage(file);
+                    var res = await fetch('/api/gallery-photos', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ image: compressed.dataUrl, token: token }),
+                    });
+                    var data = await res.json().catch(function () { return {}; });
+                    if (!res.ok) throw new Error(data.error || 'Upload fehlgeschlagen');
 
-            var prevPhotos = ALL_PHOTOS;
-            var newPhoto = {
-                id: data.id,
-                src: data.url,
-                source: 'blob',
-                title: file.name.replace(/\.[^.]+$/, ''),
-                cat: ALBEN[targetAlbum] ? ALBEN[targetAlbum].title : '',
-                orient: compressed.orient,
-                album: targetAlbum,
-                subalbum: null,
-            };
-            ALL_PHOTOS = ALL_PHOTOS.concat([newPhoto]);
-            var ok = await saveGalleryData();
-            if (!ok) { ALL_PHOTOS = prevPhotos; return; }
-            renderFromState();
-        } catch (err) {
-            alert('Foto konnte nicht hochgeladen werden: ' + err.message);
+                    var newPhoto = {
+                        id: data.id,
+                        src: data.url,
+                        source: 'blob',
+                        title: file.name.replace(/\.[^.]+$/, ''),
+                        cat: ALBEN[targetAlbum] ? ALBEN[targetAlbum].title : '',
+                        orient: compressed.orient,
+                        album: targetAlbum,
+                        subalbum: null,
+                    };
+                    ALL_PHOTOS = ALL_PHOTOS.concat([newPhoto]);
+                } catch (err) {
+                    failed.push(file.name + ': ' + err.message);
+                }
+            }
+
+            if (ALL_PHOTOS !== prevPhotos) {
+                var ok = await saveGalleryData();
+                if (!ok) { ALL_PHOTOS = prevPhotos; return; }
+                renderFromState();
+            }
+            if (failed.length) alert('Manche Fotos konnten nicht hochgeladen werden:\n' + failed.join('\n'));
         } finally {
             addPhotoBtn.disabled = false;
+            addPhotoBtn.textContent = btnLabel;
         }
     });
 
