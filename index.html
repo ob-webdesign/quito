@@ -67,7 +67,7 @@
         .nav-inner { width: 100%; max-width: var(--max); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; position: relative; }
         .nav-inner > a { position: absolute; left: 50%; transform: translateX(-50%); }
 
-        .logo-img  { height: 34px; width: auto; display: block; }
+        .logo-img  { height: 30px; width: auto; display: block; }
         .logo-text {
             font-family: var(--font-b); font-weight: 700; font-size: 1.35rem;
             letter-spacing: .12em; text-transform: uppercase;
@@ -477,6 +477,15 @@
         }
         @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
 
+        .hero-badge-cash {
+            left: auto; right: var(--pad);
+            cursor: default;
+        }
+        .hero-badge-cash svg { width: 14px; height: 14px; flex-shrink: 0; stroke: rgba(255,255,255,.85); fill: none; stroke-width: 1.6; }
+        @media (max-width: 480px) {
+            .hero-badge-cash { left: var(--pad); right: auto; top: calc(var(--nav-h) + env(safe-area-inset-top) + 3.4rem); }
+        }
+
         /* === ABOUT QUOTE DECO === */
         .about-quote {
             font-family: var(--font-d); font-size: clamp(1.3rem,2.2vw,1.8rem);
@@ -527,7 +536,7 @@
             <span class="logo-text">QUITO</span>
         </a>
         <div class="nav-actions">
-            <a href="speisekarte.html" class="nav-pill">Speisekarte</a>
+            <a href="speisekarte.html" class="nav-pill" style="display:none">Speisekarte</a>
             <button class="nav-sub-toggle" id="subToggle" aria-label="Menü öffnen" aria-expanded="false">
                 <span></span><span></span><span></span>
             </button>
@@ -565,6 +574,11 @@
         <img class="hero-media" src="bilder/hero.WEBP" alt="Café QUITO — Innenansicht mit leuchtendem Logo" fetchpriority="high" decoding="async">
     </picture>
     <div class="hero-overlay"></div>
+
+    <div class="hero-badge hero-badge-cash" aria-label="Hinweis: nur Barzahlung möglich">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+        <span>Nur Barzahlung</span>
+    </div>
 
     <a href="#kontakt" class="hero-badge" id="heroBadge">
         <span class="hero-badge-dot"></span>
@@ -639,6 +653,10 @@
                     <div class="cb reveal d3">
                         <div class="cb-label">Reservierung</div>
                         <a href="tel:+4962333039095" class="btn btn-fill" style="margin-top:.4rem;display:inline-flex;">Tisch reservieren</a>
+                    </div>
+                    <div class="cb reveal d3">
+                        <div class="cb-label">Zahlung</div>
+                        <div class="cb-content">Bei uns wird ausschließlich bar bezahlt.</div>
                     </div>
                 </div>
             </div>
