@@ -1,4 +1,4 @@
-import { checkPassword, createSessionToken } from './_dish-utils.js';
+import { checkPassword, createSessionToken } from './_admin-utils.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

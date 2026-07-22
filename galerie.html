@@ -122,6 +122,8 @@
             animation: fadeIn .9s var(--ease) .2s forwards;
         }
 
+        .bar-right { display: flex; align-items: center; gap: .9rem; }
+
         .back-link {
             font-family: var(--font-b);
             font-size: .68rem;
@@ -454,6 +456,61 @@
             .foot-credit-inline, .foot-credit-sep { display: none; }
             .foot-credit-block { display: block; text-align: center; margin-top: calc(-0.6rem + .15rem); }
         }
+
+        /* === ADMIN === */
+        .gallery-admin-trigger { display: flex; justify-content: center; padding: 3rem 0 .5rem; cursor: default; }
+        .gallery-admin-trigger img { height: 22px; filter: invert(1) brightness(1.6); opacity: .35; }
+
+        .admin-modal { position: fixed; inset: 0; background: rgba(11,9,6,.88); z-index: 9500; display: flex; align-items: center; justify-content: center; padding: 1.5rem; opacity: 0; pointer-events: none; transition: opacity .2s; }
+        .admin-modal.open { opacity: 1; pointer-events: all; }
+        .admin-box { background: var(--warm-white); border-radius: 16px; padding: 2rem; max-width: 340px; width: 100%; box-shadow: 0 24px 64px rgba(0,0,0,.4); }
+        .admin-box h3 { font-family: var(--font-b); font-weight: 700; font-size: 1.2rem; color: var(--black); margin-bottom: .3rem; }
+        .admin-box p { font-family: var(--font-b); font-size: .82rem; color: #6b6459; margin-bottom: 1.2rem; }
+        .admin-pw { width: 100%; padding: .7em 1em; border: 1.5px solid rgba(11,9,6,.2); border-radius: 8px; font-family: var(--font-b); font-size: 1rem; outline: none; background: #fff; color: var(--black); transition: border-color .2s; }
+        .admin-pw:focus { border-color: var(--terracotta); }
+        .admin-pw-err { font-family: var(--font-b); font-size: .78rem; color: var(--terracotta); margin-top: .4rem; display: none; }
+        .admin-btns { display: flex; gap: .6rem; margin-top: 1rem; }
+        .admin-btn { flex: 1; padding: .65em 0; border-radius: 8px; font-family: var(--font-b); font-size: .85rem; font-weight: 600; cursor: pointer; transition: background .2s; border: none; }
+        .admin-btn.ok { background: var(--black); color: #fff; }
+        .admin-btn.ok:hover { background: #2a231b; }
+        .admin-btn.cancel { background: transparent; color: #6b6459; border: 1.5px solid rgba(11,9,6,.2); }
+        .admin-btn.cancel:hover { border-color: var(--black); color: var(--black); }
+        .admin-badge { position: fixed; bottom: 1.2rem; right: 1.2rem; background: var(--terracotta); color: #fff; font-family: var(--font-b); font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: .4em .9em; border-radius: 999px; opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 9400; }
+        .admin-badge.visible { opacity: 1; }
+
+        /* Admin-Overlay auf Album-Kacheln (Positionierung relativ zu .album-tile-media) */
+        .album-tile-edit { display: none; position: absolute; top: .7rem; right: .7rem; z-index: 2; width: 34px; height: 34px; border-radius: 999px; background: rgba(11,9,6,.65); border: 1px solid rgba(244,239,230,.3); backdrop-filter: blur(3px); align-items: center; justify-content: center; cursor: pointer; }
+        .album-tile-edit svg { width: 15px; height: 15px; stroke: var(--warm-white); fill: none; stroke-width: 1.6; }
+        body.admin-mode .album-tile-edit { display: flex; }
+        .album-tile-new { display: none; border: 1.5px dashed rgba(244,239,230,.3); border-radius: 6px; aspect-ratio: 4/5; align-items: center; justify-content: center; flex-direction: column; gap: .6rem; cursor: pointer; color: var(--muted); font-family: var(--font-b); font-size: .8rem; text-align: center; background: transparent; }
+        .album-tile-new:hover { border-color: var(--terracotta); color: var(--warm-white); }
+        .album-tile-new-plus { font-size: 2rem; line-height: 1; font-weight: 300; }
+        body.admin-mode .album-tile-new { display: flex; }
+
+        /* Admin-Button "Foto hinzufügen" in der Slideshow-Bar */
+        .admin-add-photo { display: none; align-items: center; gap: .4rem; font-family: var(--font-b); font-size: .68rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--warm-white); background: rgba(244,239,230,.12); border: 1px solid rgba(244,239,230,.25); padding: .5em 1em; border-radius: 999px; cursor: pointer; }
+        .admin-add-photo:hover { background: rgba(244,239,230,.2); }
+        body.admin-mode .admin-add-photo { display: inline-flex; }
+
+        /* Admin-Bearbeiten-Button in der Lightbox */
+        .lb-edit { display: none; align-items: center; gap: .4rem; font-family: var(--font-b); font-size: .68rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--warm-white); background: rgba(244,239,230,.12); border: 1px solid rgba(244,239,230,.25); padding: .45em 1em; border-radius: 999px; cursor: pointer; margin-top: .8rem; }
+        body.admin-mode .lb-edit { display: inline-flex; }
+
+        /* Album/Foto-Bearbeiten-Modal (teilt Optik mit dem Login-Modal) */
+        .edit-modal { position: fixed; inset: 0; background: rgba(11,9,6,.88); z-index: 9500; display: flex; align-items: center; justify-content: center; padding: 1.5rem; opacity: 0; pointer-events: none; transition: opacity .2s; }
+        .edit-modal.open { opacity: 1; pointer-events: all; }
+        .edit-box { background: var(--warm-white); border-radius: 16px; padding: 2rem; max-width: 400px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 24px 64px rgba(0,0,0,.4); }
+        .edit-box h3 { font-family: var(--font-b); font-weight: 700; font-size: 1.2rem; color: var(--black); margin-bottom: 1.2rem; }
+        .edit-field { margin-bottom: 1rem; }
+        .edit-field label { display: block; font-family: var(--font-b); font-size: .72rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: #6b6459; margin-bottom: .4rem; }
+        .edit-field input, .edit-field select { width: 100%; padding: .65em .9em; border: 1.5px solid rgba(11,9,6,.2); border-radius: 8px; font-family: var(--font-b); font-size: .95rem; outline: none; background: #fff; color: var(--black); transition: border-color .2s; }
+        .edit-field input:focus, .edit-field select:focus { border-color: var(--terracotta); }
+        .edit-btns { display: flex; gap: .6rem; margin-top: 1.3rem; }
+        .edit-btn-delete { width: 100%; margin-top: .6rem; padding: .6em 0; border-radius: 8px; background: transparent; border: 1.5px solid rgba(196,121,58,.5); color: var(--terracotta); font-family: var(--font-b); font-size: .82rem; font-weight: 600; cursor: pointer; }
+        .edit-btn-delete:hover { background: rgba(196,121,58,.1); }
+        .edit-cover-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; max-height: 160px; overflow-y: auto; }
+        .edit-cover-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px; cursor: pointer; border: 2px solid transparent; opacity: .6; }
+        .edit-cover-grid img.selected { border-color: var(--terracotta); opacity: 1; }
     </style>
 </head>
 <body>
@@ -486,10 +543,13 @@
             <span class="line"></span>Zurück
         </a>
         <span class="bar-label">Galerie</span>
-        <div class="counter">
-            <span class="counter-cur" id="counterCur">01</span>
-            <span class="counter-sep">/</span>
-            <span class="counter-tot" id="counterTot">07</span>
+        <div class="bar-right">
+            <button class="admin-add-photo" id="addPhotoBtn" type="button">+ Foto</button>
+            <div class="counter">
+                <span class="counter-cur" id="counterCur">01</span>
+                <span class="counter-sep">/</span>
+                <span class="counter-tot" id="counterTot">07</span>
+            </div>
         </div>
     </div>
 
@@ -521,6 +581,7 @@
                 <span class="lb-title" id="lbTitle"></span>
                 <span class="lb-cat"   id="lbCat"></span>
             </div>
+            <button class="lb-edit" id="lbEditBtn" type="button">Foto bearbeiten</button>
         </div>
     </div>
 
@@ -536,9 +597,77 @@
         <p class="album-view-sub" id="albumViewSub"></p>
     </div>
     <div class="album-grid" id="albumGrid"></div>
+
+    <!-- Admin-Login-Trigger: 5x klicken öffnet das Admin-Modal -->
+    <div class="gallery-admin-trigger" id="galleryAdminTrigger">
+        <img src="../bilder/logo.png" alt="QUITO" onerror="this.style.display='none'">
+    </div>
 </main>
 
-<!-- GALERIE-DATEN (wird von scripts/update-galerie.sh aktualisiert) -->
+<!-- Admin login modal -->
+<div class="admin-modal" id="adminModal">
+    <div class="admin-box">
+        <h3>Admin-Zugang</h3>
+        <p>Nur für berechtigte Mitarbeiter</p>
+        <input class="admin-pw" id="adminPw" type="password" placeholder="Passwort" autocomplete="current-password">
+        <div class="admin-pw-err" id="adminPwErr">Falsches Passwort</div>
+        <div class="admin-btns">
+            <button class="admin-btn cancel" id="adminCancel">Abbrechen</button>
+            <button class="admin-btn ok" id="adminOk">Anmelden</button>
+        </div>
+    </div>
+</div>
+<div class="admin-badge" id="adminBadge">Admin</div>
+
+<!-- Album anlegen/bearbeiten -->
+<div class="edit-modal" id="albumEditModal">
+    <div class="edit-box">
+        <h3 id="albumEditTitle">Album bearbeiten</h3>
+        <div class="edit-field">
+            <label for="albumEditName">Titel</label>
+            <input id="albumEditName" type="text" placeholder="z. B. Café &amp; Interieur">
+        </div>
+        <div class="edit-field">
+            <label for="albumEditOrder">Reihenfolge</label>
+            <input id="albumEditOrder" type="number" min="1" step="1">
+        </div>
+        <div class="edit-field" id="albumEditCoverField">
+            <label>Cover-Bild</label>
+            <div class="edit-cover-grid" id="albumEditCoverGrid"></div>
+        </div>
+        <div class="edit-btns">
+            <button class="admin-btn cancel" id="albumEditCancel">Abbrechen</button>
+            <button class="admin-btn ok" id="albumEditSave">Speichern</button>
+        </div>
+        <button class="edit-btn-delete" id="albumEditDelete">Album löschen</button>
+    </div>
+</div>
+
+<!-- Foto bearbeiten -->
+<div class="edit-modal" id="photoEditModal">
+    <div class="edit-box">
+        <h3>Foto bearbeiten</h3>
+        <div class="edit-field">
+            <label for="photoEditTitle">Titel</label>
+            <input id="photoEditTitle" type="text">
+        </div>
+        <div class="edit-field">
+            <label for="photoEditCat">Kategorie</label>
+            <input id="photoEditCat" type="text">
+        </div>
+        <div class="edit-field">
+            <label for="photoEditAlbum">Album</label>
+            <select id="photoEditAlbum"></select>
+        </div>
+        <div class="edit-btns">
+            <button class="admin-btn cancel" id="photoEditCancel">Abbrechen</button>
+            <button class="admin-btn ok" id="photoEditSave">Speichern</button>
+        </div>
+        <button class="edit-btn-delete" id="photoEditDelete">Foto löschen</button>
+    </div>
+</div>
+
+<!-- GALERIE-DATEN (wird von scripts/update-galerie.sh aktualisiert, dient nur als Offline-Fallback) -->
 <script id="galerie-data">
 window.GALERIE_DATA = [
   {"src": "hero.WEBP", "title": "Das Café", "cat": "Interieur", "orient": "landscape", "album": "interieur", "subalbum": null},
@@ -555,15 +684,15 @@ window.GALERIE_DATA = [
 <!-- ALBEN-DATEN (wird von scripts/update-galerie.sh aktualisiert) -->
 <script id="alben-data">
 window.ALBEN_DATA = {
-  "interieur": {
-    "title": "Café & Interieur",
-    "order": 1,
-    "cover": "hero.WEBP"
-  },
   "kaffee-kueche": {
     "title": "Kaffee & Küche",
     "order": 2,
     "cover": "kaffee.jpeg"
+  },
+   "interieur": {
+    "title": "Café & Interieur",
+    "order": 1,
+    "cover": "hero.WEBP"
   },
   "team-geschichte": {
     "title": "Team & Geschichte",
@@ -610,9 +739,54 @@ window.ALBEN_DATA = {
 
     function fmt(n) { return n < 10 ? '0' + n : '' + n; }
 
-    // Bilddaten aus Inline-Variablen laden (via scripts/update-galerie.sh aktuell gehalten)
-    var ALL_PHOTOS = window.GALERIE_DATA || [];
-    var ALBEN      = window.ALBEN_DATA || {};
+    // slugify() muss exakt zum serverseitigen Pendant in api/_admin-utils.js passen.
+    function slugify(name) {
+        return String(name)
+            .normalize('NFKD')
+            .replace(/[̀-ͯ]/g, '')
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    }
+
+    // Bilddaten werden von /api/gallery-data geladen (serverseitig in Vercel Blob
+    // gespeichert, online per Admin-UI bearbeitbar). Die eingebetteten
+    // GALERIE_DATA/ALBEN_DATA-Blöcke dienen nur als Offline-Fallback.
+    var ALL_PHOTOS = [];
+    var ALBEN      = {};
+    var DATA_VERSION = null;
+
+    function resolveSrc(photo) {
+        return photo.source === 'blob' ? photo.src : '../bilder/' + photo.src;
+    }
+
+    async function loadGalleryData() {
+        try {
+            var res = await fetch('/api/gallery-data', { cache: 'no-store' });
+            if (!res.ok) throw new Error();
+            var data = await res.json();
+            ALL_PHOTOS = data.photos || [];
+            ALBEN      = data.albums || {};
+            DATA_VERSION = data.version;
+        } catch (err) {
+            // Galerie funktioniert auch ohne API/Blob-Store weiter (statischer Stand)
+            ALL_PHOTOS = (window.GALERIE_DATA || []).map(function (p) {
+                return Object.assign({ id: slugify((p.album || 'sonstige') + '-' + p.src), source: 'local' }, p);
+            });
+            var rawAlben = window.ALBEN_DATA || {};
+            ALBEN = {};
+            Object.keys(rawAlben).forEach(function (slug) {
+                var meta = rawAlben[slug];
+                var cover = null;
+                if (meta.cover) {
+                    var found = ALL_PHOTOS.find(function (p) { return p.album === slug && p.src === meta.cover; });
+                    cover = found ? found.id : null;
+                }
+                ALBEN[slug] = { title: meta.title, order: meta.order, cover: cover, subalbums: meta.subalbums || null };
+            });
+            DATA_VERSION = null;
+        }
+    }
 
     function photosFor(album, sub) {
         return ALL_PHOTOS.filter(function (p) {
@@ -632,9 +806,10 @@ window.ALBEN_DATA = {
         return !!(meta && meta.subalbums && Object.keys(meta.subalbums).length);
     }
 
-    function coverSrc(photos, explicitCover) {
-        if (explicitCover) return '../bilder/' + explicitCover;
-        if (photos.length) return '../bilder/' + photos[0].src;
+    function coverSrc(photos, coverId) {
+        var explicit = coverId ? ALL_PHOTOS.find(function (p) { return p.id === coverId; }) : null;
+        if (explicit) return resolveSrc(explicit);
+        if (photos.length) return resolveSrc(photos[0]);
         return '../bilder/hero.WEBP';
     }
 
@@ -657,6 +832,20 @@ window.ALBEN_DATA = {
         img.loading  = 'lazy';
         img.decoding = 'async';
         media.appendChild(img);
+
+        if (opts.onEdit) {
+            var editBtn = document.createElement('button');
+            editBtn.type = 'button';
+            editBtn.className = 'album-tile-edit';
+            editBtn.setAttribute('aria-label', 'Album bearbeiten');
+            editBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+            editBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                opts.onEdit();
+            });
+            media.appendChild(editBtn);
+        }
 
         var countBadge = document.createElement('span');
         countBadge.className = 'album-tile-count';
@@ -702,9 +891,21 @@ window.ALBEN_DATA = {
                 cat: 'Galerie',
                 count: albumPhotoCount(slug),
                 delay: i,
-                onClick: function () { navigateTo(slug, null); }
+                onClick: function () { navigateTo(slug, null); },
+                onEdit: function () { openAlbumEditModal(slug); }
             }));
         });
+        albumGrid.appendChild(buildNewAlbumTile());
+    }
+
+    // ── NEUES-ALBUM-KACHEL (nur admin, per CSS ein-/ausgeblendet) ──
+    function buildNewAlbumTile() {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'album-tile-new';
+        btn.innerHTML = '<span class="album-tile-new-plus">+</span><span>Neues Album</span>';
+        btn.addEventListener('click', function () { openAlbumEditModal(null); });
+        return btn;
     }
 
     // ── UNTERALBEN-GRID ──
@@ -743,7 +944,7 @@ window.ALBEN_DATA = {
         if (filtered.length === 0) filtered = photos;
 
         SLIDES = filtered.map(function (s) {
-            return { src: '../bilder/' + s.src, title: s.title, cat: s.cat };
+            return { src: resolveSrc(s), title: s.title, cat: s.cat, photo: s };
         });
 
         clearInterval(autoTimer);
@@ -927,7 +1128,355 @@ window.ALBEN_DATA = {
         if (e.target === lightbox) closeLb();
     });
 
-    renderFromState();
+    // ── ADMIN AUTH ────────────────────────────────────────────
+    // Das Passwort wird serverseitig geprüft (api/admin-auth.js) und lebt dort in der
+    // Env-Var ADMIN_PASSWORD. Gleiche Session wie speisekarte.html (sessionStorage,
+    // gleicher Schlüssel) — einmal anmelden reicht für beide Seiten im selben Tab.
+    var ADMIN_KEY  = 'quito_admin_token';
+    var getToken   = function () { return sessionStorage.getItem(ADMIN_KEY) || ''; };
+    var tokenValid = function (t) { var exp = Number((t || '').split('.')[0]); return Number.isFinite(exp) && exp > Date.now(); };
+    var isAdmin    = function () { return tokenValid(getToken()); };
+    var setAdmin   = function (token) { sessionStorage.setItem(ADMIN_KEY, token); document.body.classList.add('admin-mode'); document.getElementById('adminBadge').classList.add('visible'); };
+    var clearAdmin = function () { sessionStorage.removeItem(ADMIN_KEY); document.body.classList.remove('admin-mode'); document.getElementById('adminBadge').classList.remove('visible'); };
+
+    var adminModal  = document.getElementById('adminModal');
+    var adminPw     = document.getElementById('adminPw');
+    var adminPwErr  = document.getElementById('adminPwErr');
+    var adminOkBtn  = document.getElementById('adminOk');
+    var showAdminErr = function (msg) { adminPwErr.textContent = msg; adminPwErr.style.display = 'block'; };
+    var openAdminModal  = function () { adminPw.value = ''; adminPwErr.style.display = 'none'; adminModal.classList.add('open'); setTimeout(function () { adminPw.focus(); }, 50); };
+    var closeAdminModal = function () { adminModal.classList.remove('open'); };
+
+    document.getElementById('adminCancel').addEventListener('click', closeAdminModal);
+    adminModal.addEventListener('click', function (e) { if (e.target === adminModal) closeAdminModal(); });
+
+    async function tryLogin() {
+        adminOkBtn.disabled = true;
+        try {
+            var res = await fetch('/api/admin-auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: adminPw.value }),
+            });
+            var data = await res.json().catch(function () { return {}; });
+            if (res.ok && data.token) {
+                setAdmin(data.token);
+                closeAdminModal();
+            } else {
+                showAdminErr(data.error || 'Falsches Passwort');
+                adminPw.value = ''; adminPw.focus();
+            }
+        } catch (err) {
+            showAdminErr('Verbindung fehlgeschlagen — bitte erneut versuchen');
+        } finally {
+            adminOkBtn.disabled = false;
+        }
+    }
+    adminOkBtn.addEventListener('click', tryLogin);
+    adminPw.addEventListener('keydown', function (e) { if (e.key === 'Enter') tryLogin(); });
+
+    // Logo unter dem Album-Grid: 5× klicken → Admin-Modal
+    var logoTaps = 0, logoTimer;
+    document.getElementById('galleryAdminTrigger').addEventListener('click', function () {
+        if (isAdmin()) return;
+        logoTaps++;
+        clearTimeout(logoTimer);
+        logoTimer = setTimeout(function () { logoTaps = 0; }, 2000);
+        if (logoTaps >= 5) { logoTaps = 0; openAdminModal(); }
+    });
+    if (isAdmin()) { document.body.classList.add('admin-mode'); document.getElementById('adminBadge').classList.add('visible'); }
+    else { sessionStorage.removeItem(ADMIN_KEY); } // abgelaufenes Token aufräumen
+
+    // ── SPEICHERN (persistiert Album-/Foto-Struktur für alle Besucher:innen) ──
+    async function saveGalleryData() {
+        var token = getToken();
+        if (!tokenValid(token)) { clearAdmin(); alert('Admin-Sitzung abgelaufen. Bitte erneut anmelden.'); return false; }
+        try {
+            var res = await fetch('/api/gallery-data', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ albums: ALBEN, photos: ALL_PHOTOS, version: DATA_VERSION, token: token }),
+            });
+            var data = await res.json().catch(function () { return {}; });
+            if (res.status === 409) {
+                alert('Die Daten wurden inzwischen an anderer Stelle geändert. Die Ansicht wird aktualisiert.');
+                if (data.current) {
+                    ALBEN = data.current.albums;
+                    ALL_PHOTOS = data.current.photos;
+                    DATA_VERSION = data.current.version;
+                    renderFromState();
+                }
+                return false;
+            }
+            if (!res.ok) { alert('Speichern fehlgeschlagen: ' + (data.error || '')); return false; }
+            DATA_VERSION = data.version;
+            return true;
+        } catch (err) {
+            alert('Speichern fehlgeschlagen: Verbindung unterbrochen.');
+            return false;
+        }
+    }
+
+    // ── ALBUM ANLEGEN / BEARBEITEN / LÖSCHEN ──
+    var albumEditModal      = document.getElementById('albumEditModal');
+    var albumEditTitleEl    = document.getElementById('albumEditTitle');
+    var albumEditName       = document.getElementById('albumEditName');
+    var albumEditOrder      = document.getElementById('albumEditOrder');
+    var albumEditCoverField = document.getElementById('albumEditCoverField');
+    var albumEditCoverGrid  = document.getElementById('albumEditCoverGrid');
+    var albumEditCancel     = document.getElementById('albumEditCancel');
+    var albumEditSave       = document.getElementById('albumEditSave');
+    var albumEditDelete     = document.getElementById('albumEditDelete');
+
+    var editingAlbumSlug = null;
+    var selectedCoverId  = null;
+
+    function renderCoverGrid(slug) {
+        var photos = photosFor(slug);
+        albumEditCoverGrid.innerHTML = '';
+        photos.forEach(function (p) {
+            var img = document.createElement('img');
+            img.src = resolveSrc(p);
+            img.alt = p.title;
+            img.className = p.id === selectedCoverId ? 'selected' : '';
+            img.addEventListener('click', function () {
+                selectedCoverId = p.id;
+                albumEditCoverGrid.querySelectorAll('img').forEach(function (i) { i.classList.remove('selected'); });
+                img.classList.add('selected');
+            });
+            albumEditCoverGrid.appendChild(img);
+        });
+    }
+
+    function openAlbumEditModal(slug) {
+        editingAlbumSlug = slug;
+        if (slug) {
+            var meta = ALBEN[slug];
+            albumEditTitleEl.textContent = 'Album bearbeiten';
+            albumEditName.value  = meta.title;
+            albumEditOrder.value = meta.order || 1;
+            selectedCoverId = meta.cover || null;
+            albumEditCoverField.style.display = '';
+            renderCoverGrid(slug);
+            albumEditDelete.style.display = slug === 'sonstige' ? 'none' : '';
+        } else {
+            var maxOrder = Object.keys(ALBEN).reduce(function (m, s) { return Math.max(m, ALBEN[s].order || 0); }, 0);
+            albumEditTitleEl.textContent = 'Neues Album';
+            albumEditName.value  = '';
+            albumEditOrder.value = maxOrder + 1;
+            selectedCoverId = null;
+            albumEditCoverField.style.display = 'none';
+            albumEditDelete.style.display = 'none';
+        }
+        albumEditModal.classList.add('open');
+    }
+    function closeAlbumEditModal() { albumEditModal.classList.remove('open'); }
+
+    albumEditCancel.addEventListener('click', closeAlbumEditModal);
+    albumEditModal.addEventListener('click', function (e) { if (e.target === albumEditModal) closeAlbumEditModal(); });
+
+    albumEditSave.addEventListener('click', async function () {
+        var title = albumEditName.value.trim();
+        if (!title) { alert('Bitte einen Titel angeben.'); return; }
+        var order = Number(albumEditOrder.value) || 99;
+        var prevAlben = ALBEN;
+
+        if (editingAlbumSlug) {
+            ALBEN = Object.assign({}, ALBEN);
+            ALBEN[editingAlbumSlug] = Object.assign({}, ALBEN[editingAlbumSlug], { title: title, order: order, cover: selectedCoverId });
+        } else {
+            var slug = slugify(title);
+            if (!slug) { alert('Ungültiger Titel.'); return; }
+            if (ALBEN[slug]) { alert('Es existiert bereits ein Album mit diesem Namen.'); return; }
+            ALBEN = Object.assign({}, ALBEN);
+            ALBEN[slug] = { title: title, order: order, cover: null, subalbums: null };
+        }
+
+        albumEditSave.disabled = true;
+        var ok = await saveGalleryData();
+        albumEditSave.disabled = false;
+        if (!ok) { ALBEN = prevAlben; return; }
+        closeAlbumEditModal();
+        renderFromState();
+    });
+
+    albumEditDelete.addEventListener('click', async function () {
+        if (!editingAlbumSlug || editingAlbumSlug === 'sonstige') return;
+        var slug  = editingAlbumSlug;
+        var count = albumPhotoCount(slug);
+        var msg = count > 0
+            ? ('Album löschen? ' + count + (count === 1 ? ' Foto wird' : ' Fotos werden') + ' nach „Weitere Eindrücke" verschoben.')
+            : 'Album wirklich löschen?';
+        if (!confirm(msg)) return;
+
+        var prevAlben = ALBEN, prevPhotos = ALL_PHOTOS;
+        ALBEN = Object.assign({}, ALBEN);
+        delete ALBEN[slug];
+        ALL_PHOTOS = ALL_PHOTOS.map(function (p) {
+            return p.album === slug ? Object.assign({}, p, { album: 'sonstige' }) : p;
+        });
+
+        albumEditDelete.disabled = true;
+        var ok = await saveGalleryData();
+        albumEditDelete.disabled = false;
+        if (!ok) { ALBEN = prevAlben; ALL_PHOTOS = prevPhotos; return; }
+        closeAlbumEditModal();
+        navigateTo(null, null);
+    });
+
+    // ── FOTO BEARBEITEN / LÖSCHEN ──
+    var photoEditModal       = document.getElementById('photoEditModal');
+    var photoEditTitleInput  = document.getElementById('photoEditTitle');
+    var photoEditCatInput    = document.getElementById('photoEditCat');
+    var photoEditAlbumSelect = document.getElementById('photoEditAlbum');
+    var photoEditCancel      = document.getElementById('photoEditCancel');
+    var photoEditSave        = document.getElementById('photoEditSave');
+    var photoEditDelete      = document.getElementById('photoEditDelete');
+    var editingPhotoId = null;
+
+    function openPhotoEditModal(photo) {
+        editingPhotoId = photo.id;
+        photoEditTitleInput.value = photo.title || '';
+        photoEditCatInput.value   = photo.cat || '';
+        photoEditAlbumSelect.innerHTML = '';
+        Object.keys(ALBEN)
+            .sort(function (a, b) { return (ALBEN[a].order || 99) - (ALBEN[b].order || 99); })
+            .forEach(function (slug) {
+                var opt = document.createElement('option');
+                opt.value = slug;
+                opt.textContent = ALBEN[slug].title;
+                if (slug === photo.album) opt.selected = true;
+                photoEditAlbumSelect.appendChild(opt);
+            });
+        photoEditModal.classList.add('open');
+    }
+    function closePhotoEditModal() { photoEditModal.classList.remove('open'); }
+
+    photoEditCancel.addEventListener('click', closePhotoEditModal);
+    photoEditModal.addEventListener('click', function (e) { if (e.target === photoEditModal) closePhotoEditModal(); });
+
+    document.getElementById('lbEditBtn').addEventListener('click', function () {
+        var s = SLIDES[current];
+        if (s && s.photo) openPhotoEditModal(s.photo);
+    });
+
+    photoEditSave.addEventListener('click', async function () {
+        var prevPhotos = ALL_PHOTOS;
+        ALL_PHOTOS = ALL_PHOTOS.map(function (p) {
+            if (p.id !== editingPhotoId) return p;
+            return Object.assign({}, p, {
+                title: photoEditTitleInput.value.trim() || p.title,
+                cat: photoEditCatInput.value.trim(),
+                album: photoEditAlbumSelect.value,
+            });
+        });
+        photoEditSave.disabled = true;
+        var ok = await saveGalleryData();
+        photoEditSave.disabled = false;
+        if (!ok) { ALL_PHOTOS = prevPhotos; return; }
+        closePhotoEditModal();
+        closeLb();
+        renderFromState();
+    });
+
+    photoEditDelete.addEventListener('click', async function () {
+        if (!confirm('Foto wirklich löschen?')) return;
+        var photo = ALL_PHOTOS.find(function (p) { return p.id === editingPhotoId; });
+        if (!photo) return;
+        var prevPhotos = ALL_PHOTOS;
+        ALL_PHOTOS = ALL_PHOTOS.filter(function (p) { return p.id !== editingPhotoId; });
+
+        photoEditDelete.disabled = true;
+        var ok = await saveGalleryData();
+        photoEditDelete.disabled = false;
+        if (!ok) { ALL_PHOTOS = prevPhotos; return; }
+
+        if (photo.source === 'blob') {
+            var token = getToken();
+            try {
+                await fetch('/api/gallery-photos', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: photo.id, token: token }),
+                });
+            } catch (err) { /* Metadaten sind bereits entfernt; Datei-Löschung best effort */ }
+        }
+        closePhotoEditModal();
+        closeLb();
+        renderFromState();
+    });
+
+    // ── FOTO HOCHLADEN (persistiert für alle Besucher:innen via Vercel Blob) ──
+    function compressImage(file, maxDim, quality) {
+        maxDim = maxDim || 1600; quality = quality || 0.85;
+        return new Promise(function (resolve) {
+            var img = new Image();
+            var url = URL.createObjectURL(file);
+            img.onload = function () {
+                var scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+                var canvas = document.createElement('canvas');
+                canvas.width  = Math.round(img.width  * scale);
+                canvas.height = Math.round(img.height * scale);
+                canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                URL.revokeObjectURL(url);
+                resolve({ dataUrl: canvas.toDataURL('image/jpeg', quality), orient: img.width >= img.height ? 'landscape' : 'portrait' });
+            };
+            img.src = url;
+        });
+    }
+
+    var addPhotoBtn = document.getElementById('addPhotoBtn');
+    var galleryImgInput = document.createElement('input');
+    galleryImgInput.type = 'file'; galleryImgInput.accept = 'image/*'; galleryImgInput.style.display = 'none';
+    document.body.appendChild(galleryImgInput);
+
+    addPhotoBtn.addEventListener('click', function () { galleryImgInput.click(); });
+
+    galleryImgInput.addEventListener('change', async function () {
+        var file = galleryImgInput.files[0];
+        galleryImgInput.value = '';
+        if (!file) return;
+
+        var token = getToken();
+        if (!tokenValid(token)) { clearAdmin(); alert('Admin-Sitzung abgelaufen. Bitte erneut anmelden.'); return; }
+
+        var s = parseState();
+        var targetAlbum = s.album && ALBEN[s.album] ? s.album : 'sonstige';
+
+        addPhotoBtn.disabled = true;
+        try {
+            var compressed = await compressImage(file);
+            var res = await fetch('/api/gallery-photos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: compressed.dataUrl, token: token }),
+            });
+            var data = await res.json().catch(function () { return {}; });
+            if (!res.ok) throw new Error(data.error || 'Upload fehlgeschlagen');
+
+            var prevPhotos = ALL_PHOTOS;
+            var newPhoto = {
+                id: data.id,
+                src: data.url,
+                source: 'blob',
+                title: file.name.replace(/\.[^.]+$/, ''),
+                cat: ALBEN[targetAlbum] ? ALBEN[targetAlbum].title : '',
+                orient: compressed.orient,
+                album: targetAlbum,
+                subalbum: null,
+            };
+            ALL_PHOTOS = ALL_PHOTOS.concat([newPhoto]);
+            var ok = await saveGalleryData();
+            if (!ok) { ALL_PHOTOS = prevPhotos; return; }
+            renderFromState();
+        } catch (err) {
+            alert('Foto konnte nicht hochgeladen werden: ' + err.message);
+        } finally {
+            addPhotoBtn.disabled = false;
+        }
+    });
+
+    loadGalleryData().then(renderFromState);
 })();
 </script>
 

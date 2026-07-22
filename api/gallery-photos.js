@@ -1,19 +1,19 @@
-import { put, del, list } from '@vercel/blob';
-import { slugify, verifySessionToken, getBlobToken } from './_admin-utils.js';
+import { put, del } from '@vercel/blob';
+import { verifySessionToken, getBlobToken } from './_admin-utils.js';
+import crypto from 'node:crypto';
 
-const PREFIX = 'dishes/';
+const PREFIX = 'gallery/photos/';
 const MAX_IMAGE_BYTES = 4 * 1024 * 1024; // client compresses to ~1600px/JPEG 85%, this is a generous ceiling
-
-function pathFor(name) {
-  if (typeof name !== 'string' || !name.trim()) return null;
-  const slug = slugify(name);
-  return slug ? `${PREFIX}${slug}.jpg` : null;
-}
 
 function parseDataUrl(dataUrl) {
   const match = /^data:image\/jpeg;base64,(.+)$/.exec(dataUrl || '');
   if (!match) return null;
   return Buffer.from(match[1], 'base64');
+}
+
+function pathFor(id) {
+  if (typeof id !== 'string' || !/^[a-zA-Z0-9-]+$/.test(id)) return null;
+  return `${PREFIX}${id}.jpg`;
 }
 
 async function readJsonBody(req) {
@@ -37,38 +37,27 @@ function blobErrorMessage(err) {
 }
 
 export default async function handler(req, res) {
-  if (req.method === 'GET') {
-    try {
-      const { blobs } = await list({ prefix: PREFIX, token: getBlobToken() });
-      return res.status(200).json({
-        photos: blobs.map((b) => ({ pathname: b.pathname, url: b.url })),
-      });
-    } catch (err) {
-      return res.status(502).json({ error: blobErrorMessage(err) });
-    }
-  }
-
   if (req.method === 'POST') {
     const body = await readJsonBody(req);
     if (!body) return res.status(400).json({ error: 'Invalid JSON body' });
     if (!verifySessionToken(body.token)) return res.status(401).json({ error: 'Nicht angemeldet' });
 
-    const pathname = pathFor(body.name);
-    if (!pathname) return res.status(400).json({ error: 'name is required' });
-
     const buffer = parseDataUrl(body.image);
     if (!buffer) return res.status(400).json({ error: 'image must be a JPEG data URL' });
     if (buffer.byteLength > MAX_IMAGE_BYTES) return res.status(413).json({ error: 'Bild zu groß' });
+
+    const id = crypto.randomUUID();
+    const pathname = pathFor(id);
 
     try {
       const blob = await put(pathname, buffer, {
         access: 'public',
         contentType: 'image/jpeg',
         addRandomSuffix: false,
-        allowOverwrite: true,
+        allowOverwrite: false,
         token: getBlobToken(),
       });
-      return res.status(200).json({ url: blob.url });
+      return res.status(200).json({ id, url: blob.url });
     } catch (err) {
       return res.status(502).json({ error: blobErrorMessage(err) });
     }
@@ -79,8 +68,8 @@ export default async function handler(req, res) {
     if (!body) return res.status(400).json({ error: 'Invalid JSON body' });
     if (!verifySessionToken(body.token)) return res.status(401).json({ error: 'Nicht angemeldet' });
 
-    const pathname = pathFor(body.name);
-    if (!pathname) return res.status(400).json({ error: 'name is required' });
+    const pathname = pathFor(body.id);
+    if (!pathname) return res.status(400).json({ error: 'id is required' });
 
     try {
       await del(pathname, { token: getBlobToken() });
@@ -90,6 +79,6 @@ export default async function handler(req, res) {
     }
   }
 
-  res.setHeader('Allow', 'GET, POST, DELETE');
+  res.setHeader('Allow', 'POST, DELETE');
   return res.status(405).json({ error: 'Method not allowed' });
 }

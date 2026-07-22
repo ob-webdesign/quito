@@ -585,8 +585,8 @@
     lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
 
     // ── ADMIN AUTH ────────────────────────────────────────────
-    // Das Passwort wird serverseitig geprüft (api/dish-auth.js) und lebt dort in der
-    // Env-Var DISH_ADMIN_PASSWORD — hier im Client steht es nicht mehr im Klartext.
+    // Das Passwort wird serverseitig geprüft (api/admin-auth.js) und lebt dort in der
+    // Env-Var ADMIN_PASSWORD — hier im Client steht es nicht mehr im Klartext.
     const ADMIN_KEY  = 'quito_admin_token';
     const getToken   = () => sessionStorage.getItem(ADMIN_KEY) || '';
     const tokenValid = t => { const exp = Number((t || '').split('.')[0]); return Number.isFinite(exp) && exp > Date.now(); };
@@ -607,7 +607,7 @@
     async function tryLogin() {
         adminOkBtn.disabled = true;
         try {
-            const res = await fetch('/api/dish-auth', {
+            const res = await fetch('/api/admin-auth', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ password: adminPw.value }),
@@ -644,7 +644,7 @@
     else { sessionStorage.removeItem(ADMIN_KEY); } // abgelaufenes Token aufräumen
 
     // ── BILD-UPLOAD (persistiert für alle Besucher:innen via Vercel Blob) ──────
-    // slugify() muss exakt zum serverseitigen Pendant in api/_dish-utils.js passen.
+    // slugify() muss exakt zum serverseitigen Pendant in api/_admin-utils.js passen.
     function slugify(name) {
         return String(name)
             .normalize('NFKD')

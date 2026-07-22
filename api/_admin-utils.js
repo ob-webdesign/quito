@@ -14,11 +14,21 @@ export function slugify(name) {
 }
 
 function getSecret() {
-  const secret = process.env.DISH_ADMIN_PASSWORD;
+  const secret = process.env.ADMIN_PASSWORD;
   if (!secret) {
-    throw new Error('DISH_ADMIN_PASSWORD is not configured');
+    throw new Error('ADMIN_PASSWORD is not configured');
   }
   return secret;
+}
+
+// @vercel/blob liest ohne explizites `token` nur BLOB_READ_WRITE_TOKEN automatisch —
+// unser Store-Token heißt im Projekt aber ADMIN_READ_WRITE_TOKEN, daher explizit reichen.
+export function getBlobToken() {
+  const token = process.env.ADMIN_READ_WRITE_TOKEN;
+  if (!token) {
+    throw new Error('ADMIN_READ_WRITE_TOKEN is not configured');
+  }
+  return token;
 }
 
 export function checkPassword(password) {
