@@ -386,6 +386,44 @@
             .bar-top { animation: none; opacity: 1; }
         }
 
+        /* ── ALBUM GRID VIEW ── */
+        html.mode-grid, html.mode-grid body { height: auto; overflow-y: auto; overflow-x: hidden; }
+
+        .album-view { position: relative; z-index: 1; min-height: 100vh; padding: calc(var(--pad) + 3rem) var(--pad) var(--pad); padding-top: calc(var(--pad) + 3rem + env(safe-area-inset-top)); max-width: 1400px; margin: 0 auto; }
+        .album-view[hidden] { display: none; }
+
+        .album-view-head { margin-bottom: clamp(2rem, 5vw, 3.5rem); opacity: 0; animation: fadeIn .9s var(--ease) .1s forwards; }
+        .album-view-head .back-link { margin-bottom: 1.6rem; }
+        .album-view-title { font-family: var(--font-d); font-style: italic; font-weight: 300; font-size: clamp(2.1rem, 6vw, 3.6rem); color: var(--warm-white); letter-spacing: .01em; }
+        .album-view-sub { font-family: var(--font-b); font-size: .92rem; color: var(--muted); margin-top: .65rem; }
+
+        .album-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem); }
+
+        .album-tile { display: block; cursor: pointer; opacity: 0; transform: translateY(14px); animation: albumTileIn .7s var(--ease) forwards; }
+        @keyframes albumTileIn { to { opacity: 1; transform: none; } }
+        .album-tile-media { position: relative; aspect-ratio: 4/5; border-radius: 6px; overflow: hidden; background: #151109; }
+        .album-tile-media img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.02); transition: transform .7s var(--ease); }
+        .album-tile:hover .album-tile-media img { transform: scale(1.08); }
+        .album-tile-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(11,9,6,.55) 0%, transparent 45%); pointer-events: none; }
+
+        .album-tile-count { position: absolute; bottom: .9rem; right: .9rem; font-family: var(--font-b); font-size: .58rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--warm-white); background: rgba(11,9,6,.55); border: 1px solid rgba(244,239,230,.25); padding: .4em .9em; border-radius: 999px; backdrop-filter: blur(3px); }
+
+        .album-tile-text { padding-top: 1.1rem; }
+        .album-tile-cat { display: block; font-family: var(--font-b); font-size: .6rem; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--terracotta); margin-bottom: .4rem; }
+        .album-tile-title { font-family: var(--font-d); font-style: italic; font-weight: 300; font-size: clamp(1.35rem, 2.4vw, 1.9rem); color: var(--warm-white); letter-spacing: .01em; }
+
+        @media (max-width: 768px) {
+            .album-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .album-tile-title { font-size: 1.05rem; }
+        }
+        @media (max-width: 480px) {
+            .album-grid { grid-template-columns: 1fr; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .album-tile { opacity: 1; transform: none; animation: none; }
+            .album-view-head { opacity: 1; animation: none; }
+        }
+
         /* === FOOTER === */
         footer { background: var(--black); color: #fff; padding: clamp(3rem,6vw,5rem) 0 calc(clamp(2rem,4vw,3rem) + env(safe-area-inset-bottom)); }
         .foot-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center; }
@@ -420,82 +458,125 @@
 </head>
 <body>
 
-<!-- SLIDES -->
-<div class="gallery" id="gallery" aria-label="Galerie Slideshow"></div>
+<!-- SLIDESHOW VIEW -->
+<div id="slideshowView">
 
-<!-- GRADIENTS -->
-<div class="grad-top"></div>
-<div class="grad-bottom"></div>
+    <!-- SLIDES -->
+    <div class="gallery" id="gallery" aria-label="Galerie Slideshow"></div>
 
-<!-- HOVER ZONES -->
-<div class="zone zone-prev" id="zonePrev" role="button" aria-label="Vorheriges Bild">
-    <div class="zone-icon">
-        <svg viewBox="0 0 14 14"><polyline points="9,2 4,7 9,12"/></svg>
-    </div>
-</div>
-<div class="zone zone-next" id="zoneNext" role="button" aria-label="Nächstes Bild">
-    <div class="zone-icon">
-        <svg viewBox="0 0 14 14"><polyline points="5,2 10,7 5,12"/></svg>
-    </div>
-</div>
+    <!-- GRADIENTS -->
+    <div class="grad-top"></div>
+    <div class="grad-bottom"></div>
 
-<!-- TOP BAR -->
-<div class="bar-top">
-    <a href="index.html" class="back-link">
-        <span class="line"></span>Zurück
-    </a>
-    <span class="bar-label">Galerie</span>
-    <div class="counter">
-        <span class="counter-cur" id="counterCur">01</span>
-        <span class="counter-sep">/</span>
-        <span class="counter-tot" id="counterTot">07</span>
-    </div>
-</div>
-
-<!-- CAPTION -->
-<div class="caption" id="caption">
-    <div class="caption-text">
-        <div class="caption-cat"  id="captionCat"></div>
-        <div class="caption-title" id="captionTitle"></div>
-    </div>
-    <nav class="cap-nav" aria-label="Bildnavigation">
-        <button class="nav-btn" id="prevBtn" aria-label="Vorheriges Bild">
+    <!-- HOVER ZONES -->
+    <div class="zone zone-prev" id="zonePrev" role="button" aria-label="Vorheriges Bild">
+        <div class="zone-icon">
             <svg viewBox="0 0 14 14"><polyline points="9,2 4,7 9,12"/></svg>
-        </button>
-        <button class="nav-btn" id="nextBtn" aria-label="Nächstes Bild">
+        </div>
+    </div>
+    <div class="zone zone-next" id="zoneNext" role="button" aria-label="Nächstes Bild">
+        <div class="zone-icon">
             <svg viewBox="0 0 14 14"><polyline points="5,2 10,7 5,12"/></svg>
-        </button>
-    </nav>
+        </div>
+    </div>
+
+    <!-- TOP BAR -->
+    <div class="bar-top">
+        <a href="galerie.html" class="back-link" id="slideshowBack">
+            <span class="line"></span>Zurück
+        </a>
+        <span class="bar-label">Galerie</span>
+        <div class="counter">
+            <span class="counter-cur" id="counterCur">01</span>
+            <span class="counter-sep">/</span>
+            <span class="counter-tot" id="counterTot">07</span>
+        </div>
+    </div>
+
+    <!-- CAPTION -->
+    <div class="caption" id="caption">
+        <div class="caption-text">
+            <div class="caption-cat"  id="captionCat"></div>
+            <div class="caption-title" id="captionTitle"></div>
+        </div>
+        <nav class="cap-nav" aria-label="Bildnavigation">
+            <button class="nav-btn" id="prevBtn" aria-label="Vorheriges Bild">
+                <svg viewBox="0 0 14 14"><polyline points="9,2 4,7 9,12"/></svg>
+            </button>
+            <button class="nav-btn" id="nextBtn" aria-label="Nächstes Bild">
+                <svg viewBox="0 0 14 14"><polyline points="5,2 10,7 5,12"/></svg>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Bild vergrößert">
+        <div class="lb-inner">
+            <button class="lb-close" id="lbClose">Schließen</button>
+            <img id="lbImg" src="" alt="">
+            <div class="lb-meta">
+                <span class="lb-title" id="lbTitle"></span>
+                <span class="lb-cat"   id="lbCat"></span>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<!-- PROGRESS -->
-<div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+<!-- ALBUM OVERVIEW VIEW -->
+<main class="album-view" id="albumView" hidden>
+    <div class="album-view-head">
+        <a href="index.html" class="back-link" id="albumViewBack">
+            <span class="line"></span>Zurück
+        </a>
+        <h1 class="album-view-title" id="albumViewTitle">Galerie</h1>
+        <p class="album-view-sub" id="albumViewSub"></p>
+    </div>
+    <div class="album-grid" id="albumGrid"></div>
+</main>
 
 <!-- GALERIE-DATEN (wird von scripts/update-galerie.sh aktualisiert) -->
 <script id="galerie-data">
 window.GALERIE_DATA = [
-  {"src":"hero.WEBP","title":"Das Café","cat":"Interieur","orient":"landscape"},
-  {"src":"cafe-innen.JPG","title":"Innenraum","cat":"Interieur","orient":"both"},
-  {"src":"kaffee.jpeg","title":"Kaffee & Kuchen","cat":"Kaffee","orient":"portrait"},
-  {"src":"fruehstueck.jpeg","title":"Frühstück","cat":"Frühstück","orient":"portrait"},
-  {"src":"essen.JPG.jpg","title":"Mittagessen","cat":"Essen","orient":"landscape"},
-  {"src":"team.JPG","title":"Unser Team","cat":"Team","orient":"landscape"},
-  {"src":"story-bild.WEBP","title":"Unsere Geschichte","cat":"Geschichte","orient":"landscape"},
-  {"src":"tisch.jpg","title":"Gedeck","cat":"Feiern","orient":"portrait"}
+  {"src": "hero.WEBP", "title": "Das Café", "cat": "Interieur", "orient": "landscape", "album": "interieur", "subalbum": null},
+  {"src": "cafe-innen.JPG", "title": "Innenraum", "cat": "Interieur", "orient": "both", "album": "interieur", "subalbum": null},
+  {"src": "kaffee.jpeg", "title": "Specialty Coffee", "cat": "Kaffee", "orient": "portrait", "album": "kaffee-kueche", "subalbum": null},
+  {"src": "fruehstueck.jpeg", "title": "Frühstück", "cat": "Frühstück", "orient": "portrait", "album": "kaffee-kueche", "subalbum": null},
+  {"src": "essen.JPG.jpg", "title": "Mittagessen", "cat": "Essen", "orient": "landscape", "album": "kaffee-kueche", "subalbum": null},
+  {"src": "team.JPG", "title": "Unser Team", "cat": "Team", "orient": "landscape", "album": "team-geschichte", "subalbum": null},
+  {"src": "story-bild.WEBP", "title": "Unsere Geschichte", "cat": "Geschichte", "orient": "landscape", "album": "team-geschichte", "subalbum": null},
+  {"src": "tisch.jpg", "title": "tisch", "cat": "Neu", "orient": "portrait", "album": "sonstige", "subalbum": null}
 ];
 </script>
 
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Bild vergrößert">
-    <div class="lb-inner">
-        <button class="lb-close" id="lbClose">Schließen</button>
-        <img id="lbImg" src="" alt="">
-        <div class="lb-meta">
-            <span class="lb-title" id="lbTitle"></span>
-            <span class="lb-cat"   id="lbCat"></span>
-        </div>
-    </div>
-</div>
+<!-- ALBEN-DATEN (wird von scripts/update-galerie.sh aktualisiert) -->
+<script id="alben-data">
+window.ALBEN_DATA = {
+  "interieur": {
+    "title": "Café & Interieur",
+    "order": 1,
+    "cover": "hero.WEBP"
+  },
+  "kaffee-kueche": {
+    "title": "Kaffee & Küche",
+    "order": 2,
+    "cover": "kaffee.jpeg"
+  },
+  "team-geschichte": {
+    "title": "Team & Geschichte",
+    "order": 3,
+    "cover": "team.JPG"
+  },
+  "sonstige": {
+    "title": "Weitere Eindrücke",
+    "order": 99,
+    "cover": null
+  }
+};
+</script>
 
 <script>
 (function () {
@@ -505,6 +586,15 @@ window.GALERIE_DATA = [
     var total       = 0;
     var autoTimer   = null;
     var SLIDES      = [];
+
+    var htmlEl        = document.documentElement;
+    var slideshowView = document.getElementById('slideshowView');
+    var albumView      = document.getElementById('albumView');
+    var albumViewBack  = document.getElementById('albumViewBack');
+    var albumViewTitle = document.getElementById('albumViewTitle');
+    var albumViewSub   = document.getElementById('albumViewSub');
+    var albumGrid       = document.getElementById('albumGrid');
+    var slideshowBack   = document.getElementById('slideshowBack');
 
     var gallery      = document.getElementById('gallery');
     var caption      = document.getElementById('caption');
@@ -520,22 +610,145 @@ window.GALERIE_DATA = [
 
     function fmt(n) { return n < 10 ? '0' + n : '' + n; }
 
-    // Bilddaten aus Inline-Variable laden (via scripts/update-galerie.sh aktuell gehalten)
-    var all = window.GALERIE_DATA || [];
-    SLIDES = all.filter(function (s) {
-        var o = s.orient || 'both';
-        return o === 'both' || (isMobile ? o === 'portrait' : o === 'landscape');
-    }).map(function (s) {
-        return { src: '../bilder/' + s.src, title: s.title, cat: s.cat };
-    });
-    if (SLIDES.length === 0) {
-        SLIDES = all.map(function (s) {
-            return { src: '../bilder/' + s.src, title: s.title, cat: s.cat };
+    // Bilddaten aus Inline-Variablen laden (via scripts/update-galerie.sh aktuell gehalten)
+    var ALL_PHOTOS = window.GALERIE_DATA || [];
+    var ALBEN      = window.ALBEN_DATA || {};
+
+    function photosFor(album, sub) {
+        return ALL_PHOTOS.filter(function (p) {
+            var a = p.album || 'sonstige';
+            if (a !== album) return false;
+            if (sub) return p.subalbum === sub;
+            return true;
         });
     }
-    init();
 
-    function init() {
+    function albumPhotoCount(album) {
+        return ALL_PHOTOS.filter(function (p) { return (p.album || 'sonstige') === album; }).length;
+    }
+
+    function albumHasSubalbums(slug) {
+        var meta = ALBEN[slug];
+        return !!(meta && meta.subalbums && Object.keys(meta.subalbums).length);
+    }
+
+    function coverSrc(photos, explicitCover) {
+        if (explicitCover) return '../bilder/' + explicitCover;
+        if (photos.length) return '../bilder/' + photos[0].src;
+        return '../bilder/hero.WEBP';
+    }
+
+    // ── ALBUM-KACHEL BAUEN ──
+    function buildTile(opts) {
+        var a = document.createElement('a');
+        a.className = 'album-tile';
+        a.href = opts.href;
+        a.style.animationDelay = (opts.delay * 0.06) + 's';
+        a.addEventListener('click', function (e) {
+            e.preventDefault();
+            opts.onClick();
+        });
+
+        var media = document.createElement('div');
+        media.className = 'album-tile-media';
+        var img = document.createElement('img');
+        img.src      = opts.cover;
+        img.alt      = opts.title;
+        img.loading  = 'lazy';
+        img.decoding = 'async';
+        media.appendChild(img);
+
+        var countBadge = document.createElement('span');
+        countBadge.className = 'album-tile-count';
+        countBadge.textContent = opts.count + (opts.count === 1 ? ' Foto' : ' Fotos');
+        media.appendChild(countBadge);
+
+        var text = document.createElement('div');
+        text.className = 'album-tile-text';
+        var cat = document.createElement('span');
+        cat.className = 'album-tile-cat';
+        cat.textContent = opts.cat;
+        var title = document.createElement('h2');
+        title.className = 'album-tile-title';
+        title.textContent = opts.title;
+        text.appendChild(cat);
+        text.appendChild(title);
+
+        a.appendChild(media);
+        a.appendChild(text);
+        return a;
+    }
+
+    // ── TOP-LEVEL ALBUM-GRID ──
+    function renderAlbumGrid() {
+        albumViewBack.href = 'index.html';
+        albumViewBack.onclick = null;
+        albumViewTitle.textContent = 'Galerie';
+        albumViewSub.textContent = 'Ein Blick in unser Café — in Bildern.';
+
+        var slugs = Object.keys(ALBEN).filter(function (slug) {
+            return albumPhotoCount(slug) > 0 || albumHasSubalbums(slug);
+        });
+        slugs.sort(function (a, b) { return (ALBEN[a].order || 99) - (ALBEN[b].order || 99); });
+
+        albumGrid.innerHTML = '';
+        slugs.forEach(function (slug, i) {
+            var meta   = ALBEN[slug];
+            var photos = photosFor(slug);
+            albumGrid.appendChild(buildTile({
+                href: 'galerie.html?album=' + encodeURIComponent(slug),
+                cover: coverSrc(photos, meta.cover),
+                title: meta.title,
+                cat: 'Galerie',
+                count: albumPhotoCount(slug),
+                delay: i,
+                onClick: function () { navigateTo(slug, null); }
+            }));
+        });
+    }
+
+    // ── UNTERALBEN-GRID ──
+    function renderSubalbumGrid(albumSlug) {
+        var meta = ALBEN[albumSlug];
+        albumViewBack.href = 'galerie.html';
+        albumViewBack.onclick = function (e) { e.preventDefault(); navigateTo(null, null); };
+        albumViewTitle.textContent = meta.title;
+        albumViewSub.textContent = '';
+
+        var subSlugs = Object.keys(meta.subalbums || {});
+        subSlugs.sort(function (a, b) { return (meta.subalbums[a].order || 99) - (meta.subalbums[b].order || 99); });
+
+        albumGrid.innerHTML = '';
+        subSlugs.forEach(function (subSlug, i) {
+            var subMeta = meta.subalbums[subSlug];
+            var photos  = photosFor(albumSlug, subSlug);
+            albumGrid.appendChild(buildTile({
+                href: 'galerie.html?album=' + encodeURIComponent(albumSlug) + '&sub=' + encodeURIComponent(subSlug),
+                cover: coverSrc(photos, subMeta.cover),
+                title: subMeta.title,
+                cat: meta.title,
+                count: photos.length,
+                delay: i,
+                onClick: function () { navigateTo(albumSlug, subSlug); }
+            }));
+        });
+    }
+
+    // ── SLIDESHOW (wiedereintrittsfähig) ──
+    function renderSlideshow(photos, state) {
+        var filtered = photos.filter(function (s) {
+            var o = s.orient || 'both';
+            return o === 'both' || (isMobile ? o === 'portrait' : o === 'landscape');
+        });
+        if (filtered.length === 0) filtered = photos;
+
+        SLIDES = filtered.map(function (s) {
+            return { src: '../bilder/' + s.src, title: s.title, cat: s.cat };
+        });
+
+        clearInterval(autoTimer);
+        gallery.innerHTML = '';
+        current = 0;
         total = SLIDES.length;
         counterTot.textContent = fmt(total);
 
@@ -551,10 +764,71 @@ window.GALERIE_DATA = [
             gallery.appendChild(div);
         });
 
-        progressFill.style.width = (1 / total * 100) + '%';
-        updateCaption(false);
-        autoTimer = setInterval(next, AUTO_MS);
+        progressFill.style.width = total ? (1 / total * 100) + '%' : '0%';
+        if (total > 0) {
+            updateCaption(false);
+            autoTimer = setInterval(next, AUTO_MS);
+        } else {
+            captionCat.textContent = '';
+            captionTitle.textContent = '';
+        }
+
+        var hasSubs = albumHasSubalbums(state.album);
+        slideshowBack.onclick = function (e) {
+            e.preventDefault();
+            if (hasSubs) navigateTo(state.album, null);
+            else navigateTo(null, null);
+        };
     }
+
+    // ── MODUS-STEUERUNG (Grid vs. Slideshow) ──
+    function setMode(mode) {
+        htmlEl.classList.toggle('mode-grid', mode !== 'slideshow');
+        slideshowView.hidden = mode === 'slideshow' ? false : true;
+        albumView.hidden     = mode === 'slideshow' ? true  : false;
+        window.scrollTo(0, 0);
+    }
+
+    // ── URL-STATE ──
+    function parseState() {
+        var p = new URLSearchParams(location.search);
+        var album = p.get('album');
+        var sub   = p.get('sub');
+        if (album && !ALBEN[album]) album = null;
+        if (album && sub) {
+            var meta = ALBEN[album];
+            if (!meta.subalbums || !meta.subalbums[sub]) sub = null;
+        }
+        return { album: album, sub: sub };
+    }
+
+    function renderFromState() {
+        var s = parseState();
+        if (!s.album) {
+            setMode('grid');
+            renderAlbumGrid();
+            return;
+        }
+        if (albumHasSubalbums(s.album) && !s.sub) {
+            setMode('grid');
+            renderSubalbumGrid(s.album);
+            return;
+        }
+        setMode('slideshow');
+        renderSlideshow(photosFor(s.album, s.sub), s);
+    }
+
+    function navigateTo(album, sub) {
+        var params = new URLSearchParams();
+        if (album) params.set('album', album);
+        if (sub)   params.set('sub', sub);
+        var qs  = params.toString();
+        var url = 'galerie.html' + (qs ? '?' + qs : '');
+        history.pushState({}, '', url);
+        renderFromState();
+    }
+
+    window.addEventListener('popstate', renderFromState);
 
     function updateCaption(animate) {
         if (animate) {
@@ -573,7 +847,7 @@ window.GALERIE_DATA = [
     function slides() { return gallery.querySelectorAll('.slide'); }
 
     function goTo(idx) {
-        if (idx === current) return;
+        if (total === 0 || idx === current) return;
         slides()[current].classList.remove('active');
         current = (idx + total) % total;
         slides()[current].classList.add('active');
@@ -602,6 +876,7 @@ window.GALERIE_DATA = [
 
     // Keyboard
     document.addEventListener('keydown', function (e) {
+        if (slideshowView.hidden) return;
         if (lightbox.classList.contains('open')) {
             if (e.key === 'Escape') closeLb();
             if (e.key === 'ArrowLeft')  { closeLb(); prev(); }
@@ -634,6 +909,7 @@ window.GALERIE_DATA = [
 
     // Lightbox
     function openLb() {
+        if (total === 0) return;
         var s = SLIDES[current];
         lbImg.src = s.src;
         lbImg.alt = s.title + ' — Café QUITO';
@@ -650,6 +926,8 @@ window.GALERIE_DATA = [
     lightbox.addEventListener('click', function (e) {
         if (e.target === lightbox) closeLb();
     });
+
+    renderFromState();
 })();
 </script>
 

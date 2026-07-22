@@ -1,0 +1,22 @@
+{
+  "interieur": {
+    "title": "Café & Interieur",
+    "order": 1,
+    "cover": "hero.WEBP"
+  },
+  "kaffee-kueche": {
+    "title": "Kaffee & Küche",
+    "order": 2,
+    "cover": "kaffee.jpeg"
+  },
+  "team-geschichte": {
+    "title": "Team & Geschichte",
+    "order": 3,
+    "cover": "team.JPG"
+  },
+  "sonstige": {
+    "title": "Weitere Eindrücke",
+    "order": 99,
+    "cover": null
+  }
+}

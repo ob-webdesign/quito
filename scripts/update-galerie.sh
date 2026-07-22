@@ -17,12 +17,14 @@
 
 BILDER_DIR="$(dirname "$0")/../bilder"
 GALERIE_JSON="$BILDER_DIR/galerie.json"
+ALBEN_JSON="$BILDER_DIR/alben.json"
 
-python3 - "$BILDER_DIR" "$GALERIE_JSON" <<'EOF'
+python3 - "$BILDER_DIR" "$GALERIE_JSON" "$ALBEN_JSON" <<'EOF'
 import json, sys, subprocess, os, glob
 
 bilder_dir   = sys.argv[1]
 galerie_path = sys.argv[2]
+alben_path   = sys.argv[3]
 
 # Vorhandene Einträge laden
 with open(galerie_path, encoding='utf-8') as f:
@@ -39,7 +41,7 @@ for ext in exts:
 added = 0
 for filepath in sorted(files):
     fname = os.path.basename(filepath)
-    if fname in ('logo.png',) or fname in existing:
+    if fname in ('logo.png', 'hero-alt.WEBP', 'hero-desktop.WEBP') or fname in existing:
         continue
 
     # Abmessungen per sips ermitteln
@@ -61,19 +63,24 @@ for filepath in sorted(files):
 
 if added == 0:
     print('  Keine neuen Bilder gefunden.')
-    sys.exit(0)
+else:
+    # galerie.json sauber zurückschreiben
+    with open(galerie_path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+        f.write('\n')
+    print('  galerie.json aktualisiert.')
 
-# galerie.json sauber zurückschreiben
-with open(galerie_path, 'w', encoding='utf-8') as f:
-    json.dump(data, f, ensure_ascii=False, indent=2)
-    f.write('\n')
+# alben.json laden (falls vorhanden) — Album-Metadaten werden hier redaktionell gepflegt
+alben = {}
+if os.path.exists(alben_path):
+    with open(alben_path, encoding='utf-8') as f:
+        alben = json.load(f)
 
-print('  galerie.json aktualisiert.')
-
-# Inline-Daten in galerie.html aktualisieren
+# Inline-Daten in galerie.html aktualisieren (immer, auch ohne neue Fotos,
+# damit manuelle Änderungen an galerie.json/alben.json übernommen werden)
 import re
 
-galerie_html = os.path.normpath(os.path.join(os.path.dirname(galerie_path), '..', 'html', 'galerie.html'))
+galerie_html = os.path.normpath(os.path.join(os.path.dirname(galerie_path), '..', 'galerie.html'))
 if os.path.exists(galerie_html):
     with open(galerie_html, encoding='utf-8') as f:
         html = f.read()
@@ -83,12 +90,21 @@ if os.path.exists(galerie_html):
         comma = '' if i == len(data) - 1 else ','
         lines.append('  ' + json.dumps(entry, ensure_ascii=False) + comma)
     lines.append('];')
-    new_block = '<script id="galerie-data">\n' + '\n'.join(lines) + '\n</script>'
+    new_galerie_block = '<script id="galerie-data">\n' + '\n'.join(lines) + '\n</script>'
+
+    new_alben_block = ('<script id="alben-data">\nwindow.ALBEN_DATA = '
+                        + json.dumps(alben, ensure_ascii=False, indent=2) + ';\n</script>')
 
     html_new = re.sub(
         r'<script id="galerie-data">.*?</script>',
-        new_block,
+        new_galerie_block,
         html,
+        flags=re.DOTALL
+    )
+    html_new = re.sub(
+        r'<script id="alben-data">.*?</script>',
+        new_alben_block,
+        html_new,
         flags=re.DOTALL
     )
 
