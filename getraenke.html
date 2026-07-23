@@ -58,7 +58,7 @@
         }
         .nav-inner { width: 100%; max-width: var(--max); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; position: relative; }
         .nav-inner > a { position: absolute; left: 50%; transform: translateX(-50%); }
-        .logo-img  { height: 34px; width: auto; display: block; }
+        .logo-img  { height: 30px; width: auto; display: block; }
         .logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.35rem; letter-spacing: .12em; text-transform: uppercase; background: var(--black); color: #fff; padding: .3em .85em; border-radius: 999px; display: none; }
         .nav-actions { display: flex; align-items: center; gap: .75rem; position: absolute; left: 0; }
         .nav-pill {
@@ -124,24 +124,44 @@
         .back-btn:hover { border-color: var(--terracotta); color: var(--terracotta); }
         .back-btn svg { width: 16px; height: 16px; }
         .s-label { display: inline-flex; align-items: center; gap: .75rem; font-size: .75rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 1.1rem; }
-        .s-label::before { content: ''; display: inline-block; width: 22px; height: 1.5px; background: var(--terracotta); }
+        .s-label::before, .s-label::after { content: ''; display: inline-block; width: 22px; height: 1.5px; background: var(--terracotta); }
         .s-title { font-family: var(--font-d); font-size: clamp(2.2rem,5vw,3.8rem); line-height: 1.1; }
         .s-title em { font-style: italic; color: var(--terracotta); }
 
         /* === SPEISEKARTE === */
         #speisekarte { background: var(--warm-white); padding: 0 0 clamp(5rem,10vw,9rem); }
         .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
-        .menu-head { display: flex; align-items: flex-end; justify-content: flex-start; gap: 2rem; margin-bottom: 3.5rem; flex-wrap: wrap; }
-        .tabs { display: flex; gap: .5rem; flex-wrap: wrap; }
-        .tab { font-family: var(--font-b); font-size: .78rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: .6em 1.35em; border-radius: 999px; border: 1.5px solid rgba(26,26,26,.2); background: transparent; color: var(--muted); cursor: pointer; transition: all .2s; }
-        .tab:hover { border-color: var(--terracotta); color: var(--terracotta); }
-        .tab.active { background: var(--black); border-color: var(--black); color: #fff; }
-        .panel { display: none; }
-        .panel.active { display: block; }
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%,340px),1fr)); gap: 0 3rem; }
-        .cat-title { display: flex; align-items: center; gap: 1.1rem; text-align: center; font-family: var(--font-b); font-size: .78rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 2.75rem 0 1.5rem; }
+        .menu-grid { display: block; }
+        .cat-title { display: flex; align-items: center; gap: 1.1rem; text-align: center; font-family: var(--font-b); font-size: .78rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 2.75rem 0 1.5rem; scroll-margin-top: calc(var(--nav-h) + 1.5rem); }
         .cat-title::before, .cat-title::after { content: ''; flex: 1; height: 1px; background: rgba(26,26,26,.15); }
         .cat-title:first-child { margin-top: 0; }
+        .cat-pills-wrap {
+            position: sticky; top: var(--nav-h); z-index: 60;
+            background: var(--warm-white);
+            margin: 0 0 2.5rem;
+            padding: 1.1rem 0 1.35rem;
+            border-bottom: 1px solid rgba(26,26,26,.08);
+        }
+        .cat-pills-wrap::after {
+            content: ''; position: absolute; top: 0; right: 0; bottom: 0;
+            width: 3rem; pointer-events: none;
+            background: linear-gradient(to right, transparent, var(--warm-white));
+        }
+        .cat-pills {
+            display: flex; flex-wrap: nowrap; gap: .55rem;
+            overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+            scroll-behavior: smooth; padding-right: 2rem;
+        }
+        .cat-pills::-webkit-scrollbar { display: none; }
+        .cat-pill {
+            flex: 0 0 auto; white-space: nowrap;
+            font-family: var(--font-b); font-size: .76rem; font-weight: 600; letter-spacing: .04em;
+            padding: .6em 1.3em; border-radius: 999px;
+            border: 1.5px solid rgba(26,26,26,.15); background: transparent; color: var(--muted);
+            cursor: pointer; transition: background .2s, border-color .2s, color .2s;
+        }
+        .cat-pill:hover { border-color: var(--terracotta); color: var(--terracotta); }
+        .cat-pill.active { background: #3A362F; border-color: #3A362F; color: #fff; }
         .mi { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 1.35rem 0; border-bottom: 1px solid rgba(26,26,26,.09); }
         .mi:last-child { border-bottom: none; }
         .mi.has-img { align-items: center; }
@@ -223,19 +243,11 @@
         @media (max-width: 768px) {
             .nav-sub-toggle { width: 38px; height: 38px; }
             .nav-pill { display: none; }
-            .menu-grid { grid-template-columns: 1fr; gap: 0; }
+            .s-label { justify-content: center; width: 100%; }
+            .s-title { text-align: center; }
+            .cat-pills { justify-content: safe center; }
             .mi { flex-direction: column; align-items: flex-start; gap: .35rem; }
             .mi-price { white-space: normal; text-align: left; }
-            .menu-head { justify-content: flex-start; }
-            .tabs-wrap { position: relative; width: 100%; }
-            .tabs-wrap::after {
-                content: ''; position: absolute; top: 0; right: 0; bottom: 0;
-                width: 3.5rem; pointer-events: none;
-                background: linear-gradient(to right, transparent, var(--warm-white));
-            }
-            .tabs { flex-wrap: nowrap; gap: .3rem; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-right: 2rem; }
-            .tabs::-webkit-scrollbar { display: none; }
-            .tab { flex: 0 0 auto; font-size: .74rem; padding: .38em .6em; letter-spacing: .03em; white-space: nowrap; }
             .mi.has-img { flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
             .mi.has-img > div:first-child { flex: 1; min-width: 0; }
             .mi.has-img .mi-price { order: 3; width: 100%; white-space: normal; text-align: left; }
@@ -252,7 +264,7 @@
             .reveal { opacity: 1; transform: none; transition: none; }
         }
         .nav-sub-toggle:focus-visible, .sub-menu-close:focus-visible, .sub-menu a:focus-visible,
-        .nav-pill:focus-visible, .tab:focus-visible, .btn:focus-visible, .back-btn:focus-visible,
+        .nav-pill:focus-visible, .cat-pill:focus-visible, .back-btn:focus-visible,
         .foot-social:focus-visible, .foot-links a:focus-visible {
             outline: 2px solid var(--terracotta); outline-offset: 2px;
         }
@@ -298,20 +310,22 @@
 
 <section id="speisekarte" aria-labelledby="menu-title">
     <div class="container">
-        <div class="menu-head">
-            <div class="tabs-wrap">
-                <div class="tabs reveal" role="tablist" aria-label="Menü-Kategorien">
-                    <button class="tab active" role="tab" aria-selected="true"  aria-controls="p-ka" data-panel="p-ka">Kaffee &amp; Tee</button>
-                    <button class="tab"        role="tab" aria-selected="false" aria-controls="p-ge" data-panel="p-ge">Getränke</button>
-                </div>
+        <div class="cat-pills-wrap">
+            <div class="cat-pills" role="tablist" aria-label="Getränke-Bereiche">
+                <button class="cat-pill active" type="button" data-target="cat-kaffee">Kaffee &amp; Tee</button>
+                <button class="cat-pill" type="button" data-target="cat-softdrinks">Softdrinks</button>
+                <button class="cat-pill" type="button" data-target="cat-wein">Wein &amp; Bier</button>
+                <button class="cat-pill" type="button" data-target="cat-saefte">Säfte</button>
+                <button class="cat-pill" type="button" data-target="cat-sekt">Sekt &amp; Aperitif</button>
+                <button class="cat-pill" type="button" data-target="cat-spirituosen">Spirituosen</button>
             </div>
         </div>
 
         <!-- Kaffee & Tee -->
-        <div class="panel active" id="p-ka" role="tabpanel">
+        <div id="p-ka">
             <div class="menu-grid">
                 <div>
-                    <div class="cat-title">Kaffeespezialitäten</div>
+                    <div class="cat-title" id="cat-kaffee">Kaffeespezialitäten</div>
                     <div class="mi"><div><div class="mi-name">Espresso</div></div><div class="mi-price">2,40 €</div></div>
                     <div class="mi"><div><div class="mi-name">Espresso Macchiato</div></div><div class="mi-price">2,60 €</div></div>
                     <div class="mi"><div><div class="mi-name">Doppelter Espresso</div></div><div class="mi-price">3,80 €</div></div>
@@ -344,10 +358,10 @@
         </div>
 
         <!-- Getränke -->
-        <div class="panel" id="p-ge" role="tabpanel">
+        <div id="p-ge">
             <div class="menu-grid">
                 <div>
-                    <div class="cat-title">Alkoholfreie Getränke</div>
+                    <div class="cat-title" id="cat-softdrinks">Alkoholfreie Getränke</div>
                     <div class="mi"><div><div class="mi-name">Mineralwasser still</div><div class="mi-desc">0,2 l / 0,75 l</div></div><div class="mi-price">2,70 € / 6,90 €</div></div>
                     <div class="mi"><div><div class="mi-name">Mineralwasser classic</div><div class="mi-desc">0,2 l / 0,75 l</div></div><div class="mi-price">2,70 € / 6,90 €</div></div>
                     <div class="mi"><div><div class="mi-name">Coca Cola</div><div class="mi-desc">0,2 l / 0,4 l</div></div><div class="mi-price">3,10 € / 4,00 €</div></div>
@@ -358,13 +372,7 @@
                     <div class="mi"><div><div class="mi-name">Red Bull</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">3,70 €</div></div>
                     <div class="mi"><div><div class="mi-name">Bitter Lemon / Tonic Water</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">3,10 €</div></div>
 
-                    <div class="cat-title">Säfte</div>
-                    <div class="mi"><div><div class="mi-name">Apfel / Orange / Multivitamin / Grapefruit / Ananas / Maracuja / Kirsch / Johannisbeere</div><div class="mi-desc">0,2 l</div></div><div class="mi-price">3,10 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Alle Säfte auch als Schorle</div><div class="mi-desc">0,2 l / 0,4 l</div></div><div class="mi-price">3,00 € / 4,10 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Frischgepresster Orangensaft</div><div class="mi-desc">0,2 l</div></div><div class="mi-price">4,40 €</div></div>
-                </div>
-                <div>
-                    <div class="cat-title">Wein</div>
+                    <div class="cat-title" id="cat-wein">Wein</div>
                     <div class="mi"><div><div class="mi-name">Riesling Hofstück</div><div class="mi-desc">Wachtenburg Winzer, trocken · 0,25 l</div></div><div class="mi-price">4,60 €</div></div>
                     <div class="mi"><div><div class="mi-name">Weissburgunder</div><div class="mi-desc">Wachtenburg Winzer, trocken · 0,25 l</div></div><div class="mi-price">4,50 €</div></div>
                     <div class="mi"><div><div class="mi-name">Grauburgunder</div><div class="mi-desc">Wachtenburg Winzer, trocken · 0,25 l</div></div><div class="mi-price">4,50 €</div></div>
@@ -376,23 +384,29 @@
                     <div class="mi"><div><div class="mi-name">Portugieser Rosé</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">4,90 €</div></div>
                     <div class="mi"><div><div class="mi-name">Rieslingschorle / Weißherbstschorle</div><div class="mi-desc">0,25 l / 0,5 l</div></div><div class="mi-price">3,00 € / 4,80 €</div></div>
 
-                    <div class="cat-title">Sekt &amp; Aperitif</div>
-                    <div class="mi"><div><div class="mi-name">Secco Rosé</div><div class="mi-desc">0,1 l</div></div><div class="mi-price">4,70 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Schloss Wachenheim Sekt / Prosecco</div><div class="mi-desc">0,1 l</div></div><div class="mi-price">3,80 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Sekt Orange / Sekt Maracuja</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">7,10 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Lillet Wild Berry / Aperol Spritz</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">7,10 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Campari Soda / Campari Orange</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">7,10 €</div></div>
-
-                    <div class="cat-title">Spirituosen</div>
-                    <div class="mi"><div><div class="mi-name">Williams / Mirabelle</div><div class="mi-desc">2 cl</div></div><div class="mi-price">3,20 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Ramazotti / Averna / Jägermeister / Baileys</div><div class="mi-desc">2 cl / 4 cl</div></div><div class="mi-price">2,70 € / 4,10 €</div></div>
-
                     <div class="cat-title">Bier</div>
                     <div class="mi"><div><div class="mi-name">Bitburger / Bitburger Alkoholfrei</div><div class="mi-desc">0,33 l</div></div><div class="mi-price">3,40 €</div></div>
                     <div class="mi"><div><div class="mi-name">Radler</div><div class="mi-desc">0,33 l</div></div><div class="mi-price">3,20 €</div></div>
                     <div class="mi"><div><div class="mi-name">Andechser Hefeweizen</div><div class="mi-desc">0,5 l</div></div><div class="mi-price">4,70 €</div></div>
                     <div class="mi"><div><div class="mi-name">Paulaner Hefeweizen Alkoholfrei</div><div class="mi-desc">0,5 l</div></div><div class="mi-price">4,70 €</div></div>
                     <div class="mi"><div><div class="mi-name">Tyskie</div><div class="mi-desc">Polnisches Pilsener · 0,5 l</div></div><div class="mi-price">4,90 €</div></div>
+                </div>
+                <div>
+                    <div class="cat-title" id="cat-saefte">Säfte</div>
+                    <div class="mi"><div><div class="mi-name">Apfel / Orange / Multivitamin / Grapefruit / Ananas / Maracuja / Kirsch / Johannisbeere</div><div class="mi-desc">0,2 l</div></div><div class="mi-price">3,10 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Alle Säfte auch als Schorle</div><div class="mi-desc">0,2 l / 0,4 l</div></div><div class="mi-price">3,00 € / 4,10 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Frischgepresster Orangensaft</div><div class="mi-desc">0,2 l</div></div><div class="mi-price">4,40 €</div></div>
+
+                    <div class="cat-title" id="cat-sekt">Sekt &amp; Aperitif</div>
+                    <div class="mi"><div><div class="mi-name">Secco Rosé</div><div class="mi-desc">0,1 l</div></div><div class="mi-price">4,70 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Schloss Wachenheim Sekt / Prosecco</div><div class="mi-desc">0,1 l</div></div><div class="mi-price">3,80 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Sekt Orange / Sekt Maracuja</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">7,10 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Lillet Wild Berry / Aperol Spritz</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">7,10 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Campari Soda / Campari Orange</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">7,10 €</div></div>
+
+                    <div class="cat-title" id="cat-spirituosen">Spirituosen</div>
+                    <div class="mi"><div><div class="mi-name">Williams / Mirabelle</div><div class="mi-desc">2 cl</div></div><div class="mi-price">3,20 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Ramazotti / Averna / Jägermeister / Baileys</div><div class="mi-desc">2 cl / 4 cl</div></div><div class="mi-price">2,70 € / 4,10 €</div></div>
                 </div>
             </div>
         </div>
@@ -466,19 +480,44 @@
     );
     document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
-    document.querySelectorAll('.tab').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.tab').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
-            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-            btn.classList.add('active'); btn.setAttribute('aria-selected','true');
-            const panel = document.getElementById(btn.dataset.panel);
-            panel.classList.add('active');
-            panel.querySelectorAll('.mi').forEach((item, i) => {
-                item.style.cssText = 'opacity:0;transform:translateY(10px)';
-                setTimeout(() => { item.style.cssText = 'transition:opacity .3s ease,transform .3s ease;opacity:1;transform:none'; }, i * 35);
-            });
+    const catPills   = Array.from(document.querySelectorAll('.cat-pill'));
+    const catPillsBar = document.querySelector('.cat-pills');
+    const catTitles  = catPills.map(pill => document.getElementById(pill.dataset.target)).filter(Boolean);
+
+    catPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+            const target = document.getElementById(pill.dataset.target);
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     });
+
+    function setActivePill(pill) {
+        if (!pill || pill.classList.contains('active')) return;
+        catPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        if (catPillsBar) {
+            const barRect = catPillsBar.getBoundingClientRect();
+            const pillRect = pill.getBoundingClientRect();
+            catPillsBar.scrollTo({ left: catPillsBar.scrollLeft + (pillRect.left - barRect.left) - 12, behavior: 'smooth' });
+        }
+    }
+
+    let spyTicking = false;
+    function updateActivePillFromScroll() {
+        spyTicking = false;
+        if (!catTitles.length) return;
+        const threshold = window.innerHeight * 0.5;
+        let current = catTitles[0];
+        for (const title of catTitles) {
+            if (title.getBoundingClientRect().top - threshold <= 0) current = title;
+        }
+        const pill = catPills.find(p => p.dataset.target === current.id);
+        setActivePill(pill);
+    }
+    window.addEventListener('scroll', () => {
+        if (!spyTicking) { spyTicking = true; requestAnimationFrame(updateActivePillFromScroll); }
+    }, { passive: true });
+    updateActivePillFromScroll();
 
     // Sub menu (side panel)
     const subMenu = document.getElementById('subMenu');
