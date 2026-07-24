@@ -133,6 +133,16 @@
         .additives-link:hover { text-decoration-color: var(--black); }
         .additives-link-mobile { display: none; }
 
+        /* === ZUSATZSTOFFE === */
+        .additives { margin-top: 5rem; padding-top: 2.5rem; border-top: 1px solid rgba(26,26,26,.09); scroll-margin-top: calc(var(--nav-h) + 1.5rem); }
+        .additives-title { font-family: var(--font-b); font-size: .78rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+        .additives-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .5rem 2rem; }
+        .additives-item { display: flex; gap: .6em; font-size: .88rem; color: var(--black); padding: .3rem 0; }
+        .additives-item span { color: var(--muted); flex-shrink: 0; }
+        .additives-allergen { margin-top: 2rem; font-size: .85rem; color: var(--muted); line-height: 1.7; }
+        .additives-allergen strong { color: var(--black); font-weight: 700; }
+        @media (max-width: 600px) { .additives-grid { grid-template-columns: 1fr; } }
+
         /* === SPEISEKARTE === */
         #speisekarte { background: var(--warm-white); padding: 0 0 clamp(5rem,10vw,9rem); }
         .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
@@ -315,11 +325,11 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                 Zurück
             </a>
-            <a href="speisen.html#additives" class="additives-link-mobile reveal">Zusatzstoffe / Allergene</a>
+            <a href="#additives" class="additives-link-mobile reveal">Zusatzstoffe / Allergene</a>
         </div>
         <div class="s-label reveal">Unsere Karte</div>
         <h1 class="s-title reveal d1">Getränke</h1>
-        <a href="speisen.html#additives" class="additives-link additives-link-desktop reveal d2">Zusatzstoffe / Allergene</a>
+        <a href="#additives" class="additives-link additives-link-desktop reveal d2">Zusatzstoffe / Allergene</a>
     </div>
 </div>
 
@@ -475,6 +485,34 @@
                     <div class="mi"><div><div class="mi-name">Williams / Mirabelle</div><div class="mi-desc">2 cl</div></div><div class="mi-price">3,20 €</div></div>
                     <div class="mi"><div><div class="mi-name">Ramazotti / Averna / Jägermeister / Baileys <sup class="mi-ref">1</sup></div><div class="mi-desc">2 cl / 4 cl</div></div><div class="mi-price">2,70 € / 4,10 €</div></div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Zusatzstoffe -->
+        <div class="additives" id="additives">
+            <div class="additives-title">Zusatzstoffe</div>
+            <div class="additives-grid">
+                <div class="additives-item"><span>1)</span> mit Farbstoff</div>
+                <div class="additives-item"><span>2)</span> mit Konservierungsmittel</div>
+                <div class="additives-item"><span>3)</span> mit Antioxidantien</div>
+                <div class="additives-item"><span>4)</span> mit Geschmacksverstärker</div>
+                <div class="additives-item"><span>5)</span> geschwefelt</div>
+                <div class="additives-item"><span>6)</span> geschwärzt</div>
+                <div class="additives-item"><span>7)</span> mit Phosphat</div>
+                <div class="additives-item"><span>8)</span> mit Milcheiweiß</div>
+                <div class="additives-item"><span>9)</span> koffeinhaltig</div>
+                <div class="additives-item"><span>10)</span> chininhaltig</div>
+                <div class="additives-item"><span>11)</span> mit Süßungsmittel</div>
+                <div class="additives-item"><span>12)</span> enthält eine Phenylalaninquelle</div>
+                <div class="additives-item"><span>13)</span> gewachst</div>
+                <div class="additives-item"><span>14)</span> mit Taurin</div>
+                <div class="additives-item"><span>15)</span> Nitritpökelsalz</div>
+                <div class="additives-item"><span>16)</span> enthält Sulfite</div>
+            </div>
+            <div class="additives-allergen">
+                <p><strong>Hinweise zu Allergenen:</strong></p>
+                <p>Eine genaue Deklaration aller enthaltenen Allergene entnehmen Sie unserer im Café ausliegenden Allergenliste.</p>
+                <p>Fragen Sie unser Servicepersonal.</p>
             </div>
         </div>
     </div>
