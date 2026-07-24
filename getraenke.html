@@ -120,21 +120,28 @@
             background: var(--warm-white);
         }
         .page-header .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+        .header-top-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
         .back-btn { display: flex; width: fit-content; align-items: center; gap: .55rem; font-family: var(--font-b); font-size: .82rem; font-weight: 600; letter-spacing: .03em; padding: .65em 1.4em; border: 1.5px solid rgba(26,26,26,.2); border-radius: 999px; color: var(--black); transition: border-color .2s, color .2s; margin-bottom: 2rem; }
+        .header-top-row .back-btn { margin-bottom: 0; }
         .back-btn:hover { border-color: var(--terracotta); color: var(--terracotta); }
         .back-btn svg { width: 16px; height: 16px; }
         .s-label { display: inline-flex; align-items: center; gap: .75rem; font-size: .75rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 1.1rem; }
         .s-label::before, .s-label::after { content: ''; display: inline-block; width: 22px; height: 1.5px; background: var(--terracotta); }
         .s-title { font-family: var(--font-d); font-size: clamp(2.2rem,5vw,3.8rem); line-height: 1.1; }
         .s-title em { font-style: italic; color: var(--terracotta); }
+        .additives-link { display: inline-block; margin-top: 1rem; font-family: var(--font-b); font-size: .8rem; font-weight: 500; letter-spacing: .02em; color: var(--black); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(26,26,26,.35); transition: text-decoration-color .2s; }
+        .additives-link:hover { text-decoration-color: var(--black); }
+        .additives-link-mobile { display: none; }
 
         /* === SPEISEKARTE === */
         #speisekarte { background: var(--warm-white); padding: 0 0 clamp(5rem,10vw,9rem); }
         .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
         .menu-grid { display: block; }
-        .cat-title { display: flex; align-items: center; gap: 1.1rem; text-align: center; font-family: var(--font-b); font-size: .78rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 2.75rem 0 1.5rem; scroll-margin-top: calc(var(--nav-h) + 1.5rem); }
+        .cat-title { display: flex; align-items: center; gap: 1.1rem; text-align: center; font-family: var(--font-b); font-size: .78rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 2.75rem 0 1rem; scroll-margin-top: calc(var(--nav-h) + 1.5rem); }
         .cat-title::before, .cat-title::after { content: ''; flex: 1; height: 1px; background: rgba(26,26,26,.15); }
         .cat-title:first-child { margin-top: 0; }
+        .menu-grid > div + div { margin-top: 2.75rem; }
+        .menu-section + .menu-section { margin-top: 5rem; }
         .cat-pills-wrap {
             position: sticky; top: var(--nav-h); z-index: 60;
             background: var(--warm-white);
@@ -168,6 +175,7 @@
         .mi-name { font-family: var(--font-b); font-size: 1rem; font-weight: 600; margin-bottom: .15rem; text-wrap: pretty; }
         .mi-desc { font-family: var(--font-b); font-size: .82rem; font-weight: 400; color: var(--muted); line-height: 1.5; text-wrap: pretty; }
         .mi-price { font-family: var(--font-b); font-size: 1rem; font-weight: 600; color: var(--terracotta); white-space: nowrap; flex-shrink: 0; }
+        .mi-ref { font-size: .62em; font-weight: 600; color: var(--muted); vertical-align: super; margin-left: .1em; }
         .mi-img-btn { flex-shrink: 0; width: 72px; height: 72px; border-radius: 10px; background: rgba(196,122,90,.09); border: 1.5px solid rgba(196,122,90,.18); cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; transition: transform .2s, box-shadow .2s; position: relative; }
         .mi-img-btn:hover { transform: scale(1.05); box-shadow: 0 4px 14px rgba(196,122,90,.22); }
         .mi-img-ph { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--terracotta); opacity: .45; pointer-events: none; }
@@ -245,6 +253,9 @@
             .nav-pill { display: none; }
             .s-label { justify-content: center; width: 100%; }
             .s-title { text-align: center; }
+            .additives-link-desktop { display: none; }
+            .additives-link-mobile { display: inline-block; flex-shrink: 0; font-family: var(--font-b); font-size: .72rem; font-weight: 500; letter-spacing: .02em; color: var(--black); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(26,26,26,.35); text-align: right; line-height: 1.3; transition: text-decoration-color .2s; }
+            .additives-link-mobile:hover, .additives-link-mobile:active { text-decoration-color: var(--black); }
             .cat-pills { justify-content: safe center; }
             .mi { flex-direction: column; align-items: flex-start; gap: .35rem; }
             .mi-price { white-space: normal; text-align: left; }
@@ -299,12 +310,16 @@
 
 <div class="page-header">
     <div class="container">
-        <a href="speisekarte.html" class="back-btn reveal">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            Zurück
-        </a>
+        <div class="header-top-row">
+            <a href="speisekarte.html" class="back-btn reveal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Zurück
+            </a>
+            <a href="speisen.html#additives" class="additives-link-mobile reveal">Zusatzstoffe / Allergene</a>
+        </div>
         <div class="s-label reveal">Unsere Karte</div>
         <h1 class="s-title reveal d1">Getränke</h1>
+        <a href="speisen.html#additives" class="additives-link additives-link-desktop reveal d2">Zusatzstoffe / Allergene</a>
     </div>
 </div>
 
@@ -313,100 +328,152 @@
         <div class="cat-pills-wrap">
             <div class="cat-pills" role="tablist" aria-label="Getränke-Bereiche">
                 <button class="cat-pill active" type="button" data-target="cat-kaffee">Kaffee &amp; Tee</button>
+                <button class="cat-pill" type="button" data-target="cat-frappes">Frappés &amp; Smoothies</button>
                 <button class="cat-pill" type="button" data-target="cat-softdrinks">Softdrinks</button>
-                <button class="cat-pill" type="button" data-target="cat-wein">Wein &amp; Bier</button>
                 <button class="cat-pill" type="button" data-target="cat-saefte">Säfte</button>
+                <button class="cat-pill" type="button" data-target="cat-wein">Wein &amp; Bier</button>
                 <button class="cat-pill" type="button" data-target="cat-sekt">Sekt &amp; Aperitif</button>
                 <button class="cat-pill" type="button" data-target="cat-spirituosen">Spirituosen</button>
             </div>
         </div>
 
         <!-- Kaffee & Tee -->
-        <div id="p-ka">
+        <div id="p-ka" class="menu-section">
             <div class="menu-grid">
                 <div>
-                    <div class="cat-title" id="cat-kaffee">Kaffeespezialitäten</div>
-                    <div class="mi"><div><div class="mi-name">Espresso</div></div><div class="mi-price">2,40 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Espresso Macchiato</div></div><div class="mi-price">2,60 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Doppelter Espresso</div></div><div class="mi-price">3,80 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Café Crema</div></div><div class="mi-price">2,60 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Café Crema groß</div></div><div class="mi-price">3,00 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Cappuccino Quito</div></div><div class="mi-price">2,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Cafe Latte</div></div><div class="mi-price">3,40 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Latte Macchiato</div></div><div class="mi-price">3,50 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Heiße Schokolade</div><div class="mi-desc">Mit geschäumter Milch</div></div><div class="mi-price">3,60 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Chai Latte</div><div class="mi-desc">Vanille, Spiced oder Green</div></div><div class="mi-price">3,80 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Chai Macchiato</div><div class="mi-desc">Mit Espresso: Vanille, Spiced oder Green</div></div><div class="mi-price">4,80 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Geeister Espresso</div></div><div class="mi-price">6,20 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Cappuccino Baileys</div></div><div class="mi-price">6,20 €</div></div>
+                    <div class="cat-title" id="cat-kaffee">Kaffeespezialitäten und warme Getränke</div>
+                    <div class="mi"><div><div class="mi-name">Espresso</div></div><div class="mi-price">2,60 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Espresso Macchiato</div></div><div class="mi-price">2,80 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Doppelter Espresso</div></div><div class="mi-price">4,10 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Café Crema</div></div><div class="mi-price">2,80 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Café Crema groß</div></div><div class="mi-price">3,20 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Cappuccino Quito</div></div><div class="mi-price">3,20 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Cafe Latte</div></div><div class="mi-price">3,60 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Latte Macchiato</div></div><div class="mi-price">3,70 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Heiße Schokolade</div><div class="mi-desc">Mit geschäumter Milch</div></div><div class="mi-price">3,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Chai Latte</div><div class="mi-desc">Vanille, Spiced oder Green</div></div><div class="mi-price">4,10 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Chai Macchiato</div><div class="mi-desc">Mit Espresso: Vanille, Spiced oder Green</div></div><div class="mi-price">5,10 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Cappuccino Baileys <sup class="mi-ref">1</sup></div></div><div class="mi-price">6,50 €</div></div>
 
                     <div class="cat-title">Extras</div>
                     <div class="mi"><div><div class="mi-name">Sirup</div><div class="mi-desc">Vanille, Amaretto, Cocos, Caramel, Haselnuss, Zimt</div></div><div class="mi-price">0,60 €</div></div>
                     <div class="mi"><div><div class="mi-name">Schlagsahne</div></div><div class="mi-price">0,60 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Soja-/Lactosefreie Milch</div></div><div class="mi-price">0,60 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Hafer-/Lactosefreie Milch</div></div><div class="mi-price">0,60 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Kuchen des Tages</div><div class="mi-desc">Zu einem guten Kaffee gehört natürlich auch ein gutes Stück Kuchen. Bitte fragen Sie unsere Servicemitarbeiter, welche Kuchen wir Ihnen heute anbieten können.</div></div></div>
                 </div>
                 <div>
                     <div class="cat-title">Teespezialitäten</div>
-                    <div class="mi"><div><div class="mi-name">Schwarztee</div><div class="mi-desc">Assam, Darjeeling, India Blend</div></div><div class="mi-price">3,50 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Grünertee</div><div class="mi-desc">Japan-Bancha</div></div><div class="mi-price">3,50 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Kräutertee</div><div class="mi-desc">Pfefferminz, Kamille, Fastentee</div></div><div class="mi-price">3,50 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Früchtetee</div><div class="mi-desc">Sommertraum</div></div><div class="mi-price">3,50 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Rooibos</div><div class="mi-desc">Vanille oder Natur</div></div><div class="mi-price">3,50 €</div></div>
-
+                    <div class="mi"><div><div class="mi-name">Schwarztee</div><div class="mi-desc">Assam, Darjeeling</div></div><div class="mi-price">3,80 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Grüntee</div><div class="mi-desc">Japan-Bancha</div></div><div class="mi-price">3,80 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Kräutertee</div><div class="mi-desc">Pfefferminz, Kamille, Fastentee</div></div><div class="mi-price">3,80 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Früchtetee</div><div class="mi-desc">Sommertraum</div></div><div class="mi-price">3,80 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Rooibos</div><div class="mi-desc">Vanille oder Natur</div></div><div class="mi-price">3,80 €</div></div>
                 </div>
             </div>
         </div>
 
-        <!-- Getränke -->
-        <div id="p-ge">
+        <!-- Frappés & Smoothies -->
+        <div id="p-fs" class="menu-section">
+            <div class="menu-grid">
+                <div>
+                    <div class="cat-title" id="cat-frappes">Frappé</div>
+                    <div class="mi has-img"><div><div class="mi-name">Latte Frappé <sup class="mi-ref">8</sup></div><div class="mi-desc">Crushed Ice mit Milch und Kaffee · Kaffeegeschmack · 0,4 l</div></div><div class="mi-price">8,50 €</div><button class="mi-img-btn" data-name="Latte Frappé" data-src="" aria-label="Foto: Latte Frappé"><div class="mi-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Foto</span></div></button></div>
+                    <div class="mi has-img"><div><div class="mi-name">Mocca Frappé <sup class="mi-ref">8</sup></div><div class="mi-desc">Kaffee- und Schokoladengeschmack · 0,4 l</div></div><div class="mi-price">8,50 €</div><button class="mi-img-btn" data-name="Mocca Frappé" data-src="" aria-label="Foto: Mocca Frappé"><div class="mi-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Foto</span></div></button></div>
+                    <div class="mi has-img"><div><div class="mi-name">Coffee-Toffee-Extreme <sup class="mi-ref">1,2,8</sup></div><div class="mi-desc">Frappé Latte mit Karamellsirup · 0,4 l</div></div><div class="mi-price">9,10 €</div><button class="mi-img-btn" data-name="Coffee-Toffee-Extreme" data-src="" aria-label="Foto: Coffee-Toffee-Extreme"><div class="mi-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Foto</span></div></button></div>
+                    <div class="mi has-img"><div><div class="mi-name">Coconut Mocca <sup class="mi-ref">1,2,8</sup></div><div class="mi-desc">Frappé Mocca mit Kokosnusssirup · 0,4 l</div></div><div class="mi-price">9,10 €</div><button class="mi-img-btn" data-name="Coconut Mocca" data-src="" aria-label="Foto: Coconut Mocca"><div class="mi-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Foto</span></div></button></div>
+                    <div class="mi has-img"><div><div class="mi-name">„Diana" Latte Frappé <sup class="mi-ref">1,8</sup></div><div class="mi-desc">Kaffeegeschmack mit Baileys · 0,3 l</div></div><div class="mi-price">10,50 €</div><button class="mi-img-btn" data-name='„Diana" Latte Frappé' data-src="" aria-label='Foto: „Diana" Latte Frappé'><div class="mi-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Foto</span></div></button></div>
+
+                    <div class="cat-title">Classics</div>
+                    <div class="mi has-img"><div><div class="mi-name">Eiskaffee <sup class="mi-ref">8</sup></div><div class="mi-desc">2 Bällchen Vanilleeis, Kaffee und Sahne · 0,4 l</div></div><div class="mi-price">5,20 €</div><button class="mi-img-btn" data-name="Eiskaffee" data-src="" aria-label="Foto: Eiskaffee"><div class="mi-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Foto</span></div></button></div>
+                    <div class="mi has-img"><div><div class="mi-name">Eisschokolade <sup class="mi-ref">8</sup></div><div class="mi-desc">2 Bällchen Vanilleeis, Schokoladenmilch und Sahne · 0,4 l</div></div><div class="mi-price">5,20 €</div><button class="mi-img-btn" data-name="Eisschokolade" data-src="" aria-label="Foto: Eisschokolade"><div class="mi-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Foto</span></div></button></div>
+                </div>
+                <div>
+                    <div class="cat-title">Smoothie</div>
+                    <div class="mi has-img"><div><div class="mi-name">Smoothie Pfirsich <sup class="mi-ref">1,2,3</sup></div><div class="mi-desc">Crushed Ice mit Fruchtpüree · 0,4 l</div></div><div class="mi-price">9,80 €</div><button class="mi-img-btn" data-name="Smoothie Pfirsich" data-src="" aria-label="Foto: Smoothie Pfirsich"><div class="mi-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Foto</span></div></button></div>
+                    <div class="mi has-img"><div><div class="mi-name">Smoothie Sommerfrüchte <sup class="mi-ref">1,2,3</sup></div><div class="mi-desc">Crushed Ice mit Fruchtpüree · 0,4 l</div></div><div class="mi-price">9,80 €</div><button class="mi-img-btn" data-name="Smoothie Sommerfrüchte" data-src="" aria-label="Foto: Smoothie Sommerfrüchte"><div class="mi-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Foto</span></div></button></div>
+                    <div class="mi has-img"><div><div class="mi-name">Smoothie Mango <sup class="mi-ref">1,2,3</sup></div><div class="mi-desc">Crushed Ice mit Fruchtpüree · 0,4 l</div></div><div class="mi-price">9,80 €</div><button class="mi-img-btn" data-name="Smoothie Mango" data-src="" aria-label="Foto: Smoothie Mango"><div class="mi-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Foto</span></div></button></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Softdrinks & Säfte -->
+        <div id="p-ge" class="menu-section">
             <div class="menu-grid">
                 <div>
                     <div class="cat-title" id="cat-softdrinks">Alkoholfreie Getränke</div>
-                    <div class="mi"><div><div class="mi-name">Mineralwasser still</div><div class="mi-desc">0,2 l / 0,75 l</div></div><div class="mi-price">2,70 € / 6,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Mineralwasser classic</div><div class="mi-desc">0,2 l / 0,75 l</div></div><div class="mi-price">2,70 € / 6,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Coca Cola</div><div class="mi-desc">0,2 l / 0,4 l</div></div><div class="mi-price">3,10 € / 4,00 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Coca Cola Light / Zero</div><div class="mi-desc">0,2 l / 0,4 l</div></div><div class="mi-price">3,10 € / 4,00 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Fanta / Sprite / Mezzo Mix</div><div class="mi-desc">0,2 l / 0,4 l</div></div><div class="mi-price">3,10 € / 4,00 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Orangina / Orangina Rouge</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">3,80 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Bionade</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">3,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Red Bull</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">3,70 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Bitter Lemon / Tonic Water</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">3,10 €</div></div>
-
-                    <div class="cat-title" id="cat-wein">Wein</div>
-                    <div class="mi"><div><div class="mi-name">Riesling Hofstück</div><div class="mi-desc">Wachtenburg Winzer, trocken · 0,25 l</div></div><div class="mi-price">4,60 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Weissburgunder</div><div class="mi-desc">Wachtenburg Winzer, trocken · 0,25 l</div></div><div class="mi-price">4,50 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Grauburgunder</div><div class="mi-desc">Wachtenburg Winzer, trocken · 0,25 l</div></div><div class="mi-price">4,50 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Müller-Thurgau</div><div class="mi-desc">Wachtenburg Winzer, halbtrocken · 0,25 l</div></div><div class="mi-price">4,60 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Dornfelder</div><div class="mi-desc">Wachtenburg Winzer, trocken · 0,25 l</div></div><div class="mi-price">4,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Spätburgunder</div><div class="mi-desc">Wachtenburg Winzer, trocken · 0,25 l</div></div><div class="mi-price">4,80 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Cabernet Dorsa</div><div class="mi-desc">Mühlheimer Grafenstück, trocken · 0,25 l</div></div><div class="mi-price">5,40 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Spätburgunder</div><div class="mi-desc">Obrigheimer Rosengarten, halbtrocken · 0,25 l</div></div><div class="mi-price">5,40 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Portugieser Rosé</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">4,90 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Rieslingschorle / Weißherbstschorle</div><div class="mi-desc">0,25 l / 0,5 l</div></div><div class="mi-price">3,00 € / 4,80 €</div></div>
-
-                    <div class="cat-title">Bier</div>
-                    <div class="mi"><div><div class="mi-name">Bitburger / Bitburger Alkoholfrei</div><div class="mi-desc">0,33 l</div></div><div class="mi-price">3,40 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Radler</div><div class="mi-desc">0,33 l</div></div><div class="mi-price">3,20 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Andechser Hefeweizen</div><div class="mi-desc">0,5 l</div></div><div class="mi-price">4,70 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Paulaner Hefeweizen Alkoholfrei</div><div class="mi-desc">0,5 l</div></div><div class="mi-price">4,70 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Tyskie</div><div class="mi-desc">Polnisches Pilsener · 0,5 l</div></div><div class="mi-price">4,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Mineralwasser still</div><div class="mi-desc">0,2 l / 0,75 l</div></div><div class="mi-price">2,90 € / 6,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Mineralwasser classic</div><div class="mi-desc">0,2 l / 0,75 l</div></div><div class="mi-price">2,90 € / 6,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Coca Cola <sup class="mi-ref">1,3,9</sup></div><div class="mi-desc">0,2 l / 0,4 l</div></div><div class="mi-price">3,20 € / 4,10 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Coca Cola Light / Zero <sup class="mi-ref">1,3,9,11,12</sup></div><div class="mi-desc">0,2 l / 0,4 l</div></div><div class="mi-price">3,20 € / 4,10 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Fanta <sup class="mi-ref">1,3</sup> / Sprite <sup class="mi-ref">2</sup> / Mezzo Mix <sup class="mi-ref">1,3,9</sup></div><div class="mi-desc">0,2 l / 0,4 l</div></div><div class="mi-price">3,20 € / 4,10 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Orangina / Orangina Rouge <sup class="mi-ref">1,3</sup></div><div class="mi-desc">0,25 l</div></div><div class="mi-price">3,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Bionade</div><div class="mi-desc">0,33 l</div></div><div class="mi-price">4,20 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Bitter Lemon <sup class="mi-ref">3,10</sup></div><div class="mi-desc">0,25 l</div></div><div class="mi-price">4,50 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Tonic Water <sup class="mi-ref">10</sup></div><div class="mi-desc">0,25 l</div></div><div class="mi-price">3,20 €</div></div>
                 </div>
                 <div>
                     <div class="cat-title" id="cat-saefte">Säfte</div>
-                    <div class="mi"><div><div class="mi-name">Apfel / Orange / Multivitamin / Grapefruit / Ananas / Maracuja / Kirsch / Johannisbeere</div><div class="mi-desc">0,2 l</div></div><div class="mi-price">3,10 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Alle Säfte auch als Schorle</div><div class="mi-desc">0,2 l / 0,4 l</div></div><div class="mi-price">3,00 € / 4,10 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Frischgepresster Orangensaft</div><div class="mi-desc">0,2 l</div></div><div class="mi-price">4,40 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Apfel / Orange / Grapefruit / Ananas</div><div class="mi-desc">0,2 l</div></div><div class="mi-price">3,20 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Maracujanektar / Kirschnektar / Johannisbeernektar</div><div class="mi-desc">0,2 l</div></div><div class="mi-price">3,20 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Alle Säfte auch als Schorle</div><div class="mi-desc">0,2 l / 0,4 l</div></div><div class="mi-price">3,10 € / 4,30 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Frischgepresster Orangensaft</div><div class="mi-desc">0,2 l</div></div><div class="mi-price">5,00 €</div></div>
+                </div>
+            </div>
+        </div>
 
-                    <div class="cat-title" id="cat-sekt">Sekt &amp; Aperitif</div>
-                    <div class="mi"><div><div class="mi-name">Secco Rosé</div><div class="mi-desc">0,1 l</div></div><div class="mi-price">4,70 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Schloss Wachenheim Sekt / Prosecco</div><div class="mi-desc">0,1 l</div></div><div class="mi-price">3,80 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Sekt Orange / Sekt Maracuja</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">7,10 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Lillet Wild Berry / Aperol Spritz</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">7,10 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Campari Soda / Campari Orange</div><div class="mi-desc">0,25 l</div></div><div class="mi-price">7,10 €</div></div>
+        <!-- Wein & Bier -->
+        <div id="p-we" class="menu-section">
+            <div class="menu-grid">
+                <div>
+                    <div class="cat-title" id="cat-wein">Weißweine Pfalz</div>
+                    <div class="mi"><div><div class="mi-name">Riesling <sup class="mi-ref">16</sup></div><div class="mi-desc">Trocken · 0,25 l</div></div><div class="mi-price">4,80 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Weissburgunder <sup class="mi-ref">16</sup></div><div class="mi-desc">Trocken · 0,25 l</div></div><div class="mi-price">4,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Grauburgunder <sup class="mi-ref">16</sup></div><div class="mi-desc">Trocken · 0,25 l</div></div><div class="mi-price">4,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Müller-Thurgau <sup class="mi-ref">16</sup></div><div class="mi-desc">Halbtrocken · 0,25 l</div></div><div class="mi-price">4,80 €</div></div>
 
+                    <div class="cat-title">Rotweine Pfalz</div>
+                    <div class="mi"><div><div class="mi-name">Dornfelder <sup class="mi-ref">16</sup></div><div class="mi-desc">Trocken · 0,25 l</div></div><div class="mi-price">5,20 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Spätburgunder <sup class="mi-ref">16</sup></div><div class="mi-desc">Trocken · 0,25 l</div></div><div class="mi-price">5,10 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Cabernet Dorsa <sup class="mi-ref">16</sup></div><div class="mi-desc">Trocken · 0,25 l</div></div><div class="mi-price">5,60 €</div></div>
+
+                    <div class="cat-title">Roseweine &amp; Mix</div>
+                    <div class="mi"><div><div class="mi-name">Portugieser Rosé <sup class="mi-ref">16</sup></div><div class="mi-desc">0,25 l</div></div><div class="mi-price">4,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Rieslingschorle / Weißherbstschorle <sup class="mi-ref">16</sup></div><div class="mi-desc">0,25 l / 0,5 l</div></div><div class="mi-price">3,20 € / 5,00 €</div></div>
+                </div>
+                <div>
+                    <div class="cat-title">Bier</div>
+                    <div class="mi"><div><div class="mi-name">Bitburger <sup class="mi-ref">16</sup> / Bitburger Alkoholfrei</div><div class="mi-desc">0,33 l</div></div><div class="mi-price">3,60 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Radler <sup class="mi-ref">2,16</sup></div><div class="mi-desc">0,33 l</div></div><div class="mi-price">3,40 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Andechser Hefeweizen <sup class="mi-ref">16</sup> / Alkoholfrei</div><div class="mi-desc">0,5 l</div></div><div class="mi-price">4,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Tyskie <sup class="mi-ref">16</sup></div><div class="mi-desc">Polnisches Pilsener · 0,5 l</div></div><div class="mi-price">5,10 €</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sekt & Aperitif -->
+        <div id="p-se" class="menu-section">
+            <div class="menu-grid">
+                <div>
+                    <div class="cat-title" id="cat-sekt">Sekt</div>
+                    <div class="mi"><div><div class="mi-name">Secco Rosé <sup class="mi-ref">16</sup></div><div class="mi-desc">0,1 l</div></div><div class="mi-price">4,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Schloss Wachenheim Sekt / Prosecco <sup class="mi-ref">16</sup></div><div class="mi-desc">0,1 l</div></div><div class="mi-price">3,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Sekt Orange / Sekt Maracuja <sup class="mi-ref">16</sup></div><div class="mi-desc">0,25 l</div></div><div class="mi-price">7,50 €</div></div>
+                </div>
+                <div>
+                    <div class="cat-title">Bitter</div>
+                    <div class="mi"><div><div class="mi-name">Lillet Wild Berry <sup class="mi-ref">16</sup> / Aperol Spritz <sup class="mi-ref">2,16</sup></div><div class="mi-desc">0,25 l</div></div><div class="mi-price">7,90 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Campari Soda / Campari Orange <sup class="mi-ref">1</sup></div><div class="mi-desc">0,25 l</div></div><div class="mi-price">7,30 €</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spirituosen -->
+        <div id="p-sp2" class="menu-section">
+            <div class="menu-grid">
+                <div>
                     <div class="cat-title" id="cat-spirituosen">Spirituosen</div>
                     <div class="mi"><div><div class="mi-name">Williams / Mirabelle</div><div class="mi-desc">2 cl</div></div><div class="mi-price">3,20 €</div></div>
-                    <div class="mi"><div><div class="mi-name">Ramazotti / Averna / Jägermeister / Baileys</div><div class="mi-desc">2 cl / 4 cl</div></div><div class="mi-price">2,70 € / 4,10 €</div></div>
+                    <div class="mi"><div><div class="mi-name">Ramazotti / Averna / Jägermeister / Baileys <sup class="mi-ref">1</sup></div><div class="mi-desc">2 cl / 4 cl</div></div><div class="mi-price">2,70 € / 4,10 €</div></div>
                 </div>
             </div>
         </div>

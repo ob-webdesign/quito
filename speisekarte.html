@@ -115,24 +115,24 @@
 
         /* === PAGE HEADER === */
         .page-header {
-            padding-top: calc(var(--nav-h) + clamp(3rem, 6vw, 5rem));
-            padding-bottom: clamp(2rem, 4vw, 3rem);
+            padding-top: calc(var(--nav-h) + clamp(1.25rem, 2.5vw, 2rem));
+            padding-bottom: clamp(.75rem, 1.5vw, 1.25rem);
             background: var(--warm-white);
         }
         .page-header .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
-        .s-label { display: flex; justify-content: center; align-items: center; gap: .75rem; font-size: .75rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 1.1rem; }
+        .s-label { display: flex; justify-content: center; align-items: center; gap: .75rem; font-size: .75rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--terracotta); margin-bottom: .6rem; }
         .s-label::before, .s-label::after { content: ''; display: inline-block; width: 22px; height: 1.5px; background: var(--terracotta); }
-        .s-title { font-family: var(--font-d); font-size: clamp(2.2rem,5vw,3.8rem); line-height: 1.1; text-align: center; }
+        .s-title { font-family: var(--font-d); font-size: clamp(1.6rem,3.4vw,2.3rem); line-height: 1.1; text-align: center; }
         .s-title em { font-style: italic; color: var(--terracotta); }
         .s-heart { display: inline-block; vertical-align: middle; width: .85em; height: .85em; margin-bottom: .1em; }
 
         /* === LANDING CARDS === */
-        #karten { background: var(--warm-white); padding: 0 0 clamp(5rem,10vw,9rem); }
+        #karten { background: var(--warm-white); padding: 0 0 clamp(2rem,4vw,3rem); }
         .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
-        .landing-cards { display: flex; flex-direction: column; gap: 1.5rem; max-width: 640px; margin: 0 auto; }
+        .landing-cards { display: flex; flex-direction: column; gap: .7rem; max-width: 380px; margin: 0 auto; }
         .landing-card {
             position: relative; display: block; aspect-ratio: 16 / 9;
-            border-radius: 22px; overflow: hidden;
+            border-radius: 14px; overflow: hidden;
         }
         .landing-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
         .landing-card:hover img { transform: scale(1.06); }
@@ -141,9 +141,9 @@
             background: linear-gradient(to top, rgba(0,0,0,.62) 0%, rgba(0,0,0,.08) 55%, rgba(0,0,0,0) 80%);
         }
         .landing-card-label {
-            position: absolute; left: 1.75rem; bottom: 1.5rem; z-index: 2;
-            font-family: var(--font-b); font-weight: 700; font-size: clamp(1.3rem, 3vw, 1.7rem);
-            letter-spacing: .1em; text-transform: uppercase; color: #fff;
+            position: absolute; left: 1rem; bottom: .8rem; z-index: 2;
+            font-family: var(--font-b); font-weight: 700; font-size: clamp(.85rem, 1.8vw, 1.05rem);
+            letter-spacing: .07em; text-transform: uppercase; color: #fff;
         }
 
         /* === FOOTER === */
@@ -233,7 +233,7 @@
                 <span class="landing-card-label">Speisen</span>
             </a>
             <a href="getraenke.html" class="landing-card reveal d1" aria-label="Getränke ansehen">
-                <img src="bilder/kaffee.jpeg" alt="Getränke bei QUITO" loading="lazy">
+                <img src="bilder/getraenke-box.webp" alt="Getränke bei QUITO" loading="lazy">
                 <span class="landing-card-label">Getränke</span>
             </a>
         </div>

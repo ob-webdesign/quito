@@ -478,13 +478,11 @@
         @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
 
         .hero-badge-cash {
-            left: auto; right: var(--pad);
+            left: var(--pad); right: auto;
+            top: calc(var(--nav-h) + env(safe-area-inset-top) + 3.4rem);
             cursor: default;
         }
         .hero-badge-cash svg { width: 14px; height: 14px; flex-shrink: 0; stroke: rgba(255,255,255,.85); fill: none; stroke-width: 1.6; }
-        @media (max-width: 480px) {
-            .hero-badge-cash { left: var(--pad); right: auto; top: calc(var(--nav-h) + env(safe-area-inset-top) + 3.4rem); }
-        }
 
         /* === ABOUT QUOTE DECO === */
         .about-quote {
