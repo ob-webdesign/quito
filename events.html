@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Speisekarte — QUITO Café</title>
-    <meta name="description" content="Die Speisekarte des Café QUITO in Frankenthal — Speisen und Getränke."><style>
+    <title>Events & Catering — QUITO Café</title>
+    <meta name="description" content="Feiern Sie Ihr Event im Café QUITO Frankenthal oder lassen Sie sich von unserem Q Event &amp; Catering Service direkt an Ihre Location beliefern."><style>
 @font-face { font-family: 'DM Serif Display'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/dm-serif-display-regular-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
 @font-face { font-family: 'DM Serif Display'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/dm-serif-display-regular.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 @font-face { font-family: 'DM Serif Display'; font-style: italic; font-weight: 400; font-display: swap; src: url('fonts/dm-serif-display-italic-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
@@ -44,7 +44,7 @@
 
         .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
         .reveal.visible { opacity: 1; transform: none; }
-        .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; }
+        .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; } .d3 { transition-delay: .3s; }
 
         /* === NAV === */
         nav {
@@ -124,27 +124,31 @@
         .s-label::before, .s-label::after { content: ''; display: inline-block; width: 22px; height: 1.5px; background: var(--terracotta); }
         .s-title { font-family: var(--font-d); font-size: clamp(1.6rem,3.4vw,2.3rem); line-height: 1.1; text-align: center; }
         .s-title em { font-style: italic; color: var(--terracotta); }
-        .s-heart { display: inline-block; vertical-align: middle; width: .85em; height: .85em; margin-bottom: .1em; }
 
-        /* === LANDING CARDS === */
-        #karten { background: var(--warm-white); padding: 0 0 clamp(2rem,4vw,3rem); }
+        /* === EVENT SECTION === */
+        #event { background: var(--warm-white); padding: clamp(1.5rem,3vw,2.5rem) 0 clamp(4rem,7vw,6rem); }
         .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
-        .landing-cards { display: flex; flex-direction: column; gap: .7rem; max-width: 380px; margin: 0 auto; }
-        .landing-card {
-            position: relative; display: block; aspect-ratio: 16 / 9;
-            border-radius: 14px; overflow: hidden;
+        .event-grid { max-width: 640px; margin: 0 auto; text-align: left; }
+        .event-eyebrow { font-size: .78rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--terracotta); margin-bottom: .9rem; }
+        .event-heading { font-family: var(--font-d); font-size: clamp(1.6rem,3vw,2.4rem); line-height: 1.15; margin-bottom: 1.5rem; }
+        .event-heading em { font-style: italic; color: var(--terracotta); }
+        .event-occasions { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: .5rem; margin-bottom: 2rem; }
+        .event-tag {
+            font-size: .76rem; font-weight: 600; letter-spacing: .04em;
+            padding: .6em 1.3em; border-radius: 999px;
+            background: rgba(26,26,26,.05);
+            border: 1px solid rgba(26,26,26,.12); color: var(--muted);
         }
-        .landing-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
-        .landing-card:hover img { transform: scale(1.06); }
-        .landing-card::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,.62) 0%, rgba(0,0,0,.08) 55%, rgba(0,0,0,0) 80%);
-        }
-        .landing-card-label {
-            position: absolute; left: 1rem; bottom: .8rem; z-index: 2;
-            font-family: var(--font-b); font-weight: 700; font-size: clamp(.85rem, 1.8vw, 1.05rem);
-            letter-spacing: .07em; text-transform: uppercase; color: #fff;
-        }
+        .event-text p { font-size: 1rem; color: var(--black); line-height: 1.85; margin-bottom: 1.1rem; max-width: 52ch; }
+        .event-text p:last-of-type { margin-bottom: 2rem; }
+        .event-text strong { color: var(--black); }
+        .event-ctas { display: flex; align-items: center; justify-content: flex-start; gap: 1rem; flex-wrap: wrap; }
+        .btn { display: inline-flex; align-items: center; gap: .5rem; font-family: var(--font-b); font-size: .82rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; padding: .85em 1.8em; border-radius: 999px; cursor: pointer; transition: background .2s, border-color .2s, transform .2s; border: 1.5px solid transparent; }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-fill  { background: var(--terracotta); color: #fff; }
+        .btn-fill:hover { background: #a85e28; }
+        .btn-ghost { background: transparent; color: var(--black); border-color: rgba(26,26,26,.25); }
+        .btn-ghost:hover { border-color: var(--terracotta); color: var(--terracotta); }
 
         /* === FOOTER === */
         footer { background: var(--black); color: #fff; padding: clamp(3rem,6vw,5rem) 0 calc(clamp(2rem,4vw,3rem) + env(safe-area-inset-bottom)); }
@@ -173,6 +177,17 @@
         @media (max-width: 768px) {
             .nav-sub-toggle { width: 38px; height: 38px; }
             .nav-pill { display: none; }
+            .s-label { justify-content: flex-start; }
+            .s-title { text-align: left; }
+            .event-occasions { flex-wrap: nowrap; gap: .3rem; margin-bottom: 1.7rem; }
+            .event-tag {
+                flex: 0 0 auto; white-space: nowrap;
+                font-size: calc(3vw - 1.8px);
+                padding: .45em .65em;
+            }
+            .event-text p { max-width: none; }
+            .event-ctas { flex-direction: column; align-items: stretch; gap: .75rem; }
+            .event-ctas .btn { justify-content: center; width: 100%; }
         }
         @media (max-width: 480px) {
             .foot-info { flex-direction: column; gap: .35rem; }
@@ -185,7 +200,7 @@
             .reveal { opacity: 1; transform: none; transition: none; }
         }
         .nav-sub-toggle:focus-visible, .sub-menu-close:focus-visible, .sub-menu a:focus-visible,
-        .nav-pill:focus-visible, .landing-card:focus-visible,
+        .nav-pill:focus-visible, .btn:focus-visible,
         .foot-social:focus-visible, .foot-links a:focus-visible {
             outline: 2px solid var(--terracotta); outline-offset: 2px;
         }
@@ -201,7 +216,7 @@
             <span class="logo-text">QUITO</span>
         </a>
         <div class="nav-actions">
-            <a href="speisekarte.html" class="nav-pill active">Speisekarte</a>
+            <a href="events.html" class="nav-pill active">Events</a>
             <button class="nav-sub-toggle" id="subToggle" aria-label="Menü öffnen" aria-expanded="false">
                 <span></span><span></span><span></span>
             </button>
@@ -220,22 +235,35 @@
 
 <div class="page-header">
     <div class="container">
-        <div class="s-label reveal">Unsere Karte</div>
-        <h1 class="s-title reveal d1">Frisch &amp; <em>mit</em> <svg class="s-heart" viewBox="0 0 32 29" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 27S2 18.5 2 9.5A7.5 7.5 0 0 1 16 5.22 7.5 7.5 0 0 1 30 9.5C30 18.5 16 27 16 27Z" fill="#C4793A"/></svg></h1>
+        <div class="s-label reveal">Q Event &amp; Catering</div>
+        <h1 class="s-title reveal d1">Ihr <em>Event</em> bei QUITO</h1>
     </div>
 </div>
 
-<section id="karten" aria-label="Kategorien">
+<section id="event" aria-label="Events und Catering">
     <div class="container">
-        <div class="landing-cards">
-            <a href="speisen.html" class="landing-card reveal" aria-label="Speisen ansehen">
-                <img src="bilder/essen.JPG.jpg" alt="Speisen bei QUITO" loading="lazy">
-                <span class="landing-card-label">Speisen</span>
-            </a>
-            <a href="getraenke.html" class="landing-card reveal d1" aria-label="Getränke ansehen">
-                <img src="bilder/getraenke-box.webp" alt="Getränke bei QUITO" loading="lazy">
-                <span class="landing-card-label">Getränke</span>
-            </a>
+        <div class="event-grid">
+            <div>
+                <div class="event-eyebrow reveal">Zuverlässige Profis für Ihr Event</div>
+                <div class="event-occasions reveal d2">
+                    <span class="event-tag">Firmenfeier</span>
+                    <span class="event-tag">Jubiläum</span>
+                    <span class="event-tag">Taufe</span>
+                    <span class="event-tag">Konfirmation</span>
+                    <span class="event-tag">Geburtstag</span>
+                </div>
+                <div class="event-text reveal d3">
+                    <p><strong>Sie planen Ihr Event – gerne mit uns.</strong></p>
+                    <p><strong>Wir stehen Ihnen als verlässlicher Partner zur Seite.</strong></p>
+                    <p>Wir verwöhnen Sie hier vor Ort im QUITO Frankenthal oder wir liefern direkt an die Location Ihrer Wahl.</p>
+                    <p>Wir stehen auch in allen Aufgaben <strong>im Cateringbereich</strong> zu Ihrer Verfügung.</p>
+                    <p>Sprechen Sie uns an, wir freuen uns Sie beraten zu dürfen.</p>
+                </div>
+                <div class="event-ctas reveal d3">
+                    <a href="tel:+4962333039095" class="btn btn-fill">Jetzt anfragen</a>
+                    <a href="mailto:info@cafe-quito.de" class="btn btn-ghost">E-Mail schreiben</a>
+                </div>
+            </div>
         </div>
     </div>
 </section>
