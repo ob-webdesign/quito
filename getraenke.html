@@ -245,14 +245,16 @@
         .foot-logo img { height: 30px; filter: invert(1); margin: 0 auto; }
         .foot-logo-text { font-family: var(--font-b); font-weight: 700; font-size: 1.6rem; letter-spacing: .12em; text-transform: uppercase; color: #fff; display: none; }
         .foot-info { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0; margin-bottom: 1.75rem; }
-        .foot-info p { font-size: .95rem; color: rgba(255,255,255,.55); line-height: 1.7; }
+        .foot-info p { font-size: .95rem; color: rgba(255,255,255,.65); line-height: 1.7; }
         .foot-info p + p::before { content: '·'; margin: 0 1.25rem; color: rgba(255,255,255,.25); }
-        .foot-info a { color: rgba(255,255,255,.55); transition: color .2s; }
+        .foot-info a { color: rgba(255,255,255,.65); transition: color .2s; }
         .foot-info a:hover { color: #fff; }
-        .foot-social { display: flex; align-items: center; justify-content: center; gap: .6rem; margin-bottom: 2.5rem; color: rgba(255,255,255,.55); font-size: .92rem; transition: color .2s; }
+        .foot-social-row { display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+        .foot-social { display: flex; align-items: center; justify-content: center; gap: .6rem; margin-bottom: 0; color: rgba(255,255,255,.65); font-size: .92rem; transition: color .2s; }
         .foot-social:hover { color: #fff; }
         .foot-social svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
-        .foot-divider { width: 48px; height: 1px; background: rgba(255,255,255,.15); margin: 0 auto 2rem; }
+        .foot-social svg.fb-icon { stroke: none; fill: currentColor; }
+        .foot-divider { width: 80px; height: 1px; background: linear-gradient(to right, transparent, rgba(255,255,255,.18), transparent); margin: 0 auto 2rem; }
         .foot-bottom { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; }
         .foot-copy { font-size: .78rem; color: rgba(255,255,255,.3); }
         .foot-links { display: flex; gap: 2rem; list-style: none; }
@@ -567,10 +569,16 @@
             <p>Mo–Fr 9–18 Uhr · Sa 9–16 Uhr</p>
             <p><a href="mailto:info@cafe-quito.de">info@cafe-quito.de</a></p>
         </div>
-        <a href="https://www.instagram.com" target="_blank" rel="noopener" class="foot-social" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/></svg>
-            @cafe.quito
-        </a>
+        <div class="foot-social-row">
+            <a href="https://www.instagram.com/cafe.quito/" target="_blank" rel="noopener" class="foot-social" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/></svg>
+                @cafe.quito
+            </a>
+            <a href="https://www.facebook.com/quitocafe/?locale=de_DE" target="_blank" rel="noopener" class="foot-social" aria-label="Facebook">
+                <svg class="fb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06C2 17.06 5.66 21.2 10.44 21.95v-7.02H7.9v-2.87h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.87h-2.34v7.02C18.34 21.2 22 17.06 22 12.06z"/></svg>
+                Café QUITO
+            </a>
+        </div>
         <div class="foot-divider"></div>
         <div class="foot-bottom">
             <p class="foot-copy">© 2026 Café QUITO <span class="foot-credit-sep">·</span> <span class="foot-credit foot-credit-inline">Webdesign by Dominik Orth</span></p>
