@@ -432,6 +432,39 @@
 
         .album-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem); }
 
+        .album-grid-wrap { position: relative; }
+        .album-grid-nav {
+            display: none;
+            position: absolute;
+            top: 42%;
+            transform: translateY(-50%);
+            z-index: 5;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: rgba(11, 9, 6, .55);
+            border: 1px solid rgba(244, 239, 230, .25);
+            backdrop-filter: blur(3px);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--warm-white);
+            transition: background .3s, border-color .3s, opacity .3s;
+        }
+        .album-grid-nav svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+        .album-grid-nav:hover { background: rgba(11, 9, 6, .8); border-color: rgba(244, 239, 230, .5); }
+        .album-grid-nav.prev { left: -1.3rem; }
+        .album-grid-nav.next { right: -1.3rem; }
+        .album-grid-nav.edge-hidden { opacity: 0; pointer-events: none; }
+        .album-grid-nav:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 3px; }
+        @media (min-width: 769px) {
+            .album-grid-nav { display: flex; }
+        }
+        @media (min-width: 769px) and (max-width: 1100px) {
+            .album-grid-nav.prev { left: .3rem; }
+            .album-grid-nav.next { right: .3rem; }
+        }
+
         .album-tile { display: block; cursor: pointer; opacity: 0; transform: translateY(14px); animation: albumTileIn .7s var(--ease) forwards; }
         @keyframes albumTileIn { to { opacity: 1; transform: none; } }
         .album-tile-media { position: relative; aspect-ratio: 4/5; border-radius: 6px; overflow: hidden; background: #151109; }
@@ -517,6 +550,45 @@
         .album-tile-new:hover { border-color: var(--terracotta); color: var(--warm-white); }
         .album-tile-new-plus { font-size: 2rem; line-height: 1; font-weight: 300; }
         body.admin-mode .album-tile-new { display: flex; }
+
+        /* ── DESKTOP: alles auf einer Bildschirmhöhe, Alben in einer horizontalen, wischbaren Reihe ── */
+        @media (min-width: 769px) {
+            html.mode-grid, html.mode-grid body { height: 100vh; overflow: hidden; }
+
+            .album-view {
+                height: 100vh;
+                min-height: 0;
+                display: flex;
+                flex-direction: column;
+                padding: clamp(1.2rem, 2.6vw, 2rem) var(--pad) clamp(1rem, 2vw, 1.5rem);
+                padding-top: calc(clamp(1.2rem, 2.6vw, 2rem) + env(safe-area-inset-top));
+            }
+            .album-view-head { flex: 0 0 auto; margin-bottom: clamp(1.2rem, 2.8vw, 2rem); }
+            .album-view-head .back-link { margin-bottom: 1rem; }
+            .album-view-title { font-size: clamp(1.8rem, 3.6vw, 2.8rem); }
+
+            .album-grid-wrap { flex: 1 1 auto; min-height: 0; display: flex; }
+            .album-grid {
+                flex: 1 1 auto;
+                min-height: 0;
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: center;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                scroll-padding-left: var(--pad);
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .album-grid::-webkit-scrollbar { display: none; }
+            .album-tile, .album-tile-new {
+                flex: 0 0 auto;
+                width: clamp(330px, 34vh, 400px);
+                scroll-snap-align: center;
+            }
+
+            .gallery-admin-trigger { flex: 0 0 auto; padding: .75rem 0 0; }
+        }
 
         /* Admin-Button "Foto hinzufügen" in der Slideshow-Bar */
         .admin-add-photo { display: none; align-items: center; gap: .4rem; font-family: var(--font-b); font-size: .68rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--warm-white); background: rgba(244,239,230,.12); border: 1px solid rgba(244,239,230,.25); padding: .5em 1em; border-radius: 999px; cursor: pointer; }
@@ -638,7 +710,15 @@
         <h1 class="album-view-title" id="albumViewTitle">Galerie</h1>
         <p class="album-view-sub" id="albumViewSub"></p>
     </div>
-    <div class="album-grid" id="albumGrid"></div>
+    <div class="album-grid-wrap">
+        <button class="album-grid-nav prev" id="albumGridPrev" type="button" aria-label="Vorherige Alben">
+            <svg viewBox="0 0 14 14"><polyline points="9,2 4,7 9,12"/></svg>
+        </button>
+        <div class="album-grid" id="albumGrid"></div>
+        <button class="album-grid-nav next" id="albumGridNext" type="button" aria-label="Weitere Alben">
+            <svg viewBox="0 0 14 14"><polyline points="5,2 10,7 5,12"/></svg>
+        </button>
+    </div>
 
     <!-- Admin-Login-Trigger: 5x klicken öffnet das Admin-Modal -->
     <div class="gallery-admin-trigger" id="galleryAdminTrigger">
@@ -727,7 +807,7 @@ window.GALERIE_DATA = [
 <script id="alben-data">
 window.ALBEN_DATA = {
   "kaffee-kueche": {
-    "title": "Kaffee & Küche",
+    "title": "Gerichte",
     "order": 2,
     "cover": "kaffee.jpeg"
   },
@@ -737,12 +817,12 @@ window.ALBEN_DATA = {
     "cover": "hero.WEBP"
   },
   "team-geschichte": {
-    "title": "Team & Geschichte",
+    "title": "Unser Team",
     "order": 3,
     "cover": "team.JPG"
   },
   "sonstige": {
-    "title": "Weitere Eindrücke",
+    "title": "Feste",
     "order": 99,
     "cover": null
   }
@@ -765,6 +845,8 @@ window.ALBEN_DATA = {
     var albumViewTitle = document.getElementById('albumViewTitle');
     var albumViewSub   = document.getElementById('albumViewSub');
     var albumGrid       = document.getElementById('albumGrid');
+    var albumGridPrev   = document.getElementById('albumGridPrev');
+    var albumGridNext   = document.getElementById('albumGridNext');
     var slideshowBack   = document.getElementById('slideshowBack');
 
     var gallery      = document.getElementById('gallery');
@@ -911,6 +993,26 @@ window.ALBEN_DATA = {
         return a;
     }
 
+    // ── ALBUM-GRID: horizontales Scrollen per Pfeil (Desktop) ──
+    function scrollAlbumGrid(dir) {
+        var tile = albumGrid.querySelector('.album-tile, .album-tile-new');
+        var gap  = parseFloat(getComputedStyle(albumGrid).columnGap) || 24;
+        var step = tile ? tile.getBoundingClientRect().width + gap : albumGrid.clientWidth * 0.8;
+        albumGrid.scrollBy({ left: dir * step, behavior: 'smooth' });
+    }
+    function updateAlbumGridNav() {
+        if (!albumGridPrev) return;
+        var maxScroll = albumGrid.scrollWidth - albumGrid.clientWidth - 2;
+        albumGridPrev.classList.toggle('edge-hidden', albumGrid.scrollLeft <= 2);
+        albumGridNext.classList.toggle('edge-hidden', maxScroll <= 0 || albumGrid.scrollLeft >= maxScroll);
+    }
+    if (albumGridPrev && albumGridNext) {
+        albumGridPrev.addEventListener('click', function () { scrollAlbumGrid(-1); });
+        albumGridNext.addEventListener('click', function () { scrollAlbumGrid(1); });
+        albumGrid.addEventListener('scroll', updateAlbumGridNav);
+        window.addEventListener('resize', updateAlbumGridNav);
+    }
+
     // ── TOP-LEVEL ALBUM-GRID ──
     function renderAlbumGrid() {
         albumViewBack.href = 'index.html';
@@ -939,6 +1041,8 @@ window.ALBEN_DATA = {
             }));
         });
         albumGrid.appendChild(buildNewAlbumTile());
+        albumGrid.scrollLeft = 0;
+        updateAlbumGridNav();
     }
 
     // ── NEUES-ALBUM-KACHEL (nur admin, per CSS ein-/ausgeblendet) ──
@@ -976,6 +1080,8 @@ window.ALBEN_DATA = {
                 onClick: function () { navigateTo(albumSlug, subSlug); }
             }));
         });
+        albumGrid.scrollLeft = 0;
+        updateAlbumGridNav();
     }
 
     // ── SLIDESHOW (wiedereintrittsfähig) ──
